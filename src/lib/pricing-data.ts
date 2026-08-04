@@ -20,5 +20,10 @@ export const PRICING_TIERS: PricingTier[] = [
 ];
 
 export function formatUZS(amount: number): string {
-  return new Intl.NumberFormat("uz-UZ").format(amount) + " so'm";
+  // `Intl.NumberFormat("uz-UZ")` renders a different grouping separator on
+  // the server (Node's ICU) than in the browser (Chromium's ICU), causing a
+  // React hydration mismatch. "en-US" grouping is stable across every JS
+  // engine, so we format with that and swap in the space Uzbek convention
+  // actually uses for thousands separators.
+  return amount.toLocaleString("en-US").replace(/,/g, " ") + " so'm";
 }
