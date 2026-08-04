@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PRICING_TIERS, formatUZS } from "@/lib/pricing-data";
+import { PRICING_TIERS, formatUZS, formatUSDApprox } from "@/lib/pricing-data";
 
 export function PricingTable() {
   const t = useTranslations("pricing");
@@ -57,8 +57,8 @@ export function PricingTable() {
                         {period === "monthly" ? t("perMonth") : t("perYear")}
                       </span>
                     </p>
-                    {tier.priceUSDApprox ? (
-                      <p className="text-xs text-muted-foreground">≈ ${tier.priceUSDApprox}</p>
+                    {price ? (
+                      <p className="text-xs text-muted-foreground">{formatUSDApprox(price)}</p>
                     ) : null}
                   </div>
                 )}
