@@ -26,7 +26,9 @@ export function ThemeToggle() {
   const mounted = useMounted();
 
   if (!mounted) {
-    return <Button variant="ghost" size="icon" aria-hidden />;
+    // tabIndex={-1}: an aria-hidden element must not be reachable by keyboard,
+    // otherwise focus lands on a control screen readers cannot announce.
+    return <Button variant="ghost" size="icon" aria-hidden tabIndex={-1} />;
   }
 
   return (
