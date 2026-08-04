@@ -1,0 +1,120 @@
+{
+  "nav": {
+    "pricing": "Pricing",
+    "partners": "Partner Program",
+    "login": "Log In",
+    "cta": "Get Consultation"
+  },
+  "hero": {
+    "badge": "AI EMPLOYEES",
+    "title": "Hire an AI employee for your business",
+    "subtitle": "With TayanchAI, a business can hire AI into sales, support, HR, and marketing as a full team member. It connects to your systems and learns from company history.",
+    "ctaPrimary": "Get Consultation",
+    "ctaSecondary": "See Pricing"
+  },
+  "workZones": {
+    "title": "How an AI employee works in business",
+    "subtitle": "You hire AI into a team role, connect it to channels, data, and systems — it learns from company history.",
+    "sales": {
+      "title": "Sales and customer service",
+      "description": "Qualifies leads, answers questions, books meetings, and writes everything to the CRM without manual work."
+    },
+    "hr": {
+      "title": "HR and recruiting",
+      "description": "Processes applications, replies to candidates, runs first-pass screening, and schedules interviews."
+    },
+    "marketing": {
+      "title": "Marketing and content",
+      "description": "Collects briefs and campaign leads, helps with messaging, segments requests."
+    },
+    "systems": {
+      "title": "Systems, knowledge, and actions",
+      "description": "Works through CRM, calendar, and the knowledge base — it doesn't just reply, it gets work done."
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Choose the plan that fits your team size",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "annualBadge": "33% savings",
+    "perMonth": "/mo",
+    "perYear": "/yr",
+    "cta": "Choose",
+    "tiers": {
+      "freemium": {
+        "name": "FREEMIUM",
+        "description": "For independent users and AI beginners",
+        "employees": "1 AI employee",
+        "feature2": "Ideal for testing",
+        "price": "Free",
+        "priceNote": "No time limits"
+      },
+      "businessS": {
+        "name": "Business S",
+        "description": "For entrepreneurs and small teams",
+        "employees": "5 AI employees",
+        "feature2": "10% token discount"
+      },
+      "businessM": {
+        "name": "Business M",
+        "description": "For growing teams bringing AI into routine work",
+        "employees": "20 AI employees",
+        "feature2": "25% token discount",
+        "popular": "Most Popular"
+      },
+      "businessL": {
+        "name": "Business L",
+        "description": "For ambitious businesses integrating AI into processes",
+        "employees": "75 AI employees",
+        "feature2": "50% token discount"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "For corporations integrating AI into business processes",
+        "employees": "200 AI employees",
+        "feature2": "Enterprise use cases",
+        "price": "On request",
+        "priceNote": "Custom terms"
+      }
+    }
+  },
+  "partners": {
+    "badge": "TAYANCHAI PARTNER PROGRAM",
+    "title": "Earn by rolling out AI employees",
+    "subtitle": "Help clients hire AI employees and earn from every implementation.",
+    "cta": "Submit request",
+    "stats": {
+      "discount": { "value": "up to 50%", "label": "discount on every client subscription" },
+      "referral": { "value": "up to 10%", "label": "referral payouts from top-ups" },
+      "launch": { "value": "5 days", "label": "from first call to subscription payment" },
+      "levels": { "value": "3", "label": "levels of partner participation" }
+    }
+  },
+  "leadForm": {
+    "title": "We'll show you how AI can get to work",
+    "subtitle": "We'll review your channels, scenarios, and integrations and show what can be handed off to AI in the very first launch.",
+    "name": "Name",
+    "phone": "Phone number",
+    "submit": "Get Consultation",
+    "submitPending": "Sending...",
+    "freeNote": "Free",
+    "success": "Thank you! We'll get in touch with you shortly.",
+    "errorValidation": "Please check your details and try again.",
+    "errorRateLimit": "Too many attempts. Please wait a moment and try again.",
+    "errorPhone": "Phone number must be in the format +998XXXXXXXXX."
+  },
+  "footer": {
+    "tagline": "AI agents for sales, service, and inbound request handling.",
+    "legalTitle": "Documents",
+    "copyright": "TayanchAI · all rights reserved"
+  },
+  "legal": {
+    "disclaimer": "This document is an early project draft and must be reviewed and approved by legal counsel before official launch — it is a placeholder, not a binding agreement.",
+    "offer": { "title": "Public Offer" },
+    "privacy": { "title": "Privacy Policy" },
+    "terms": { "title": "User Agreement" },
+    "cookies": { "title": "Cookie Policy" },
+    "consent": { "title": "Consent to Personal Data Processing" }
+  }
+}
