@@ -1,8 +1,12 @@
 {
+  "meta": {
+    "title": "TayanchAI — Hire an AI employee",
+    "description": "Hire AI into sales, support, HR, and marketing as a full member of your team."
+  },
   "nav": {
     "pricing": "Pricing",
     "partners": "Partner Program",
-    "login": "Log In",
+    "menu": "Menu",
     "cta": "Get Consultation",
     "themeToggle": "Toggle theme"
   },
@@ -41,6 +45,7 @@
     "annualBadge": "33% savings",
     "perMonth": "/mo",
     "perYear": "/yr",
+    "currency": "UZS",
     "cta": "Choose",
     "tiers": {
       "freemium": {
@@ -48,8 +53,7 @@
         "description": "For independent users and AI beginners",
         "employees": "1 AI employee",
         "feature2": "Ideal for testing",
-        "price": "Free",
-        "priceNote": "No time limits"
+        "price": "Free"
       },
       "businessS": {
         "name": "Business S",
@@ -75,8 +79,7 @@
         "description": "For corporations integrating AI into business processes",
         "employees": "200 AI employees",
         "feature2": "Enterprise use cases",
-        "price": "On request",
-        "priceNote": "Custom terms"
+        "price": "On request"
       }
     }
   },
@@ -104,6 +107,11 @@
     "errorValidation": "Please check your details and try again.",
     "errorRateLimit": "Too many attempts. Please wait a moment and try again.",
     "errorPhone": "Phone number must be in the format +998XXXXXXXXX."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "Sorry, the page you were looking for doesn't exist or has been moved.",
+    "cta": "Back to home"
   },
   "footer": {
     "tagline": "AI agents for sales, service, and inbound request handling.",

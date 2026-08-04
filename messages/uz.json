@@ -1,8 +1,12 @@
 {
+  "meta": {
+    "title": "TayanchAI — AI xodim ijaraga oling",
+    "description": "Sotuv, qo'llab-quvvatlash, HR va marketing bo'limlariga jamoa a'zosi sifatida AI xodim qo'shing."
+  },
   "nav": {
     "pricing": "Narxlash",
     "partners": "Hamkorlik dasturi",
-    "login": "Kirish",
+    "menu": "Menyu",
     "cta": "Konsultatsiya olish",
     "themeToggle": "Mavzuni almashtirish"
   },
@@ -41,6 +45,7 @@
     "annualBadge": "33% tejash",
     "perMonth": "/oy",
     "perYear": "/yil",
+    "currency": "so'm",
     "cta": "Tanlash",
     "tiers": {
       "freemium": {
@@ -48,8 +53,7 @@
         "description": "Mustaqil foydalanuvchilar va AI bilan yangi tanishayotganlar uchun",
         "employees": "1 AI xodim",
         "feature2": "Test qilish uchun ideal",
-        "price": "Bepul",
-        "priceNote": "Vaqt chegarasisiz"
+        "price": "Bepul"
       },
       "businessS": {
         "name": "Business S",
@@ -75,8 +79,7 @@
         "description": "Biznes-jarayonlarga AI'ni joriy qilayotgan korporatsiyalar uchun",
         "employees": "200 AI xodim",
         "feature2": "Enterprise use case'lar",
-        "price": "So'rov bo'yicha",
-        "priceNote": "Individual shartlar"
+        "price": "So'rov bo'yicha"
       }
     }
   },
@@ -104,6 +107,11 @@
     "errorValidation": "Iltimos, ma'lumotlarni to'g'ri kiriting.",
     "errorRateLimit": "Juda ko'p urinish. Biroz kuting va qayta urinib ko'ring.",
     "errorPhone": "Telefon raqami +998XXXXXXXXX formatida bo'lishi kerak."
+  },
+  "notFound": {
+    "title": "Sahifa topilmadi",
+    "description": "Kechirasiz, siz qidirayotgan sahifa mavjud emas yoki ko'chirilgan.",
+    "cta": "Bosh sahifaga qaytish"
   },
   "footer": {
     "tagline": "Sotuv, xizmat va murojaatlarni qayta ishlash uchun AI agentlar.",
