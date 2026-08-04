@@ -1,0 +1,83 @@
+# TayanchAI
+
+O'zbekiston bizneslari uchun "AI xodim ijaraga olish" B2B SaaS platformasi. worken.ru
+konsepsiyasining chuqur mahalliylashtirilgan va kuchaytirilgan versiyasi: bizneslar sotuv,
+qo'llab-quvvatlash, HR va marketing uchun AI agentlarni "ishga oladi", agentlar Telegram,
+WhatsApp, OLX.uz, CRM kabi tizimlarga ulanadi va mustaqil ishlaydi.
+
+Original tahlil qilingan mahsulot: https://worken.ru (bizniki emas — faqat konsepsiya manbai).
+
+## Nega bu loyiha va nima uchun worken.ru'dan farq qiladi
+
+worken.ru Rossiya bozori uchun qurilgan (RU/EN, rubl narxlash, Avito, rus to'lov tizimlari).
+TayanchAI xuddi shu g'oyani O'zbekiston bozori uchun qayta quradi va 4 ta muhim joyda undan
+ustun bo'lishga harakat qiladi:
+
+1. **WhatsApp Business integratsiyasi** — O'zbekistonda Telegramdan ham keng tarqalgan kanal,
+   worken.ru'da yo'q.
+2. **OLX.uz integratsiyasi** — Avito'ning mahalliy analogi (O'zbekistondagi eng katta
+   e'lonlar sayti).
+3. **Soha bo'yicha tayyor shablonlar** — do'kon, restoran, ta'lim markazi, ko'chmas mulk kabi
+   mahalliy SMB segmentlari uchun tayyor agent konfiguratsiyalari, tezroq ishga tushirish.
+4. **Human-in-the-loop rejimi** — AI ishonchsiz holatda avtomatik odamga topshiradi;
+   ishonchni oshiradigan xavfsizlik qatlami sifatida alohida ajratib ko'rsatiladi.
+
+Qo'shimcha mahalliylashtirish: 3 til (o'zbek/rus/ingliz, standart — o'zbek), telefon+SMS OTP
+autentifikatsiya, Payme/Click mahalliy to'lovlari + Stripe xalqaro kartalar uchun.
+
+## Texnik stack
+
+- **Frontend:** Next.js (App Router) + TypeScript + Tailwind + shadcn/ui
+- **i18n:** next-intl (uz standart, ru, en)
+- **Auth:** Telefon raqami + SMS OTP, email zaxira varianti
+- **DB:** Neon Postgres (Vercel Marketplace) + Drizzle ORM
+- **AI:** Vercel AI SDK + AI Gateway (multi-model, xarajat nazorati)
+- **Fayl/bilim bazasi:** Vercel Blob
+- **Uzoq muddatli jarayonlar:** Vercel Workflow (lid pipeline, onboarding)
+- **To'lovlar:** Stripe (xalqaro) + Payme/Click (mahalliy, maxsus integratsiya — Vercel
+  Marketplace'da yo'q, qo'lda API integratsiyasi kerak)
+- **Kanallar:** Telegram Bot API, WhatsApp Business Cloud API (Meta), sayt vidjeti, OLX.uz
+  (ochiq API yo'qligi taxmin qilinadi — forma/lid asosida boshlanadi, keyin qayta tekshiriladi)
+- **Hosting:** Vercel
+
+## Asosiy data-model (yuqori darajadagi)
+
+Tashkilot (tenant) → Foydalanuvchilar → Obuna/tarif → AI Xodimlar (rol: sotuv/HR/marketing)
+→ Kanallar (ulanган integratsiyalar) → Suhbatlar/xabarlar → Bilim bazasi hujjatlari →
+Lidlar/deals (ichki yengil CRM) → Hamkor/referal hisoblari
+
+## Bosqichma-bosqich yo'l xaritasi
+
+Har bir bosqich alohida `docs/superpowers/specs/` hujjati va implementatsiya rejasi oladi.
+Bitta katta rejaga hammasini oldindan batafsil yozish amaliy emas — har bosqich boshlanishidan
+oldin qayta ko'rib chiqiladi.
+
+- [ ] **0 — Fundament**: repo skeleton (Next.js+TS+Tailwind+shadcn), brend/dizayn tizimi
+      (TayanchAI), i18n scaffolding, CI, loyiha konventsiyalari
+- [ ] **1 — Marketing sayt**: landing (hero, qanday ishlaydi, 4 ish yo'nalishi), narxlash
+      sahifasi (UZS+USD), hamkorlik dasturi sahifasi, konsultatsiya lid-formasi, huquqiy
+      hujjatlar, til/tema almashtirgich
+- [ ] **2 — Auth + billing**: ro'yxatdan o'tish/kirish (telefon OTP), tashkilot yaratish,
+      tarif tanlash, Payme/Click + Stripe checkout, obuna boshqaruvi, bo'sh dashboard skeleton
+- [ ] **3 — AI agent yadrosi**: agent yaratish ustasi (rol tanlash), bilim bazasi yuklash
+      (fayl→Blob→embedding), suhbat dvigateli (AI SDK, tool calling), soha shablonlari,
+      human-in-the-loop eskalatsiya
+- [ ] **4 — Kanal integratsiyalari**: Telegram bot connector, WhatsApp Business Cloud API,
+      sayt chat-vidjeti, OLX.uz lid-intake
+- [ ] **5 — CRM/tizim integratsiyalari**: ichki yengil CRM, amoCRM/Bitrix24 connectorlari,
+      kalendar bron qilish, ochiq API/MCP server
+- [ ] **6 — Admin, analitika, hamkorlik dasturi va ishga tushirish**: admin panel
+      (tashkilot/token monitoring), analitika dashboardlari, ko'p darajali referal dasturi,
+      xavfsizlik/muvofiqlik tekshiruvi (O'zbekiston shaxsiy ma'lumotlar qonuni), yuklama testi
+
+Hozirgi holat: **0-1 bosqichlar uchun spec yozilmoqda/qurilmoqda.**
+Batafsil spec: `docs/superpowers/specs/2026-08-04-foundation-marketing-site-design.md`
+
+## Rivojlantirish konventsiyalari
+
+- Barcha foydalanuvchiga ko'rinadigan matn uch tilda: `uz` (standart), `ru`, `en`
+- Narxlar UZS'da asosiy, USD ikkinchi darajali ko'rsatiladi (xalqaro mijozlar uchun)
+- Har bir yangi bosqich boshlanishidan oldin: superpowers:brainstorming → spec →
+  superpowers:writing-plans → amalga oshirish
+- Design spec'lar: `docs/superpowers/specs/YYYY-MM-DD-<mavzu>-design.md`
+- Implementatsiya rejalari: `docs/superpowers/plans/`
