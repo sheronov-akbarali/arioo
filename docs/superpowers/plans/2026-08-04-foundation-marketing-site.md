@@ -14,9 +14,16 @@
 - Prices are shown primarily in UZS, with an approximate USD amount as secondary text (never the reverse).
 - No database and no `/api/*` route handlers in this phase — the one mutation (lead form) is a Server Action per Next.js best practice (mutations from UI → Server Actions, not Route Handlers).
 - TypeScript strict mode and ESLint must pass with zero errors before any commit.
-- Middleware uses the Next.js 16 `proxy.ts` convention (`proxy()` export, `proxyConfig`), not the legacy `middleware.ts`.
+- Middleware uses the Next.js 16 proxy convention, not the legacy `middleware.ts` — **as actually implemented: `src/proxy.ts` (not repo-root `proxy.ts`) exporting `proxy()` and `export const config` (not `proxyConfig`).** Verified via a live, fresh-cache A/B test (`rm -rf .next` both ways) in this project's Next 16.3.0 + Turbopack + `src/` layout: repo-root placement reproducibly 404s with an empty middleware manifest; `src/proxy.ts` reproducibly works. The `config` (not `proxyConfig`) export name is hardcoded in Next's static analysis (`node_modules/next/dist/build/analysis/get-page-static-info.js`). See Task 4's ledger entries for the full investigation.
 - Legal page content is explicitly marked as an unapproved draft (see Task 10) — never presented as a final legal document.
 - If a Telegram notification fails, the user must still see success in the UI (failure is logged server-side only, never surfaced to the visitor).
+
+### Settled deviations from this plan's literal code samples
+
+Two more places below still show code that was superseded during implementation — left as-is in the task bodies since editing every occurrence would be extensive, but recorded here so a future reader doesn't have to re-derive them:
+
+- **`<Button asChild>` (Tasks 6, 7, 9) does not work.** Task 2's actual shadcn CLI output uses `@base-ui/react` primitives, not Radix — `Button` has no `asChild` prop. Everywhere the code samples below show `<Button asChild><Link href="...">...</Link></Button>`, the shipped code instead uses `<Button render={<Link href="...">...</Link>} nativeButton={false}>` (confirmed against Base UI's own docs/types in Task 6's review). See `src/components/marketing/header.tsx` for the canonical example.
+- **`Intl.NumberFormat("uz-UZ")` (Task 8) causes a real hydration mismatch.** Node's ICU and Chromium's ICU disagree on `uz-UZ` digit grouping, so this literal code produces a different string server-side vs. client-side. The shipped `formatUZS` in `src/lib/pricing-data.ts` instead formats with `"en-US"` grouping and replaces commas with spaces, which is stable across engines. Also note: the shipped version takes a `currency` parameter (a later fix localized the hardcoded `" so'm"` suffix) rather than the single-argument signature shown below.
 
 ---
 

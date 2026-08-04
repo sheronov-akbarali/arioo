@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "title": "TayanchAI — AI xodim ijaraga oling",
+    "description": "Sotuv, qo'llab-quvvatlash, HR va marketing bo'limlariga jamoa a'zosi sifatida AI xodim qo'shing."
+  },
+  "nav": {
+    "pricing": "Narxlash",
+    "partners": "Hamkorlik dasturi",
+    "menu": "Menyu",
+    "cta": "Konsultatsiya olish",
+    "themeToggle": "Mavzuni almashtirish"
+  },
+  "hero": {
+    "badge": "AI XODIMLAR",
+    "title": "Biznesingiz uchun AI xodimni ishga oling",
+    "subtitle": "TayanchAI yordamida sotuv, qo'llab-quvvatlash, HR va marketing bo'limlariga jamoa a'zosi sifatida AI qo'shing. U kompaniyangiz tizimlariga ulanadi, tarixiy ma'lumotlardan o'rganadi va mustaqil ishlaydi.",
+    "ctaPrimary": "Konsultatsiya olish",
+    "ctaSecondary": "Narxlarni ko'rish"
+  },
+  "workZones": {
+    "title": "AI xodim biznesda qanday ishlaydi",
+    "subtitle": "AI'ni jamoa roliga ishga olasiz, uni kanallar, ma'lumotlar va tizimlarga ulaysiz — u kompaniya tarixidan o'rganadi.",
+    "sales": {
+      "title": "Sotuv va mijozlarga xizmat",
+      "description": "Lidlarni malakalashtiradi, savollarga javob beradi, uchrashuv belgilaydi va CRM'ga qo'lda ishlarsiz yozadi."
+    },
+    "hr": {
+      "title": "HR va recruiting",
+      "description": "Arizalarni qayta ishlaydi, nomzodlarga javob beradi, birlamchi skrining o'tkazadi va suhbatlarni rejalashtiradi."
+    },
+    "marketing": {
+      "title": "Marketing va kontent",
+      "description": "Brif va kampaniya lidlarini yig'adi, xabar matnlariga yordam beradi, so'rovlarni segmentlaydi."
+    },
+    "systems": {
+      "title": "Tizimlar, bilim va harakatlar",
+      "description": "CRM, kalendar va bilim bazasi orqali ishlaydi — shunchaki javob bermaydi, ishni bajaradi."
+    }
+  },
+  "pricing": {
+    "title": "Narxlash",
+    "subtitle": "Jamoangiz o'lchamiga mos tarifni tanlang",
+    "monthly": "Oylik",
+    "annual": "Yillik",
+    "annualBadge": "33% tejash",
+    "perMonth": "/oy",
+    "perYear": "/yil",
+    "currency": "so'm",
+    "cta": "Tanlash",
+    "tiers": {
+      "freemium": {
+        "name": "FREEMIUM",
+        "description": "Mustaqil foydalanuvchilar va AI bilan yangi tanishayotganlar uchun",
+        "employees": "1 AI xodim",
+        "feature2": "Test qilish uchun ideal",
+        "price": "Bepul"
+      },
+      "businessS": {
+        "name": "Business S",
+        "description": "Tadbirkorlar va kichik jamoalar uchun",
+        "employees": "5 AI xodim",
+        "feature2": "10% token chegirmasi"
+      },
+      "businessM": {
+        "name": "Business M",
+        "description": "AI'ni kundalik ishga joriy qilayotgan o'sayotgan jamoalar uchun",
+        "employees": "20 AI xodim",
+        "feature2": "25% token chegirmasi",
+        "popular": "Eng mashhur"
+      },
+      "businessL": {
+        "name": "Business L",
+        "description": "Biznes-jarayonlarga AI'ni integratsiya qilayotgan yirik bizneslar uchun",
+        "employees": "75 AI xodim",
+        "feature2": "50% token chegirmasi"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Biznes-jarayonlarga AI'ni joriy qilayotgan korporatsiyalar uchun",
+        "employees": "200 AI xodim",
+        "feature2": "Enterprise use case'lar",
+        "price": "So'rov bo'yicha"
+      }
+    }
+  },
+  "partners": {
+    "badge": "TAYANCHAI HAMKORLIK DASTURI",
+    "title": "AI xodimlarni joriy qilib daromad oling",
+    "subtitle": "Mijozlarga AI xodim yollashda yordam bering va har bir joriy etishdan daromad oling.",
+    "cta": "Ariza qoldirish",
+    "stats": {
+      "discount": { "value": "50%gacha", "label": "Har bir mijoz obunasidan chegirma" },
+      "referral": { "value": "10%gacha", "label": "Hisobni to'ldirishdan referal to'lovlar" },
+      "launch": { "value": "5 kun", "label": "Birinchi qo'ng'iroqdan obuna to'lovigacha" },
+      "levels": { "value": "3", "label": "Hamkorlik ishtirok darajasi" }
+    }
+  },
+  "leadForm": {
+    "title": "AI qanday ishga tushirilishini ko'rsatamiz",
+    "subtitle": "Kanallaringiz, ssenariylaringiz va integratsiyalaringizni ko'rib chiqamiz va birinchi ishga tushirishdayoq nimani AI'ga topshirish mumkinligini ko'rsatamiz.",
+    "name": "Ism",
+    "phone": "Telefon raqami",
+    "submit": "Konsultatsiya olish",
+    "submitPending": "Yuborilmoqda...",
+    "freeNote": "Bepul",
+    "success": "Rahmat! Tez orada siz bilan bog'lanamiz.",
+    "errorValidation": "Iltimos, ma'lumotlarni to'g'ri kiriting.",
+    "errorRateLimit": "Juda ko'p urinish. Biroz kuting va qayta urinib ko'ring.",
+    "errorPhone": "Telefon raqami +998XXXXXXXXX formatida bo'lishi kerak."
+  },
+  "notFound": {
+    "title": "Sahifa topilmadi",
+    "description": "Kechirasiz, siz qidirayotgan sahifa mavjud emas yoki ko'chirilgan.",
+    "cta": "Bosh sahifaga qaytish"
+  },
+  "footer": {
+    "tagline": "Sotuv, xizmat va murojaatlarni qayta ishlash uchun AI agentlar.",
+    "legalTitle": "Hujjatlar",
+    "copyright": "TayanchAI · barcha huquqlar himoyalangan"
+  },
+  "legal": {
+    "disclaimer": "Ushbu hujjat loyihaning dastlabki qoralamasi bo'lib, yuridik maslahatchi tomonidan ko'rib chiqilishi va tasdiqlanishi lozim. Rasmiy ishga tushirishdan oldin almashtirilishi shart.",
+    "offer": { "title": "Ommaviy oferta" },
+    "privacy": { "title": "Maxfiylik siyosati" },
+    "terms": { "title": "Foydalanuvchi shartnomasi" },
+    "cookies": { "title": "Cookie siyosati" },
+    "consent": { "title": "Shaxsiy ma'lumotlarni qayta ishlashga rozilik" }
+  }
+}
