@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
+import { MobileNav } from "./mobile-nav";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -22,14 +23,18 @@ export function Header() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          <LanguageSwitcher />
-          <ThemeToggle />
+          {/* Below `md` these live inside the MobileNav drawer instead. */}
+          <div className="hidden items-center gap-2 md:flex">
+            <LanguageSwitcher />
+            <ThemeToggle />
+          </div>
           <Button
             size="sm"
             className="bg-brand text-brand-foreground hover:opacity-90"
             nativeButton={false}
             render={<Link href="/#lead-form">{t("cta")}</Link>}
           />
+          <MobileNav />
         </div>
       </div>
     </header>
