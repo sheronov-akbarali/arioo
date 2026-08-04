@@ -22,13 +22,16 @@ export const PRICING_TIERS: PricingTier[] = [
 // not a live FX rate. Revisit before real billing goes live.
 const UZS_PER_USD = 12700;
 
-export function formatUZS(amount: number): string {
+// `currency` is the already-translated currency label (messages `pricing.currency`).
+// This module is a pure data/formatting helper with no access to next-intl, so
+// the caller passes the localized label in.
+export function formatUZS(amount: number, currency: string): string {
   // `Intl.NumberFormat("uz-UZ")` renders a different grouping separator on
   // the server (Node's ICU) than in the browser (Chromium's ICU), causing a
   // React hydration mismatch. "en-US" grouping is stable across every JS
   // engine, so we format with that and swap in the space Uzbek convention
   // actually uses for thousands separators.
-  return amount.toLocaleString("en-US").replace(/,/g, " ") + " so'm";
+  return `${amount.toLocaleString("en-US").replace(/,/g, " ")} ${currency}`;
 }
 
 // Derives the secondary USD figure from whichever UZS price is currently

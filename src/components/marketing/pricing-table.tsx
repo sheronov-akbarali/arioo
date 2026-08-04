@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -52,7 +53,7 @@ export function PricingTable() {
                 ) : (
                   <div>
                     <p className="text-2xl font-bold">
-                      {formatUZS(price ?? 0)}
+                      {formatUZS(price ?? 0, t("currency"))}
                       <span className="text-sm font-normal text-muted-foreground">
                         {period === "monthly" ? t("perMonth") : t("perYear")}
                       </span>
@@ -62,9 +63,11 @@ export function PricingTable() {
                     ) : null}
                   </div>
                 )}
-                <Button className="mt-6 w-full bg-brand text-brand-foreground hover:opacity-90">
-                  {t("cta")}
-                </Button>
+                <Button
+                  className="mt-6 w-full bg-brand text-brand-foreground hover:opacity-90"
+                  nativeButton={false}
+                  render={<Link href="/#lead-form">{t("cta")}</Link>}
+                />
               </CardContent>
             </Card>
           );
