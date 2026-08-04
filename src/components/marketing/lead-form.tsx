@@ -31,9 +31,12 @@ export function LeadForm() {
         <form
           action={formAction}
           // React only applies `defaultValue` on mount, and React 19 resets an
-          // uncontrolled form once its action settles. Re-keying the form on the
-          // echoed-back values remounts the inputs so the user's typing survives
-          // a server-side validation error instead of being wiped.
+          // uncontrolled form once its action settles. Keying on a server-
+          // incremented attempt counter (rather than the echoed values
+          // themselves) forces a remount on every submit, including an
+          // identical resubmit that wouldn't change a value-derived key — so
+          // the user's typing (echoed back via defaultValue) survives a
+          // server-side validation error instead of being wiped.
           key={state.attempt ?? 0}
           className="mt-8 space-y-4"
         >
