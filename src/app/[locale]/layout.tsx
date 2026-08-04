@@ -31,6 +31,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = await getTranslations({ locale: resolvedLocale, namespace: "meta" });
 
   return {
+    // Placeholder production domain — Next.js needs an absolute base to turn
+    // the relative hreflang/OG URLs below into the fully-qualified ones
+    // search engines require. Replace with the real domain before launch.
+    metadataBase: new URL("https://tayanchai.uz"),
     title: t("title"),
     description: t("description"),
     alternates: {
