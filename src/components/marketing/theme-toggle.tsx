@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 
 function subscribe() {
@@ -20,6 +21,7 @@ function useMounted() {
 }
 
 export function ThemeToggle() {
+  const t = useTranslations("nav");
   const { theme, setTheme } = useTheme();
   const mounted = useMounted();
 
@@ -32,7 +34,7 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      aria-label="Toggle theme"
+      aria-label={t("themeToggle")}
     >
       {theme === "dark" ? "☀" : "☽"}
     </Button>
