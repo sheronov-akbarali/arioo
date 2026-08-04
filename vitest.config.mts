@@ -1,17 +1,19 @@
 import { defineConfig } from "vitest/config";
+import { fileURLToPath } from "node:url";
 
 export default defineConfig({
-  // The modules under test are Server Components / server-only modules. The
-  // "react-server" condition makes `import "server-only"` resolve to its no-op
-  // entry here, exactly as it does in Next.js's RSC bundling layer — without
-  // it the package's guard throws and the suite cannot import them at all.
+  // `import "server-only"` throws unless resolved under the "react-server"
+  // export condition (its no-op build). A global `resolve.conditions`
+  // override would make that condition win for every package, not just this
+  // one — including "react" itself, which has its own "react-server" build
+  // that lacks client APIs like useState, silently breaking any future
+  // component/hook test. Alias only this one package to its own no-op entry
+  // instead, so nothing else's module resolution is affected.
   resolve: {
-    conditions: ["react-server", "node", "import", "default"],
-  },
-  ssr: {
-    resolve: {
-      conditions: ["react-server", "node", "import", "default"],
-      externalConditions: ["react-server", "node", "import", "default"],
+    alias: {
+      "server-only": fileURLToPath(
+        new URL("./node_modules/server-only/empty.js", import.meta.url),
+      ),
     },
   },
   test: {
