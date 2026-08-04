@@ -21,4 +21,26 @@ describe("parseConsultationInput", () => {
     const result = parseConsultationInput(null);
     expect(result.success).toBe(false);
   });
+
+  it("reports which field failed so the UI can pick a specific message", () => {
+    const badPhone = parseConsultationInput({ name: "Akbarali", phone: "901234567" });
+    expect(badPhone.success === false && badPhone.field).toBe("phone");
+
+    const badName = parseConsultationInput({ name: "A", phone: "+998901234567" });
+    expect(badName.success === false && badName.field).toBe("name");
+  });
+
+  it("rejects a name containing newlines that could forge Telegram lines", () => {
+    const result = parseConsultationInput({
+      name: "Akbarali\nTelefon: +998900000000",
+      phone: "+998901234567",
+    });
+    expect(result.success).toBe(false);
+    expect(result.success === false && result.field).toBe("name");
+  });
+
+  it("rejects a name containing a carriage return", () => {
+    const result = parseConsultationInput({ name: "Ak\rbarali", phone: "+998901234567" });
+    expect(result.success).toBe(false);
+  });
 });

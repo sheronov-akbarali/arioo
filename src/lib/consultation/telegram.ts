@@ -1,3 +1,7 @@
+// Hard-fails the build if this module is ever pulled into a client bundle —
+// it reads TELEGRAM_BOT_TOKEN and must stay server-side.
+import "server-only";
+
 export async function sendLeadNotification(lead: {
   name: string;
   phone: string;
