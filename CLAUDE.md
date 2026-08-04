@@ -25,6 +25,35 @@ ustun bo'lishga harakat qiladi:
 Qo'shimcha mahalliylashtirish: 3 til (o'zbek/rus/ingliz, standart — o'zbek), telefon+SMS OTP
 autentifikatsiya, Payme/Click mahalliy to'lovlari + Stripe xalqaro kartalar uchun.
 
+## Raqobatchi chuqur tahlili (worken.ru autentifikatsiyalangan panel)
+
+Marketing saytdan tashqari, worken.ru'ning haqiqiy boshqaruv panelini (`/bots`, `/integrations`,
+`/billing`, `/approvals`, `/routines`, `/products`, `/referral-program`) ham o'rganib chiqildi.
+Bu shunchaki marketing landingdan ancha boy — to'liq agent-builder platforma ekan. Muhim
+topilmalar, ular bizning yo'l xaritamizga quyida integratsiya qilingan:
+
+- **Agent konfiguratsiyasi**: tizim prompti, model tanlash, va **Tools** panelida yoqib-
+  o'chiriladigan integratsiya to'plamlari (ichki tizim, 1C, GitHub, Google Sheets/Drive,
+  Avito). Har bir integratsiya guruhi o'z ichida alohida vositalar ro'yxatiga ega
+  (masalan "Avito Messenger" — 9 ta vosita).
+- **Qo'ng'iroq muvofiqlik tizimi**: ish soatlari, oyna tashqarisidagi xatti-harakat, DNC
+  ("Не звонить") ro'yxatini hurmat qilish, davr uchun maksimal urinishlar (masalan 3ta/7kun),
+  faqat kontekst (thread) mavjud bo'lganda tashqi qo'ng'iroq — cold-dialni bloklaydi.
+- **Approvals (human-in-the-loop navbat)**: rutinalar/vositalar/ovoz ssenariylarining tashqi
+  harakatlari tasdiqlash navbatiga tushadi; statuslar: kutmoqda/tasdiqlangan/rad
+  etilgan/avto-hal qilingan/xato/muddati o'tgan.
+- **Kredit-asosidagi shaffof billing**: ichki valyuta (ularda "W"), alohida bonus valyutasi,
+  har bir suhbat/model bo'yicha xarajat tarixi, vektor-baza hajmi bo'yicha alohida to'lov,
+  bank o'tkazmasi uchun invoys so'rash.
+- **Routines**: CRM/integratsiya hodisalariga asoslangan trigger→harakat avtomatlashtirish
+  (Zapier uslubida).
+- **Ikki qatlamli referral**: ommaviy hamkorlik dasturi (agentliklar, 50%gacha chegirma) +
+  ilova ichidagi oddiy foydalanuvchi referral dasturi (5%, kunlik/oylik limit bilan).
+- **Products/commerce katalogi**: yagona "offer" ob'ekti, kanallarga (Avito) bog'lanadi,
+  to'lov yo'llari (Robokassa, Telegram Stars) ulanadi.
+- **Zaif tomoni**: ularning Statistics sahifasi ishlamayotgan/bo'sh edi — bizning tizim
+  ishonchliligi va real-time analitika ustunligimiz shu yerda ko'rinishi kerak.
+
 ## Texnik stack
 
 - **Frontend:** Next.js (App Router) + TypeScript + Tailwind + shadcn/ui
@@ -58,17 +87,26 @@ oldin qayta ko'rib chiqiladi.
       sahifasi (UZS+USD), hamkorlik dasturi sahifasi, konsultatsiya lid-formasi, huquqiy
       hujjatlar, til/tema almashtirgich
 - [ ] **2 — Auth + billing**: ro'yxatdan o'tish/kirish (telefon OTP), tashkilot yaratish,
-      tarif tanlash, Payme/Click + Stripe checkout, obuna boshqaruvi, bo'sh dashboard skeleton
+      tarif tanlash, Payme/Click + Stripe checkout, obuna boshqaruvi, bo'sh dashboard skeleton,
+      **kredit-asosidagi ichki valyuta** (masalan "TAY") + bonus valyuta, xarajat tarixi
+      infratuzilmasi (jadval darajasida, UI Phase 3'da)
 - [ ] **3 — AI agent yadrosi**: agent yaratish ustasi (rol tanlash), bilim bazasi yuklash
       (fayl→Blob→embedding), suhbat dvigateli (AI SDK, tool calling), soha shablonlari,
-      human-in-the-loop eskalatsiya
+      **human-in-the-loop approvals navbati** (kutmoqda/tasdiqlangan/rad etilgan/avto-hal
+      qilingan/muddati o'tgan statuslari bilan), **har suhbat/model bo'yicha xarajat
+      ko'rsatish**, agentga integratsiyalarni yoqib-o'chirish paneli (Tools)
 - [ ] **4 — Kanal integratsiyalari**: Telegram bot connector, WhatsApp Business Cloud API,
-      sayt chat-vidjeti, OLX.uz lid-intake
+      sayt chat-vidjeti, OLX.uz lid-intake, **ovozli qo'ng'iroq muvofiqlik tizimi** (ish
+      soatlari, "Qo'ng'iroq qilmang" ro'yxati, davr uchun urinishlar chastotasi, faqat
+      kontekstli tashqi qo'ng'iroq) — telefon/SIP kanali qo'shilganda
 - [ ] **5 — CRM/tizim integratsiyalari**: ichki yengil CRM, amoCRM/Bitrix24 connectorlari,
-      kalendar bron qilish, ochiq API/MCP server
+      kalendar bron qilish, ochiq API/MCP server, **Routines** (CRM/integratsiya hodisalariga
+      asoslangan trigger→harakat avtomatlashtirish)
 - [ ] **6 — Admin, analitika, hamkorlik dasturi va ishga tushirish**: admin panel
-      (tashkilot/token monitoring), analitika dashboardlari, ko'p darajali referal dasturi,
-      xavfsizlik/muvofiqlik tekshiruvi (O'zbekiston shaxsiy ma'lumotlar qonuni), yuklama testi
+      (tashkilot/token monitoring), **ishonchli real-time analitika dashboardlari**
+      (raqobatchining bo'sh/buzilgan Statistics sahifasidan ustunlik), ikki qatlamli referral
+      (agentlik hamkorlik dasturi + oddiy foydalanuvchi referral, limitlar bilan), xavfsizlik/
+      muvofiqlik tekshiruvi (O'zbekiston shaxsiy ma'lumotlar qonuni), yuklama testi
 
 Hozirgi holat: **0-1 bosqichlar uchun spec yozilmoqda/qurilmoqda.**
 Batafsil spec: `docs/superpowers/specs/2026-08-04-foundation-marketing-site-design.md`
