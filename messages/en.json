@@ -135,5 +135,19 @@
       "telegram": "Continue with Telegram",
       "errorOauthFailed": "Sign-in failed. Please try again."
     }
+  },
+  "onboarding": {
+    "title": "Create your organization",
+    "subtitle": "This takes just a few seconds",
+    "nameLabel": "Organization name",
+    "industryLabel": "Industry",
+    "submit": "Continue",
+    "industries": {
+      "retail": "Retail / Store",
+      "restaurant": "Restaurant / Café",
+      "education": "Education center",
+      "real_estate": "Real estate",
+      "other": "Other"
+    }
   }
 }
