@@ -149,5 +149,17 @@
       "real_estate": "Недвижимость",
       "other": "Другое"
     }
+  },
+  "settings": {
+    "accounts": {
+      "title": "Привязанные аккаунты",
+      "unlink": "Отвязать",
+      "addProvider": "Добавить провайдера",
+      "link": {
+        "google": "Добавить Google",
+        "github": "Добавить GitHub",
+        "telegram": "Добавить Telegram"
+      }
+    }
   }
 }

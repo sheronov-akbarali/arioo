@@ -19,19 +19,26 @@ declare global {
   }
 }
 
-export function TelegramLoginWidget({ botUsername }: { botUsername: string }) {
+export function TelegramLoginWidget({
+  botUsername,
+  mode = "signin",
+}: {
+  botUsername: string;
+  mode?: "signin" | "link";
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   useEffect(() => {
     window.onTelegramAuth = async (data) => {
-      const response = await fetch("/api/auth/telegram/callback", {
+      const url = `/api/auth/telegram/callback${mode === "link" ? "?mode=link" : ""}`;
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        router.push("/dashboard");
+        router.push(mode === "link" ? "/settings/accounts" : "/dashboard");
       } else {
         router.push("/sign-in?error=oauth_failed");
       }
@@ -49,7 +56,7 @@ export function TelegramLoginWidget({ botUsername }: { botUsername: string }) {
     return () => {
       window.onTelegramAuth = undefined;
     };
-  }, [botUsername, router]);
+  }, [botUsername, mode, router]);
 
   return <div ref={containerRef} />;
 }

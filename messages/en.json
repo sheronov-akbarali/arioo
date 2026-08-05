@@ -149,5 +149,17 @@
       "real_estate": "Real estate",
       "other": "Other"
     }
+  },
+  "settings": {
+    "accounts": {
+      "title": "Linked accounts",
+      "unlink": "Unlink",
+      "addProvider": "Add provider",
+      "link": {
+        "google": "Add Google",
+        "github": "Add GitHub",
+        "telegram": "Add Telegram"
+      }
+    }
   }
 }

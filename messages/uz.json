@@ -149,5 +149,17 @@
       "real_estate": "Ko'chmas mulk",
       "other": "Boshqa"
     }
+  },
+  "settings": {
+    "accounts": {
+      "title": "Ulangan akkauntlar",
+      "unlink": "Uzish",
+      "addProvider": "Provider qo'shish",
+      "link": {
+        "google": "Google qo'shish",
+        "github": "GitHub qo'shish",
+        "telegram": "Telegram qo'shish"
+      }
+    }
   }
 }
