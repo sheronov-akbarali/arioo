@@ -18,7 +18,7 @@ async function createSessionForUser(userId: string) {
   const sessionToken = randomUUID();
   const expires = new Date(Date.now() + SESSION_TTL_MS);
   await db.insert(sessions).values({ sessionToken, userId, expires });
-  return { sessionToken, userId };
+  return { sessionToken, userId, expires };
 }
 
 export async function completeLogin(input: ProviderInput) {
