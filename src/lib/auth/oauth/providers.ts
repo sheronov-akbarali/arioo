@@ -74,16 +74,25 @@ export async function exchangeCodeForProfile(
   try {
     const tokenResponse = await fetch(config.tokenUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        client_id: process.env[config.clientIdEnv],
-        client_secret: process.env[config.clientSecretEnv],
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        // GitHub's token endpoint otherwise replies with a query-string body
+        // instead of JSON; Google ignores this header and always returns JSON.
+        Accept: "application/json",
+      },
+      body: new URLSearchParams({
+        client_id: process.env[config.clientIdEnv]!,
+        client_secret: process.env[config.clientSecretEnv]!,
         code,
         redirect_uri: redirectUri,
         grant_type: "authorization_code",
       }),
     });
-    if (!tokenResponse.ok) return null;
+    if (!tokenResponse.ok) {
+      const body = await tokenResponse.text?.().catch(() => "<unreadable body>");
+      console.error(`OAuth token exchange failed for ${provider}: ${tokenResponse.status} ${body}`);
+      return null;
+    }
     const tokenBody = (await tokenResponse.json()) as { access_token?: string };
     if (!tokenBody.access_token) return null;
 
