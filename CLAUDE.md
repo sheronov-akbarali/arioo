@@ -22,8 +22,9 @@ ustun bo'lishga harakat qiladi:
 4. **Human-in-the-loop rejimi** — AI ishonchsiz holatda avtomatik odamga topshiradi;
    ishonchni oshiradigan xavfsizlik qatlami sifatida alohida ajratib ko'rsatiladi.
 
-Qo'shimcha mahalliylashtirish: 3 til (o'zbek/rus/ingliz, standart — o'zbek), telefon+SMS OTP
-autentifikatsiya, Payme/Click mahalliy to'lovlari + Stripe xalqaro kartalar uchun.
+Qo'shimcha mahalliylashtirish: 3 til (o'zbek/rus/ingliz, standart — o'zbek), mahalliylashtirilgan
+OAuth providerlar (Google/Telegram/GitHub) bilan parolsiz autentifikatsiya, Payme/Click
+mahalliy to'lovlari + Stripe xalqaro kartalar uchun.
 
 ## Raqobatchi chuqur tahlili (worken.ru autentifikatsiyalangan panel)
 
@@ -58,7 +59,10 @@ topilmalar, ular bizning yo'l xaritamizga quyida integratsiya qilingan:
 
 - **Frontend:** Next.js (App Router) + TypeScript + Tailwind + shadcn/ui
 - **i18n:** next-intl (uz standart, ru, en)
-- **Auth:** Telefon raqami + SMS OTP, email zaxira varianti
+- **Auth:** Faqat OAuth (Auth.js v5 + Drizzle adapter), parolsiz — worken.ru'ning
+  parolsiz OAuth modeliga mos, lekin O'zbekiston uchun mahalliylashtirilgan providerlar:
+  Google, Telegram Login Widget, GitHub. Batafsil:
+  `docs/superpowers/specs/2026-08-05-auth-cabinet-design.md`
 - **DB:** Neon Postgres (Vercel Marketplace) + Drizzle ORM
 - **AI:** Vercel AI SDK + AI Gateway (multi-model, xarajat nazorati)
 - **Fayl/bilim bazasi:** Vercel Blob
@@ -86,7 +90,8 @@ oldin qayta ko'rib chiqiladi.
 - [ ] **1 — Marketing sayt**: landing (hero, qanday ishlaydi, 4 ish yo'nalishi), narxlash
       sahifasi (UZS+USD), hamkorlik dasturi sahifasi, konsultatsiya lid-formasi, huquqiy
       hujjatlar, til/tema almashtirgich
-- [ ] **2 — Auth + billing**: ro'yxatdan o'tish/kirish (telefon OTP), tashkilot yaratish,
+- [ ] **2 — Auth + billing**: ro'yxatdan o'tish/kirish (parolsiz OAuth — Google/Telegram/
+      GitHub, akkaunt ulash, faol sessiyalar paneli), tashkilot yaratish + jamoa taklifi,
       tarif tanlash, Payme/Click + Stripe checkout, obuna boshqaruvi, bo'sh dashboard skeleton,
       **kredit-asosidagi ichki valyuta** (masalan "TAY") + bonus valyuta, xarajat tarixi
       infratuzilmasi (jadval darajasida, UI Phase 3'da)
@@ -108,8 +113,10 @@ oldin qayta ko'rib chiqiladi.
       (agentlik hamkorlik dasturi + oddiy foydalanuvchi referral, limitlar bilan), xavfsizlik/
       muvofiqlik tekshiruvi (O'zbekiston shaxsiy ma'lumotlar qonuni), yuklama testi
 
-Hozirgi holat: **0-1 bosqichlar uchun spec yozilmoqda/qurilmoqda.**
-Batafsil spec: `docs/superpowers/specs/2026-08-04-foundation-marketing-site-design.md`
+Hozirgi holat: **0-1 bosqichlar tugallangan (marketing sayt). 2a bosqich (Auth + kabinet
+skeleton) uchun spec tasdiqlangan, amalga oshirish rejasi tayyorlanmoqda.**
+Speclar: `docs/superpowers/specs/2026-08-04-foundation-marketing-site-design.md`,
+`docs/superpowers/specs/2026-08-05-auth-cabinet-design.md`
 
 ## Rivojlantirish konventsiyalari
 
