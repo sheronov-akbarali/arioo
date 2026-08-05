@@ -167,6 +167,12 @@
       "revokeOthers": "Boshqa hamma joydan chiqish",
       "thisDevice": "bu qurilma",
       "unknownDevice": "Noma'lum qurilma"
+    },
+    "team": {
+      "title": "Jamoa a'zolari",
+      "emailPlaceholder": "email@misol.uz",
+      "invite": "Taklif yuborish",
+      "pending": "kutilmoqda"
     }
   }
 }

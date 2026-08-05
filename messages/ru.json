@@ -167,6 +167,12 @@
       "revokeOthers": "Выйти со всех других устройств",
       "thisDevice": "это устройство",
       "unknownDevice": "Неизвестное устройство"
+    },
+    "team": {
+      "title": "Участники команды",
+      "emailPlaceholder": "email@example.com",
+      "invite": "Отправить приглашение",
+      "pending": "ожидает"
     }
   }
 }

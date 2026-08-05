@@ -167,6 +167,12 @@
       "revokeOthers": "Sign out of all other devices",
       "thisDevice": "this device",
       "unknownDevice": "Unknown device"
+    },
+    "team": {
+      "title": "Team members",
+      "emailPlaceholder": "email@example.com",
+      "invite": "Send invite",
+      "pending": "pending"
     }
   }
 }
