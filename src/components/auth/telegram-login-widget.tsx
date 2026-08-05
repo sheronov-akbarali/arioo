@@ -39,6 +39,13 @@ export function TelegramLoginWidget({
       });
       if (response.ok) {
         router.push(mode === "link" ? "/settings/accounts" : "/dashboard");
+      } else if (mode === "link") {
+        // The user is already signed in; a failed *link* attempt (e.g. this
+        // Telegram account is already linked elsewhere) should send them
+        // back to their settings, not bounce them out to sign-in.
+        const body = await response.json().catch(() => null);
+        const errorCode = body?.error ?? "link_failed";
+        router.push(`/settings/accounts?error=${errorCode}`);
       } else {
         router.push("/sign-in?error=oauth_failed");
       }
