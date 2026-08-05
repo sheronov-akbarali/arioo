@@ -14,9 +14,10 @@ export default async function TeamPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const { organization } = await requireOrganization(locale);
+  const { organization, membership } = await requireOrganization(locale);
   const t = await getTranslations("settings.team");
   const action = inviteMemberAction.bind(null, locale);
+  const canInvite = membership.role === "owner" || membership.role === "admin";
 
   const members = await db
     .select({ name: users.name, email: users.email, role: memberships.role })
@@ -32,10 +33,12 @@ export default async function TeamPage({
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-xl font-semibold">{t("title")}</h1>
-      <form action={action} className="flex gap-2">
-        <Input name="email" type="email" placeholder={t("emailPlaceholder")} required />
-        <Button type="submit">{t("invite")}</Button>
-      </form>
+      {canInvite && (
+        <form action={action} className="flex gap-2">
+          <Input name="email" type="email" placeholder={t("emailPlaceholder")} required />
+          <Button type="submit">{t("invite")}</Button>
+        </form>
+      )}
       <ul className="flex flex-col gap-2">
         {members.map((member) => (
           <li key={member.email} className="rounded-lg border p-3">
