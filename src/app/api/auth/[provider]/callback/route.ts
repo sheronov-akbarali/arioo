@@ -1,13 +1,20 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { type NextRequest } from "next/server";
 import { exchangeCodeForProfile, type ProviderId } from "@/lib/auth/oauth/providers";
-import { completeLogin, linkProviderToUser } from "@/lib/auth/session";
+import { completeLogin, linkProviderToUser, EmailAlreadyInUseError } from "@/lib/auth/session";
 import { getSession } from "@/lib/auth/dal";
 import { SESSION_COOKIE_NAME, sessionCookieOptions } from "@/lib/auth/cookies";
+import { routing } from "@/i18n/routing";
 
 const VALID_PROVIDERS: ProviderId[] = ["google", "github"];
-const DEFAULT_LOCALE = "uz";
+const DEFAULT_LOCALE = routing.defaultLocale;
+
+function resolveLocale(candidate: string | undefined): string {
+  return (routing.locales as readonly string[]).includes(candidate ?? "")
+    ? candidate!
+    : DEFAULT_LOCALE;
+}
 
 export async function GET(
   request: NextRequest,
@@ -24,12 +31,14 @@ export async function GET(
   const storedState = cookieStore.get("tayanchai_oauth_state")?.value;
   cookieStore.delete("tayanchai_oauth_state");
 
+  const [expectedState, mode, storedLocale] = (storedState ?? "").split(":");
+  const locale = resolveLocale(storedLocale);
+
   if (!code || !state || !storedState) {
-    redirect(`/${DEFAULT_LOCALE}/sign-in?error=oauth_failed`);
+    redirect(`/${locale}/sign-in?error=oauth_failed`);
   }
-  const [expectedState, mode] = storedState.split(":");
   if (expectedState !== state) {
-    redirect(`/${DEFAULT_LOCALE}/sign-in?error=oauth_failed`);
+    redirect(`/${locale}/sign-in?error=oauth_failed`);
   }
 
   const redirectUri = new URL(
@@ -38,20 +47,33 @@ export async function GET(
   ).toString();
   const profile = await exchangeCodeForProfile(provider as ProviderId, code, redirectUri);
   if (!profile) {
-    redirect(`/${DEFAULT_LOCALE}/sign-in?error=oauth_failed`);
+    redirect(`/${locale}/sign-in?error=oauth_failed`);
   }
 
   if (mode === "link") {
     const session = await getSession();
-    if (!session) redirect(`/${DEFAULT_LOCALE}/sign-in?error=oauth_failed`);
+    if (!session) redirect(`/${locale}/sign-in?error=oauth_failed`);
     const result = await linkProviderToUser({ ...profile, provider, userId: session.user.id });
     if (!result.ok) {
-      redirect(`/${DEFAULT_LOCALE}/settings/accounts?error=${result.error}`);
+      redirect(`/${locale}/settings/accounts?error=${result.error}`);
     }
-    redirect(`/${DEFAULT_LOCALE}/settings/accounts`);
+    redirect(`/${locale}/settings/accounts`);
   }
 
-  const { sessionToken, expires } = await completeLogin({ ...profile, provider });
-  cookieStore.set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions(expires));
-  redirect(`/${DEFAULT_LOCALE}/dashboard`);
+  const headerList = await headers();
+  const meta = {
+    userAgent: headerList.get("user-agent"),
+    ipAddress: headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null,
+  };
+
+  try {
+    const { sessionToken, expires } = await completeLogin({ ...profile, provider }, meta);
+    cookieStore.set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions(expires));
+  } catch (error) {
+    if (error instanceof EmailAlreadyInUseError) {
+      redirect(`/${locale}/sign-in?error=email_in_use`);
+    }
+    throw error;
+  }
+  redirect(`/${locale}/dashboard`);
 }

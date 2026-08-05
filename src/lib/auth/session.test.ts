@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { afterEach, describe, expect, it } from "vitest";
 import { db } from "@/db/client";
 import { accounts, sessions, users } from "@/db/schema/auth";
-import { completeLogin, linkProviderToUser, unlinkProvider } from "./session";
+import { EmailAlreadyInUseError, completeLogin, linkProviderToUser, unlinkProvider } from "./session";
 
 const createdUserIds: string[] = [];
 // Tracked *before* completeLogin/linkProviderToUser run, since those do
@@ -78,6 +78,41 @@ describe("completeLogin", () => {
 
     expect(second.userId).toBe(first.userId);
     expect(second.sessionToken).not.toBe(first.sessionToken);
+  });
+
+  it("throws EmailAlreadyInUseError instead of crashing when a second provider shares an email", async () => {
+    const sharedEmail = `${randomUUID()}@example.com`;
+    const googleAccountId = randomUUID();
+    createdProviderAccountIds.push(googleAccountId);
+    const first = await completeLogin({
+      provider: "google",
+      providerAccountId: googleAccountId,
+      email: sharedEmail,
+      name: null,
+      image: null,
+    });
+    createdUserIds.push(first.userId);
+
+    const githubAccountId = randomUUID();
+    await expect(
+      completeLogin({
+        provider: "github",
+        providerAccountId: githubAccountId,
+        email: sharedEmail,
+        name: null,
+        image: null,
+      }),
+    ).rejects.toBeInstanceOf(EmailAlreadyInUseError);
+
+    // No second user row and no partial "github" account row should exist.
+    const usersWithEmail = await db.select().from(users).where(eq(users.email, sharedEmail));
+    expect(usersWithEmail).toHaveLength(1);
+
+    const [orphanAccount] = await db
+      .select()
+      .from(accounts)
+      .where(eq(accounts.providerAccountId, githubAccountId));
+    expect(orphanAccount).toBeUndefined();
   });
 });
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 import { isTelegramAuthFresh, verifyTelegramAuth } from "@/lib/auth/oauth/telegram";
-import { completeLogin, linkProviderToUser } from "@/lib/auth/session";
+import { completeLogin, linkProviderToUser, EmailAlreadyInUseError } from "@/lib/auth/session";
 import { getSession } from "@/lib/auth/dal";
 import { SESSION_COOKIE_NAME, sessionCookieOptions } from "@/lib/auth/cookies";
 
@@ -51,7 +51,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  const { sessionToken, expires } = await completeLogin({ ...profile, provider: "telegram" });
-  cookieStore.set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions(expires));
+  const meta = {
+    userAgent: request.headers.get("user-agent"),
+    ipAddress: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null,
+  };
+
+  try {
+    const { sessionToken, expires } = await completeLogin(
+      { ...profile, provider: "telegram" },
+      meta,
+    );
+    cookieStore.set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions(expires));
+  } catch (error) {
+    if (error instanceof EmailAlreadyInUseError) {
+      return NextResponse.json({ error: "email_in_use" }, { status: 409 });
+    }
+    throw error;
+  }
   return NextResponse.json({ ok: true });
 }
