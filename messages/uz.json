@@ -125,5 +125,15 @@
     "terms": { "title": "Foydalanuvchi shartnomasi" },
     "cookies": { "title": "Cookie siyosati" },
     "consent": { "title": "Shaxsiy ma'lumotlarni qayta ishlashga rozilik" }
+  },
+  "auth": {
+    "signIn": {
+      "title": "TayanchAI'ga kiring",
+      "subtitle": "Parolsiz — bitta tugmani bosing",
+      "google": "Google orqali kirish",
+      "github": "GitHub orqali kirish",
+      "telegram": "Telegram orqali kirish",
+      "errorOauthFailed": "Kirishda xatolik yuz berdi. Qaytadan urinib ko'ring."
+    }
   }
 }

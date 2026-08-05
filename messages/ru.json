@@ -125,5 +125,15 @@
     "terms": { "title": "Пользовательское соглашение" },
     "cookies": { "title": "Политика использования cookie" },
     "consent": { "title": "Согласие на обработку персональных данных" }
+  },
+  "auth": {
+    "signIn": {
+      "title": "Войдите в TayanchAI",
+      "subtitle": "Без пароля — один клик",
+      "google": "Войти через Google",
+      "github": "Войти через GitHub",
+      "telegram": "Войти через Telegram",
+      "errorOauthFailed": "Ошибка входа. Попробуйте снова."
+    }
   }
 }
