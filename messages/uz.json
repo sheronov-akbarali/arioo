@@ -160,6 +160,13 @@
         "github": "GitHub qo'shish",
         "telegram": "Telegram qo'shish"
       }
+    },
+    "sessions": {
+      "title": "Faol sessiyalar",
+      "revoke": "Chiqish",
+      "revokeOthers": "Boshqa hamma joydan chiqish",
+      "thisDevice": "bu qurilma",
+      "unknownDevice": "Noma'lum qurilma"
     }
   }
 }

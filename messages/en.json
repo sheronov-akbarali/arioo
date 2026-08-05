@@ -160,6 +160,13 @@
         "github": "Add GitHub",
         "telegram": "Add Telegram"
       }
+    },
+    "sessions": {
+      "title": "Active sessions",
+      "revoke": "Sign out",
+      "revokeOthers": "Sign out of all other devices",
+      "thisDevice": "this device",
+      "unknownDevice": "Unknown device"
     }
   }
 }

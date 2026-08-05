@@ -160,6 +160,13 @@
         "github": "Добавить GitHub",
         "telegram": "Добавить Telegram"
       }
+    },
+    "sessions": {
+      "title": "Активные сессии",
+      "revoke": "Выйти",
+      "revokeOthers": "Выйти со всех других устройств",
+      "thisDevice": "это устройство",
+      "unknownDevice": "Неизвестное устройство"
     }
   }
 }
