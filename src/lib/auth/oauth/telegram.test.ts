@@ -1,14 +1,14 @@
 import { createHash, createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { isTelegramAuthFresh, verifyTelegramAuth } from "./telegram";
+import { isTelegramAuthFresh, verifyTelegramAuth, type TelegramAuthData } from "./telegram";
 
 const BOT_TOKEN = "test-bot-token";
 
-function signPayload(data: Record<string, string>) {
+function signPayload(data: Omit<TelegramAuthData, "hash">) {
   const checkString = Object.keys(data)
     .filter((key) => key !== "hash")
     .sort()
-    .map((key) => `${key}=${data[key]}`)
+    .map((key) => `${key}=${(data as Record<string, string>)[key]}`)
     .join("\n");
   const secretKey = createHash("sha256").update(BOT_TOKEN).digest();
   const hash = createHmac("sha256", secretKey).update(checkString).digest("hex");
