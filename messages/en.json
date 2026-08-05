@@ -176,6 +176,11 @@
     }
   },
   "dashboard": {
+    "home": {
+      "title": "Welcome, {org}",
+      "subtitle": "No AI employees yet. This feature is coming soon — create your first assistant in the AI Employees section.",
+      "cta": "Hire an AI employee"
+    },
     "nav": {
       "assistants": "AI Employees",
       "chats": "Chats",

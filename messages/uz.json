@@ -176,6 +176,11 @@
     }
   },
   "dashboard": {
+    "home": {
+      "title": "Xush kelibsiz, {org}",
+      "subtitle": "Hali AI xodim yo'q. Bu funksiya tez orada — AI Xodimlar bo'limida birinchi assistentingizni yaratasiz.",
+      "cta": "AI xodim ijaraga olish"
+    },
     "nav": {
       "assistants": "AI Xodimlar",
       "chats": "Suhbatlar",
