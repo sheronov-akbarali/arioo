@@ -174,5 +174,20 @@
       "invite": "Отправить приглашение",
       "pending": "ожидает"
     }
+  },
+  "dashboard": {
+    "nav": {
+      "assistants": "AI Сотрудники",
+      "chats": "Диалоги",
+      "knowledgeBases": "База знаний",
+      "integrations": "Интеграции",
+      "statistics": "Статистика",
+      "settings": "Настройки",
+      "comingSoon": "Скоро"
+    },
+    "userMenu": {
+      "signOut": "Выйти",
+      "anonymous": "Пользователь"
+    }
   }
 }

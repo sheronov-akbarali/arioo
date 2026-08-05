@@ -174,5 +174,20 @@
       "invite": "Taklif yuborish",
       "pending": "kutilmoqda"
     }
+  },
+  "dashboard": {
+    "nav": {
+      "assistants": "AI Xodimlar",
+      "chats": "Suhbatlar",
+      "knowledgeBases": "Bilim bazasi",
+      "integrations": "Integratsiyalar",
+      "statistics": "Statistika",
+      "settings": "Sozlamalar",
+      "comingSoon": "Tez orada"
+    },
+    "userMenu": {
+      "signOut": "Chiqish",
+      "anonymous": "Foydalanuvchi"
+    }
   }
 }

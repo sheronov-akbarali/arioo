@@ -174,5 +174,20 @@
       "invite": "Send invite",
       "pending": "pending"
     }
+  },
+  "dashboard": {
+    "nav": {
+      "assistants": "AI Employees",
+      "chats": "Chats",
+      "knowledgeBases": "Knowledge base",
+      "integrations": "Integrations",
+      "statistics": "Statistics",
+      "settings": "Settings",
+      "comingSoon": "Coming soon"
+    },
+    "userMenu": {
+      "signOut": "Sign out",
+      "anonymous": "User"
+    }
   }
 }

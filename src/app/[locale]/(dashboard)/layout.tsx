@@ -1,10 +1,41 @@
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarInset,
+} from "@/components/ui/sidebar";
+import { SidebarNav } from "@/components/dashboard/sidebar-nav";
+import { OrgSwitcher } from "@/components/dashboard/org-switcher";
+import { UserMenu } from "@/components/dashboard/user-menu";
 import { SessionTouch } from "@/components/dashboard/session-touch";
+import { requireOrganization } from "@/lib/auth/dal";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const { user, organization } = await requireOrganization(locale);
+
   return (
-    <>
-      {children}
-      <SessionTouch />
-    </>
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarHeader>
+          <OrgSwitcher userId={user.id} activeOrgId={organization.id} />
+        </SidebarHeader>
+        <SidebarNav />
+        <SidebarFooter>
+          <UserMenu name={user.name} />
+        </SidebarFooter>
+      </Sidebar>
+      <SidebarInset>
+        <SessionTouch />
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
