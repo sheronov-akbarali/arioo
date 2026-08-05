@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/db/client";
@@ -18,7 +18,10 @@ export default async function SessionsPage({
   const t = await getTranslations("settings.sessions");
   const currentToken = (await cookies()).get(SESSION_COOKIE_NAME)?.value;
 
-  const rows = await db.select().from(sessions).where(eq(sessions.userId, user.id));
+  const rows = await db
+    .select()
+    .from(sessions)
+    .where(and(eq(sessions.userId, user.id), gt(sessions.expires, new Date())));
 
   return (
     <div className="flex flex-col gap-6">
