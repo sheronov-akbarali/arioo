@@ -194,5 +194,14 @@
       "signOut": "Chiqish",
       "anonymous": "Foydalanuvchi"
     }
+  },
+  "invite": {
+    "title": "Sizni taklif qilishdi",
+    "signInPrompt": "Sizni TayanchAI'dagi tashkilotga qo'shilishga taklif qilishdi — qabul qilish uchun tizimga kiring.",
+    "returnHint": "Tizimga kirgandan so'ng, ushbu taklif havolasiga qaytib, \"Taklifni qabul qilish\" tugmasini bosing.",
+    "orgPrompt": "Sizni {orgName} tashkilotiga qo'shilishga taklif qilishdi.",
+    "accept": "Taklifni qabul qilish",
+    "errorInvalid": "Ushbu taklif havolasi yaroqsiz, muddati o'tgan yoki allaqachon ishlatilgan.",
+    "errorEmailMismatch": "Ushbu taklif boshqa elektron pochta manziliga yuborilgan. Taklif yuborilgan hisob bilan tizimga kiring."
   }
 }

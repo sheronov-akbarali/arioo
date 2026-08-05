@@ -194,5 +194,14 @@
       "signOut": "Sign out",
       "anonymous": "User"
     }
+  },
+  "invite": {
+    "title": "You're invited",
+    "signInPrompt": "You've been invited to join an organization on TayanchAI — sign in to accept.",
+    "returnHint": "After signing in, come back to this invite link and click Accept invite.",
+    "orgPrompt": "You've been invited to join {orgName}.",
+    "accept": "Accept invite",
+    "errorInvalid": "This invite link is invalid, expired, or has already been used.",
+    "errorEmailMismatch": "This invite was sent to a different email address. Sign in with the account that received the invite."
   }
 }
