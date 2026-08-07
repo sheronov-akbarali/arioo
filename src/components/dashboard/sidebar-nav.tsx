@@ -11,8 +11,11 @@ import { Bot, MessageSquare, BookOpen, Plug, BarChart3, Settings, ShieldCheck } 
 
 const NAV_ITEMS = [
   { key: "assistants", icon: Bot, href: "/assistants" },
-  { key: "chats", icon: MessageSquare },
-  { key: "knowledgeBases", icon: BookOpen },
+  // Chats and knowledge bases live per-agent (/assistants/[id]/chat,
+  // /assistants/[id]/knowledge) — there's no global cross-agent page for
+  // either yet, so both link to the agent list where the user picks one.
+  { key: "chats", icon: MessageSquare, href: "/assistants" },
+  { key: "knowledgeBases", icon: BookOpen, href: "/assistants" },
   { key: "approvals", icon: ShieldCheck, href: "/approvals" },
   { key: "integrations", icon: Plug },
   { key: "statistics", icon: BarChart3 },
