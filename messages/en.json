@@ -201,7 +201,12 @@
       "integrations": "Integrations",
       "statistics": "Statistics",
       "settings": "Settings",
-      "comingSoon": "Coming soon"
+      "comingSoon": "Coming soon",
+      "groups": {
+        "work": "Work",
+        "data": "Data",
+        "monitoring": "Monitoring"
+      }
     },
     "userMenu": {
       "signOut": "Sign out",
@@ -249,11 +254,17 @@
       },
       "tools": {
         "title": "Integrations (Tools)",
+        "subtitle": "Choose which tools the assistant can use",
         "comingSoon": "Coming soon",
         "groups": {
           "internalSystem": "Internal system",
           "googleSheets": "Google Sheets/Drive",
           "github": "GitHub"
+        },
+        "descriptions": {
+          "internalSystem": "Manage organization and team data",
+          "googleSheets": "Read and write spreadsheets and files",
+          "github": "Work with repositories and code"
         }
       }
     },
@@ -279,9 +290,14 @@
   },
   "approvals": {
     "title": "Approvals queue",
+    "subtitle": "Decisions that need confirmation before an external action: routine outcomes, tool calls from chats, and more.",
     "empty": "No actions waiting for approval right now.",
+    "emptyHint": "Routines, chats, and agents aren't waiting on you yet.",
     "approve": "Approve",
     "reject": "Reject",
+    "statusFilters": {
+      "all": "All"
+    },
     "status": {
       "pending": "Pending",
       "approved": "Approved",

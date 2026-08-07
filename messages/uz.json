@@ -201,7 +201,12 @@
       "integrations": "Integratsiyalar",
       "statistics": "Statistika",
       "settings": "Sozlamalar",
-      "comingSoon": "Tez orada"
+      "comingSoon": "Tez orada",
+      "groups": {
+        "work": "Ish",
+        "data": "Ma'lumotlar",
+        "monitoring": "Nazorat"
+      }
     },
     "userMenu": {
       "signOut": "Chiqish",
@@ -249,11 +254,17 @@
       },
       "tools": {
         "title": "Integratsiyalar (Tools)",
+        "subtitle": "Agent qaysi vositalardan foydalana olishini tanlang",
         "comingSoon": "Tez orada",
         "groups": {
           "internalSystem": "Ichki tizim",
           "googleSheets": "Google Sheets/Drive",
           "github": "GitHub"
+        },
+        "descriptions": {
+          "internalSystem": "Tashkilot va jamoa ma'lumotlarini boshqarish",
+          "googleSheets": "Jadval va fayllarni o'qish/yozish",
+          "github": "Repozitoriy va kod bilan ishlash"
         }
       }
     },
@@ -279,9 +290,14 @@
   },
   "approvals": {
     "title": "Tasdiqlash navbati",
+    "subtitle": "Tashqi harakatdan oldin tasdiqlash talab qiladigan qarorlar: rutina natijalari, chatlardagi vosita chaqiruvlari va boshqalar.",
     "empty": "Hozircha tasdiqlash kutayotgan harakatlar yo'q.",
+    "emptyHint": "Rutinalar, chatlar va agentlar hozircha sizdan hech narsa kutmayapti.",
     "approve": "Tasdiqlash",
     "reject": "Rad etish",
+    "statusFilters": {
+      "all": "Hammasi"
+    },
     "status": {
       "pending": "Kutmoqda",
       "approved": "Tasdiqlangan",
