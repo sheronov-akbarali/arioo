@@ -220,6 +220,30 @@
         "hr": "HR",
         "marketing": "Marketing"
       }
+    },
+    "detail": {
+      "nameLabel": "Name",
+      "roleLabel": "Role",
+      "systemPromptLabel": "System prompt",
+      "modelLabel": "Model",
+      "save": "Save",
+      "knowledgeLink": "Knowledge base",
+      "chatLink": "Try it",
+      "roles": {
+        "sales": "Sales",
+        "support": "Support",
+        "hr": "HR",
+        "marketing": "Marketing"
+      },
+      "tools": {
+        "title": "Integrations (Tools)",
+        "comingSoon": "Coming soon",
+        "groups": {
+          "internalSystem": "Internal system",
+          "googleSheets": "Google Sheets/Drive",
+          "github": "GitHub"
+        }
+      }
     }
   },
   "invite": {

@@ -220,6 +220,30 @@
         "hr": "HR",
         "marketing": "Marketing"
       }
+    },
+    "detail": {
+      "nameLabel": "Nomi",
+      "roleLabel": "Rol",
+      "systemPromptLabel": "Tizim prompti",
+      "modelLabel": "Model",
+      "save": "Saqlash",
+      "knowledgeLink": "Bilim bazasi",
+      "chatLink": "Sinash",
+      "roles": {
+        "sales": "Sotuv",
+        "support": "Qo'llab-quvvatlash",
+        "hr": "HR",
+        "marketing": "Marketing"
+      },
+      "tools": {
+        "title": "Integratsiyalar (Tools)",
+        "comingSoon": "Tez orada",
+        "groups": {
+          "internalSystem": "Ichki tizim",
+          "googleSheets": "Google Sheets/Drive",
+          "github": "GitHub"
+        }
+      }
     }
   },
   "invite": {

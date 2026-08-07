@@ -220,6 +220,30 @@
         "hr": "HR",
         "marketing": "Маркетинг"
       }
+    },
+    "detail": {
+      "nameLabel": "Название",
+      "roleLabel": "Роль",
+      "systemPromptLabel": "Системный промпт",
+      "modelLabel": "Модель",
+      "save": "Сохранить",
+      "knowledgeLink": "База знаний",
+      "chatLink": "Проверить",
+      "roles": {
+        "sales": "Продажи",
+        "support": "Поддержка",
+        "hr": "HR",
+        "marketing": "Маркетинг"
+      },
+      "tools": {
+        "title": "Интеграции (Tools)",
+        "comingSoon": "Скоро",
+        "groups": {
+          "internalSystem": "Внутренняя система",
+          "googleSheets": "Google Sheets/Drive",
+          "github": "GitHub"
+        }
+      }
     }
   },
   "invite": {
