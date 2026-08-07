@@ -16,7 +16,16 @@
     "title": "Biznesingiz uchun AI xodimni ishga oling",
     "subtitle": "TayanchAI yordamida sotuv, qo'llab-quvvatlash, HR va marketing bo'limlariga jamoa a'zosi sifatida AI qo'shing. U kompaniyangiz tizimlariga ulanadi, tarixiy ma'lumotlardan o'rganadi va mustaqil ishlaydi.",
     "ctaPrimary": "Konsultatsiya olish",
-    "ctaSecondary": "Narxlarni ko'rish"
+    "ctaSecondary": "Narxlarni ko'rish",
+    "diagram": {
+      "sources": "Manbalar",
+      "website": { "label": "Veb-sayt", "sublabel": "Yangi lidlar" },
+      "telegram": { "label": "Telegram", "sublabel": "Dialoglar" },
+      "olx": { "label": "OLX.uz", "sublabel": "E'lon so'rovlari" },
+      "crm": { "label": "CRM", "sublabel": "Bitimlar" },
+      "knowledge": { "label": "Bilim bazasi", "sublabel": "Savol-javoblar" },
+      "agent": { "label": "AI Xodim", "sublabel": "Malakalashtiradi va javob beradi" }
+    }
   },
   "workZones": {
     "title": "AI xodim biznesda qanday ishlaydi",
@@ -116,8 +125,10 @@
   },
   "footer": {
     "tagline": "Sotuv, xizmat va murojaatlarni qayta ishlash uchun AI agentlar.",
+    "menuTitle": "Menyu",
     "legalTitle": "Hujjatlar",
-    "copyright": "TayanchAI · barcha huquqlar himoyalangan"
+    "copyright": "TayanchAI · barcha huquqlar himoyalangan",
+    "status": "Barcha tizimlar ishlayapti"
   },
   "legal": {
     "disclaimer": "Ushbu hujjat loyihaning dastlabki qoralamasi bo'lib, yuridik maslahatchi tomonidan ko'rib chiqilishi va tasdiqlanishi lozim. Rasmiy ishga tushirishdan oldin almashtirilishi shart.",

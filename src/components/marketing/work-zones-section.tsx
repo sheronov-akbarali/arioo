@@ -1,7 +1,13 @@
 import { useTranslations } from "next-intl";
+import { ShoppingCart, Users, Megaphone, Workflow } from "lucide-react";
 import { WorkZoneCard } from "./work-zone-card";
 
-const ZONES = ["sales", "hr", "marketing", "systems"] as const;
+const ZONES = [
+  { key: "sales", icon: ShoppingCart },
+  { key: "hr", icon: Users },
+  { key: "marketing", icon: Megaphone },
+  { key: "systems", icon: Workflow },
+] as const;
 
 export function WorkZonesSection() {
   const t = useTranslations("workZones");
@@ -13,11 +19,12 @@ export function WorkZonesSection() {
         <p className="mt-4 text-muted-foreground">{t("subtitle")}</p>
       </div>
       <div className="mt-12 grid gap-6 sm:grid-cols-2">
-        {ZONES.map((zone) => (
+        {ZONES.map(({ key, icon }) => (
           <WorkZoneCard
-            key={zone}
-            title={t(`${zone}.title`)}
-            description={t(`${zone}.description`)}
+            key={key}
+            icon={icon}
+            title={t(`${key}.title`)}
+            description={t(`${key}.description`)}
           />
         ))}
       </div>

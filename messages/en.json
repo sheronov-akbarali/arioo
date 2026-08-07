@@ -16,7 +16,16 @@
     "title": "Hire an AI employee for your business",
     "subtitle": "With TayanchAI, a business can hire AI into sales, support, HR, and marketing as a full team member. It connects to your systems and learns from company history.",
     "ctaPrimary": "Get Consultation",
-    "ctaSecondary": "See Pricing"
+    "ctaSecondary": "See Pricing",
+    "diagram": {
+      "sources": "Sources",
+      "website": { "label": "Website", "sublabel": "New leads" },
+      "telegram": { "label": "Telegram", "sublabel": "Dialogs" },
+      "olx": { "label": "OLX.uz", "sublabel": "Listing inquiries" },
+      "crm": { "label": "CRM", "sublabel": "Deals" },
+      "knowledge": { "label": "Knowledge base", "sublabel": "Q&A" },
+      "agent": { "label": "AI Employee", "sublabel": "Qualifies and replies" }
+    }
   },
   "workZones": {
     "title": "How an AI employee works in business",
@@ -116,8 +125,10 @@
   },
   "footer": {
     "tagline": "AI agents for sales, service, and inbound request handling.",
+    "menuTitle": "Menu",
     "legalTitle": "Documents",
-    "copyright": "TayanchAI · all rights reserved"
+    "copyright": "TayanchAI · all rights reserved",
+    "status": "All systems operational"
   },
   "legal": {
     "disclaimer": "This document is an early project draft and must be reviewed and approved by legal counsel before official launch — it is a placeholder, not a binding agreement.",
