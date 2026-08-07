@@ -254,6 +254,15 @@
         "ready": "Tayyor",
         "error": "Xato"
       }
+    },
+    "chat": {
+      "title": "{name} bilan sinov suhbati",
+      "cost": "{tokens} token ≈ ${cost}",
+      "you": "Siz",
+      "assistant": "Assistent",
+      "placeholder": "Xabar yozing...",
+      "send": "Yuborish",
+      "error": "Javob olishda xatolik, qayta urinib ko'ring."
     }
   },
   "invite": {

@@ -1,4 +1,5 @@
 import createIntlMiddleware from "next-intl/middleware";
+import { NextResponse } from "next/server";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { routing } from "./i18n/routing";
 
@@ -17,9 +18,14 @@ export default clerkMiddleware(async (auth, request) => {
       unauthenticatedUrl: new URL(`/${locale}/sign-in`, request.url).toString(),
     });
   }
+  // API routes have no locale segment and authorize themselves via auth() —
+  // next-intl's routing only applies to the localized page tree.
+  if (request.nextUrl.pathname.startsWith("/api")) {
+    return NextResponse.next();
+  }
   return handleI18nRouting(request);
 });
 
 export const config = {
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+  matcher: ["/((?!_next|_vercel|.*\\..*).*)"],
 };

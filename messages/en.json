@@ -254,6 +254,15 @@
         "ready": "Ready",
         "error": "Error"
       }
+    },
+    "chat": {
+      "title": "Test chat with {name}",
+      "cost": "{tokens} tokens ≈ ${cost}",
+      "you": "You",
+      "assistant": "Assistant",
+      "placeholder": "Type a message...",
+      "send": "Send",
+      "error": "Failed to get a response, please try again."
     }
   },
   "invite": {
