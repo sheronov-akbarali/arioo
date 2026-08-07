@@ -265,6 +265,19 @@
       "error": "Javob olishda xatolik, qayta urinib ko'ring."
     }
   },
+  "approvals": {
+    "title": "Tasdiqlash navbati",
+    "empty": "Hozircha tasdiqlash kutayotgan harakatlar yo'q.",
+    "approve": "Tasdiqlash",
+    "reject": "Rad etish",
+    "status": {
+      "pending": "Kutmoqda",
+      "approved": "Tasdiqlangan",
+      "rejected": "Rad etilgan",
+      "auto_resolved": "Avto-hal qilingan",
+      "expired": "Muddati o'tgan"
+    }
+  },
   "invite": {
     "title": "Sizni taklif qilishdi",
     "signInPrompt": "Sizni TayanchAI'dagi tashkilotga qo'shilishga taklif qilishdi — qabul qilish uchun tizimga kiring.",

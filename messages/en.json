@@ -265,6 +265,19 @@
       "error": "Failed to get a response, please try again."
     }
   },
+  "approvals": {
+    "title": "Approvals queue",
+    "empty": "No actions waiting for approval right now.",
+    "approve": "Approve",
+    "reject": "Reject",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "auto_resolved": "Auto-resolved",
+      "expired": "Expired"
+    }
+  },
   "invite": {
     "title": "You're invited",
     "signInPrompt": "You've been invited to join an organization on TayanchAI — sign in to accept.",
