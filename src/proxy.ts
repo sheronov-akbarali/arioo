@@ -1,20 +1,24 @@
-import createMiddleware from "next-intl/middleware";
-import { NextResponse, type NextRequest } from "next/server";
+import createIntlMiddleware from "next-intl/middleware";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { routing } from "./i18n/routing";
-import { SESSION_COOKIE_NAME } from "./lib/auth/cookies";
 
-const handleI18nRouting = createMiddleware(routing);
+const handleI18nRouting = createIntlMiddleware(routing);
 
-const PROTECTED_SEGMENT = /^\/(uz|ru|en)\/(dashboard|settings|onboarding)(\/|$)/;
+const isProtectedRoute = createRouteMatcher([
+  "/(uz|ru|en)/dashboard(.*)",
+  "/(uz|ru|en)/settings(.*)",
+  "/(uz|ru|en)/onboarding(.*)",
+]);
 
-export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  if (PROTECTED_SEGMENT.test(pathname) && !request.cookies.get(SESSION_COOKIE_NAME)) {
-    const locale = pathname.split("/")[1];
-    return NextResponse.redirect(new URL(`/${locale}/sign-in`, request.url));
+export default clerkMiddleware(async (auth, request) => {
+  if (isProtectedRoute(request)) {
+    const locale = request.nextUrl.pathname.split("/")[1] || routing.defaultLocale;
+    await auth.protect({
+      unauthenticatedUrl: new URL(`/${locale}/sign-in`, request.url).toString(),
+    });
   }
   return handleI18nRouting(request);
-}
+});
 
 export const config = {
   matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],

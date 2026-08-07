@@ -244,6 +244,16 @@
           "github": "GitHub"
         }
       }
+    },
+    "knowledge": {
+      "title": "Bilim bazasi",
+      "upload": "Yuklash",
+      "empty": "Hali fayl yuklanmagan.",
+      "status": {
+        "processing": "Qayta ishlanmoqda",
+        "ready": "Tayyor",
+        "error": "Xato"
+      }
     }
   },
   "invite": {

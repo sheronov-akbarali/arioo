@@ -244,6 +244,16 @@
           "github": "GitHub"
         }
       }
+    },
+    "knowledge": {
+      "title": "База знаний",
+      "upload": "Загрузить",
+      "empty": "Файлы ещё не загружены.",
+      "status": {
+        "processing": "Обрабатывается",
+        "ready": "Готово",
+        "error": "Ошибка"
+      }
     }
   },
   "invite": {

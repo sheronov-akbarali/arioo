@@ -4,8 +4,7 @@ import { db } from "@/db/client";
 import { invites, organizations } from "@/db/schema/org";
 import { getSession } from "@/lib/auth/dal";
 import { isInviteValid } from "@/lib/auth/invites";
-import { ProviderButtons } from "@/components/auth/provider-buttons";
-import { TelegramLoginWidget } from "@/components/auth/telegram-login-widget";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 // Reused from the team-settings action module rather than duplicated —
 // invites are created/listed there and accepted here.
@@ -31,10 +30,13 @@ export default async function InvitePage({
           <p className="text-muted-foreground max-w-sm">{t("signInPrompt")}</p>
         </div>
         <div className="flex flex-col items-center gap-3">
-          <ProviderButtons />
-          <TelegramLoginWidget
-            botUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? ""}
-          />
+          <Button
+            size="lg"
+            nativeButton={false}
+            render={<Link href={`/sign-in?redirect_url=/${locale}/invite/${token}`} />}
+          >
+            {t("signInCta")}
+          </Button>
         </div>
         <p className="text-muted-foreground max-w-sm text-center text-sm">
           {t("returnHint")}

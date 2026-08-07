@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
+import { clerkClient } from "@clerk/nextjs/server";
 import { db } from "@/db/client";
 import { invites, memberships } from "@/db/schema/org";
-import { users } from "@/db/schema/auth";
 import { requireOrganization } from "@/lib/auth/dal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,11 +19,28 @@ export default async function TeamPage({
   const action = inviteMemberAction.bind(null, locale);
   const canInvite = membership.role === "owner" || membership.role === "admin";
 
-  const members = await db
-    .select({ name: users.name, email: users.email, role: memberships.role })
+  const memberRows = await db
+    .select({ userId: memberships.userId, role: memberships.role })
     .from(memberships)
-    .innerJoin(users, eq(memberships.userId, users.id))
     .where(eq(memberships.organizationId, organization.id));
+
+  // Membership only stores the Clerk user id — profile data (name/email)
+  // lives in Clerk, not a local table, so it's fetched from the Backend API.
+  const client = await clerkClient();
+  const { data: clerkUsers } =
+    memberRows.length > 0
+      ? await client.users.getUserList({ userId: memberRows.map((row) => row.userId) })
+      : { data: [] };
+
+  const members = memberRows.map((row) => {
+    const clerkUser = clerkUsers.find((cu) => cu.id === row.userId);
+    return {
+      userId: row.userId,
+      role: row.role,
+      name: clerkUser?.fullName ?? clerkUser?.username ?? null,
+      email: clerkUser?.primaryEmailAddress?.emailAddress ?? null,
+    };
+  });
 
   const pendingInvites = await db
     .select()
@@ -41,8 +58,8 @@ export default async function TeamPage({
       )}
       <ul className="flex flex-col gap-2">
         {members.map((member) => (
-          <li key={member.email} className="rounded-lg border p-3">
-            {member.name ?? member.email} — {member.role}
+          <li key={member.userId} className="rounded-lg border p-3">
+            {member.name ?? member.email ?? member.userId} — {member.role}
           </li>
         ))}
         {pendingInvites

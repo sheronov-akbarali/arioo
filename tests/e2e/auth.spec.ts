@@ -2,10 +2,9 @@ import { test, expect } from "@playwright/test";
 
 test.describe("sign-in page", () => {
   for (const locale of ["uz", "ru", "en"] as const) {
-    test(`renders provider buttons in ${locale}`, async ({ page }) => {
+    test(`renders the Clerk sign-in form in ${locale}`, async ({ page }) => {
       await page.goto(`/${locale}/sign-in`);
-      await expect(page.getByRole("link", { name: /google|Google/i })).toBeVisible();
-      await expect(page.getByRole("link", { name: /github|GitHub/i })).toBeVisible();
+      await expect(page.getByLabel(/email/i).first()).toBeVisible();
     });
   }
 });

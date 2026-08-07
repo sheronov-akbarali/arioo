@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import { Show, UserButton } from "@clerk/nextjs";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "./language-switcher";
@@ -28,6 +29,18 @@ export function Header() {
             <LanguageSwitcher />
             <ThemeToggle />
           </div>
+          <Show when="signed-in">
+            <UserButton userProfileUrl="/settings/accounts" />
+          </Show>
+          <Show when="signed-out">
+            <Button
+              size="sm"
+              variant="ghost"
+              className="hidden md:inline-flex"
+              nativeButton={false}
+              render={<Link href="/sign-in">{t("login")}</Link>}
+            />
+          </Show>
           <Button
             size="sm"
             className="bg-brand text-brand-foreground hover:opacity-90"

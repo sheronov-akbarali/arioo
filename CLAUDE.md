@@ -22,9 +22,9 @@ ustun bo'lishga harakat qiladi:
 4. **Human-in-the-loop rejimi** — AI ishonchsiz holatda avtomatik odamga topshiradi;
    ishonchni oshiradigan xavfsizlik qatlami sifatida alohida ajratib ko'rsatiladi.
 
-Qo'shimcha mahalliylashtirish: 3 til (o'zbek/rus/ingliz, standart — o'zbek), mahalliylashtirilgan
-OAuth providerlar (Google/Telegram/GitHub) bilan parolsiz autentifikatsiya, Payme/Click
-mahalliy to'lovlari + Stripe xalqaro kartalar uchun.
+Qo'shimcha mahalliylashtirish: 3 til (o'zbek/rus/ingliz, standart — o'zbek), Clerk orqali
+autentifikatsiya (Google OAuth + email/parol), Payme/Click mahalliy to'lovlari + Stripe
+xalqaro kartalar uchun.
 
 ## Raqobatchi chuqur tahlili (worken.ru autentifikatsiyalangan panel)
 
@@ -59,9 +59,12 @@ topilmalar, ular bizning yo'l xaritamizga quyida integratsiya qilingan:
 
 - **Frontend:** Next.js (App Router) + TypeScript + Tailwind + shadcn/ui
 - **i18n:** next-intl (uz standart, ru, en)
-- **Auth:** Faqat OAuth (Auth.js v5 + Drizzle adapter), parolsiz — worken.ru'ning
-  parolsiz OAuth modeliga mos, lekin O'zbekiston uchun mahalliylashtirilgan providerlar:
-  Google, Telegram Login Widget, GitHub. Batafsil:
+- **Auth:** Clerk (Vercel Marketplace orqali ulangan) — Google OAuth + email/parol bilan
+  kirish/ro'yxatdan o'tish, `<SignIn/>`/`<SignUp/>`/`<UserProfile/>` tayyor componentlari,
+  `clerkMiddleware` orqali route himoyasi. Tashkilot/jamoa (`organization`/`membership`/
+  `invite`) hamon o'zimizning yengil Drizzle jadvallarimizda saqlanadi — faqat `userId`
+  endi Clerk foydalanuvchi ID'siga ishora qiladi, local `users` jadvali yo'q. Dastlabki
+  spec (Auth.js-asosida yozilgan, endi eskirgan):
   `docs/superpowers/specs/2026-08-05-auth-cabinet-design.md`
 - **DB:** Neon Postgres (Vercel Marketplace) + Drizzle ORM
 - **AI:** Vercel AI SDK + AI Gateway (multi-model, xarajat nazorati)
@@ -90,8 +93,9 @@ oldin qayta ko'rib chiqiladi.
 - [ ] **1 — Marketing sayt**: landing (hero, qanday ishlaydi, 4 ish yo'nalishi), narxlash
       sahifasi (UZS+USD), hamkorlik dasturi sahifasi, konsultatsiya lid-formasi, huquqiy
       hujjatlar, til/tema almashtirgich
-- [ ] **2 — Auth + billing**: ro'yxatdan o'tish/kirish (parolsiz OAuth — Google/Telegram/
-      GitHub, akkaunt ulash, faol sessiyalar paneli), tashkilot yaratish + jamoa taklifi,
+- [ ] **2 — Auth + billing**: ro'yxatdan o'tish/kirish (Clerk — Google OAuth + email/parol,
+      akkaunt ulash va faol sessiyalar Clerk'ning `<UserProfile/>` paneli orqali), tashkilot
+      yaratish + jamoa taklifi,
       tarif tanlash, Payme/Click + Stripe checkout, obuna boshqaruvi, bo'sh dashboard skeleton,
       **kredit-asosidagi ichki valyuta** (masalan "TAY") + bonus valyuta, xarajat tarixi
       infratuzilmasi (jadval darajasida, UI Phase 3'da)
@@ -114,7 +118,8 @@ oldin qayta ko'rib chiqiladi.
       muvofiqlik tekshiruvi (O'zbekiston shaxsiy ma'lumotlar qonuni), yuklama testi
 
 Hozirgi holat: **0-1 bosqichlar tugallangan (marketing sayt). 2a bosqich (Auth + kabinet
-skeleton) uchun spec tasdiqlangan, amalga oshirish rejasi tayyorlanmoqda.**
+skeleton) amalga oshirilgan — auth Clerk'ga o'tkazilgan (Google OAuth + email/parol),
+onboarding va bo'sh dashboard skeleton ishlaydi.**
 Speclar: `docs/superpowers/specs/2026-08-04-foundation-marketing-site-design.md`,
 `docs/superpowers/specs/2026-08-05-auth-cabinet-design.md`
 

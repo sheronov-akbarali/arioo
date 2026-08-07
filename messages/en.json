@@ -244,6 +244,16 @@
           "github": "GitHub"
         }
       }
+    },
+    "knowledge": {
+      "title": "Knowledge base",
+      "upload": "Upload",
+      "empty": "No files uploaded yet.",
+      "status": {
+        "processing": "Processing",
+        "ready": "Ready",
+        "error": "Error"
+      }
     }
   },
   "invite": {

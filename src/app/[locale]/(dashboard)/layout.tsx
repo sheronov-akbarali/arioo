@@ -8,7 +8,6 @@ import {
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import { OrgSwitcher } from "@/components/dashboard/org-switcher";
 import { UserMenu } from "@/components/dashboard/user-menu";
-import { SessionTouch } from "@/components/dashboard/session-touch";
 import { requireOrganization } from "@/lib/auth/dal";
 
 export default async function DashboardLayout({
@@ -32,10 +31,7 @@ export default async function DashboardLayout({
           <UserMenu name={user.name} />
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset>
-        <SessionTouch />
-        {children}
-      </SidebarInset>
+      <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>
   );
 }

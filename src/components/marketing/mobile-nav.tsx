@@ -49,6 +49,13 @@ export function MobileNav() {
           >
             {t("partners")}
           </Link>
+          <Link
+            href="/sign-in"
+            className="rounded-md py-2 text-muted-foreground hover:text-foreground"
+            onClick={() => setOpen(false)}
+          >
+            {t("login")}
+          </Link>
         </nav>
         <div className="mt-2 flex items-center gap-2 border-t border-border px-4 pt-4">
           <LanguageSwitcher />

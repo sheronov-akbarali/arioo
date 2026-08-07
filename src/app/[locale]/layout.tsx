@@ -7,6 +7,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AppClerkProvider } from "@/components/clerk-provider";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
 
@@ -74,9 +75,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body>
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            <AppClerkProvider>
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </AppClerkProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
