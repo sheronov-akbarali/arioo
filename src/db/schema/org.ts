@@ -1,5 +1,4 @@
 import { pgTable, text, timestamp, pgEnum } from "drizzle-orm/pg-core";
-import { users } from "./auth";
 
 export const membershipRole = pgEnum("membership_role", [
   "owner",
@@ -22,9 +21,9 @@ export const organizations = pgTable("organization", {
 
 export const memberships = pgTable("membership", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  userId: text("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+  // References a Clerk user id — Clerk owns the user store, so there is no
+  // local `users` table to foreign-key against.
+  userId: text("userId").notNull(),
   organizationId: text("organizationId")
     .notNull()
     .references(() => organizations.id, { onDelete: "cascade" }),
@@ -41,9 +40,7 @@ export const invites = pgTable("invite", {
   token: text("token").notNull().unique(),
   role: membershipRole("role").notNull(),
   status: inviteStatus("status").notNull().default("pending"),
-  invitedByUserId: text("invitedByUserId")
-    .notNull()
-    .references(() => users.id),
+  invitedByUserId: text("invitedByUserId").notNull(),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
   expiresAt: timestamp("expiresAt", { mode: "date" }).notNull(),
 });
