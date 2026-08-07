@@ -205,6 +205,21 @@
       "support": "Support",
       "hr": "HR",
       "marketing": "Marketing"
+    },
+    "new": {
+      "title": "New AI employee",
+      "subtitle": "Choose a role, system prompt, and model",
+      "nameLabel": "Name",
+      "roleLabel": "Role",
+      "systemPromptLabel": "System prompt",
+      "modelLabel": "Model",
+      "submit": "Create",
+      "roles": {
+        "sales": "Sales",
+        "support": "Support",
+        "hr": "HR",
+        "marketing": "Marketing"
+      }
     }
   },
   "invite": {

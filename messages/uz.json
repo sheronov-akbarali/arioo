@@ -205,6 +205,21 @@
       "support": "Qo'llab-quvvatlash",
       "hr": "HR",
       "marketing": "Marketing"
+    },
+    "new": {
+      "title": "Yangi AI xodim",
+      "subtitle": "Rol, tizim prompti va modelni tanlang",
+      "nameLabel": "Nomi",
+      "roleLabel": "Rol",
+      "systemPromptLabel": "Tizim prompti",
+      "modelLabel": "Model",
+      "submit": "Yaratish",
+      "roles": {
+        "sales": "Sotuv",
+        "support": "Qo'llab-quvvatlash",
+        "hr": "HR",
+        "marketing": "Marketing"
+      }
     }
   },
   "invite": {

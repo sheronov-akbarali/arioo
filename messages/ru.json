@@ -205,6 +205,21 @@
       "support": "Поддержка",
       "hr": "HR",
       "marketing": "Маркетинг"
+    },
+    "new": {
+      "title": "Новый AI сотрудник",
+      "subtitle": "Выберите роль, системный промпт и модель",
+      "nameLabel": "Название",
+      "roleLabel": "Роль",
+      "systemPromptLabel": "Системный промпт",
+      "modelLabel": "Модель",
+      "submit": "Создать",
+      "roles": {
+        "sales": "Продажи",
+        "support": "Поддержка",
+        "hr": "HR",
+        "marketing": "Маркетинг"
+      }
     }
   },
   "invite": {
