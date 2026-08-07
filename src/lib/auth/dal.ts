@@ -1,25 +1,27 @@
 import "server-only";
 import { cache } from "react";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { db } from "@/db/client";
-import { sessions, users } from "@/db/schema/auth";
 import { memberships, organizations } from "@/db/schema/org";
-import { SESSION_COOKIE_NAME } from "./cookies";
+import { aiAgents } from "@/db/schema/agents";
 
 export const getSession = cache(async () => {
-  const token = (await cookies()).get(SESSION_COOKIE_NAME)?.value;
-  if (!token) return null;
+  const { userId } = await auth();
+  if (!userId) return null;
 
-  const [row] = await db
-    .select({ session: sessions, user: users })
-    .from(sessions)
-    .innerJoin(users, eq(sessions.userId, users.id))
-    .where(eq(sessions.sessionToken, token));
+  const user = await currentUser();
+  if (!user) return null;
 
-  if (!row || row.session.expires < new Date()) return null;
-  return row;
+  return {
+    user: {
+      id: userId,
+      email: user.primaryEmailAddress?.emailAddress ?? null,
+      name: user.fullName ?? user.username ?? null,
+      image: user.imageUrl ?? null,
+    },
+  };
 });
 
 export async function verifySession(locale: string) {
@@ -39,4 +41,14 @@ export async function requireOrganization(locale: string) {
 
   if (!row) redirect(`/${locale}/onboarding`);
   return { ...session, ...row };
+}
+
+export async function requireAgent(locale: string, agentId: string) {
+  const context = await requireOrganization(locale);
+  const [agent] = await db.select().from(aiAgents).where(eq(aiAgents.id, agentId));
+
+  if (!agent || agent.organizationId !== context.organization.id) {
+    notFound();
+  }
+  return { ...context, agent: agent! };
 }

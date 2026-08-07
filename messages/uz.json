@@ -6,6 +6,7 @@
   "nav": {
     "pricing": "Narxlash",
     "partners": "Hamkorlik dasturi",
+    "login": "Kirish",
     "menu": "Menyu",
     "cta": "Konsultatsiya olish",
     "themeToggle": "Mavzuni almashtirish"
@@ -195,10 +196,22 @@
       "anonymous": "Foydalanuvchi"
     }
   },
+  "assistants": {
+    "title": "AI Xodimlar",
+    "create": "Yaratish",
+    "empty": "Hali AI xodim yo'q.",
+    "roles": {
+      "sales": "Sotuv",
+      "support": "Qo'llab-quvvatlash",
+      "hr": "HR",
+      "marketing": "Marketing"
+    }
+  },
   "invite": {
     "title": "Sizni taklif qilishdi",
     "signInPrompt": "Sizni TayanchAI'dagi tashkilotga qo'shilishga taklif qilishdi — qabul qilish uchun tizimga kiring.",
     "returnHint": "Tizimga kirgandan so'ng, ushbu taklif havolasiga qaytib, \"Taklifni qabul qilish\" tugmasini bosing.",
+    "signInCta": "Tizimga kirish",
     "orgPrompt": "Sizni {orgName} tashkilotiga qo'shilishga taklif qilishdi.",
     "accept": "Taklifni qabul qilish",
     "errorInvalid": "Ushbu taklif havolasi yaroqsiz, muddati o'tgan yoki allaqachon ishlatilgan.",

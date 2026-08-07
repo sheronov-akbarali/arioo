@@ -6,6 +6,7 @@
   "nav": {
     "pricing": "Pricing",
     "partners": "Partner Program",
+    "login": "Log in",
     "menu": "Menu",
     "cta": "Get Consultation",
     "themeToggle": "Toggle theme"
@@ -195,10 +196,22 @@
       "anonymous": "User"
     }
   },
+  "assistants": {
+    "title": "AI Employees",
+    "create": "Create",
+    "empty": "No AI employees yet.",
+    "roles": {
+      "sales": "Sales",
+      "support": "Support",
+      "hr": "HR",
+      "marketing": "Marketing"
+    }
+  },
   "invite": {
     "title": "You're invited",
     "signInPrompt": "You've been invited to join an organization on TayanchAI — sign in to accept.",
     "returnHint": "After signing in, come back to this invite link and click Accept invite.",
+    "signInCta": "Sign in",
     "orgPrompt": "You've been invited to join {orgName}.",
     "accept": "Accept invite",
     "errorInvalid": "This invite link is invalid, expired, or has already been used.",
