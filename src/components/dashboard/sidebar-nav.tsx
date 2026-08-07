@@ -7,12 +7,13 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { Link } from "@/i18n/navigation";
-import { Bot, MessageSquare, BookOpen, Plug, BarChart3, Settings } from "lucide-react";
+import { Bot, MessageSquare, BookOpen, Plug, BarChart3, Settings, ShieldCheck } from "lucide-react";
 
-const COMING_SOON_ITEMS = [
-  { key: "assistants", icon: Bot },
+const NAV_ITEMS = [
+  { key: "assistants", icon: Bot, href: "/assistants" },
   { key: "chats", icon: MessageSquare },
   { key: "knowledgeBases", icon: BookOpen },
+  { key: "approvals", icon: ShieldCheck, href: "/approvals" },
   { key: "integrations", icon: Plug },
   { key: "statistics", icon: BarChart3 },
 ] as const;
@@ -23,13 +24,20 @@ export function SidebarNav() {
     <SidebarContent>
       <SidebarGroup>
         <SidebarMenu>
-          {COMING_SOON_ITEMS.map(({ key, icon: Icon }) => (
+          {NAV_ITEMS.map(({ key, icon: Icon, ...item }) => (
             <SidebarMenuItem key={key}>
-              <SidebarMenuButton disabled>
-                <Icon />
-                <span>{t(key)}</span>
-                <span className="text-muted-foreground ml-auto text-xs">{t("comingSoon")}</span>
-              </SidebarMenuButton>
+              {"href" in item ? (
+                <SidebarMenuButton render={<Link href={item.href} />}>
+                  <Icon />
+                  <span>{t(key)}</span>
+                </SidebarMenuButton>
+              ) : (
+                <SidebarMenuButton disabled>
+                  <Icon />
+                  <span>{t(key)}</span>
+                  <span className="text-muted-foreground ml-auto text-xs">{t("comingSoon")}</span>
+                </SidebarMenuButton>
+              )}
             </SidebarMenuItem>
           ))}
           <SidebarMenuItem>
