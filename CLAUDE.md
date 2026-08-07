@@ -117,11 +117,16 @@ oldin qayta ko'rib chiqiladi.
       (agentlik hamkorlik dasturi + oddiy foydalanuvchi referral, limitlar bilan), xavfsizlik/
       muvofiqlik tekshiruvi (O'zbekiston shaxsiy ma'lumotlar qonuni), yuklama testi
 
-Hozirgi holat: **0-1 bosqichlar tugallangan (marketing sayt). 2a bosqich (Auth + kabinet
-skeleton) amalga oshirilgan — auth Clerk'ga o'tkazilgan (Google OAuth + email/parol),
-onboarding va bo'sh dashboard skeleton ishlaydi.**
+Hozirgi holat: **0-2a bosqichlar tugallangan (marketing sayt, Clerk auth, onboarding,
+dashboard skeleton). 3-bosqich (AI agent yadrosi) amalga oshirilgan** — agent yaratish
+ustasi, bilim bazasi (Vercel Blob + pgvector), playground chat (AI Gateway), placeholder
+Tools paneli, approvals navbat. **AI Gateway'da to'lov kartasi yo'qligi sababli haqiqiy
+model chaqiruvlari (embedding/chat generation) hozircha ishlamayapti** — Vercel
+dashboard'da to'lov kartasini qo'shish kerak (https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card),
+qolgan hamma narsa (UI, DB, marshrutlash, xatoliklarni boshqarish) tayyor va tekshirilgan.
 Speclar: `docs/superpowers/specs/2026-08-04-foundation-marketing-site-design.md`,
-`docs/superpowers/specs/2026-08-05-auth-cabinet-design.md`
+`docs/superpowers/specs/2026-08-05-auth-cabinet-design.md` (eskirgan, Clerk migratsiyasidan
+oldin yozilgan), `docs/superpowers/specs/2026-08-07-ai-agent-core-design.md`
 
 ## Rivojlantirish konventsiyalari
 
