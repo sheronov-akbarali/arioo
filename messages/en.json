@@ -178,6 +178,11 @@
           "referral": "10%"
         }
       ]
+    },
+    "leadForm": {
+      "title": "Apply to become a partner",
+      "subtitle": "Leave your contact details — we'll reach out, answer your questions, and help you choose the right AI-employee launch format for your clients.",
+      "submit": "Submit application"
     }
   },
   "leadForm": {

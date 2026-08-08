@@ -178,6 +178,11 @@
           "referral": "10%"
         }
       ]
+    },
+    "leadForm": {
+      "title": "Hamkorlikka ariza qoldiring",
+      "subtitle": "Kontakt ma'lumotlaringizni qoldiring — siz bilan bog'lanamiz, savollaringizga javob beramiz va mijozlaringiz uchun eng mos AI xodim ishga tushirish formatini tanlashda yordam beramiz.",
+      "submit": "Ariza yuborish"
     }
   },
   "leadForm": {
