@@ -36,6 +36,7 @@ export default function PartnersPage() {
         title={t("leadForm.title")}
         subtitle={t("leadForm.subtitle")}
         submitLabel={t("leadForm.submit")}
+        source="partners"
       />
     </>
   );

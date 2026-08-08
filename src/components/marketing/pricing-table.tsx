@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PRICING_TIERS, formatUZS, formatUSDApprox } from "@/lib/pricing-data";
+import { cn } from "@/lib/utils";
 import { Sparkles, Gem, Zap, Crown, type LucideIcon } from "lucide-react";
 
 const PRICING_TIER_ICONS: Record<(typeof PRICING_TIERS)[number]["id"], LucideIcon> = {
@@ -44,13 +45,14 @@ export function PricingTable() {
             >
               <CardHeader>
                 <span
-                  className={
+                  className={cn(
+                    "mb-2 flex size-8 items-center justify-center rounded-lg",
                     tier.isPopular
-                      ? "mb-2 flex size-8 items-center justify-center rounded-lg bg-brand text-brand-foreground"
-                      : "mb-2 flex size-8 items-center justify-center rounded-lg bg-muted text-muted-foreground"
-                  }
+                      ? "bg-brand text-brand-foreground"
+                      : "bg-muted text-muted-foreground",
+                  )}
                 >
-                  <Icon className="size-4" />
+                  <Icon className="size-4" aria-hidden="true" />
                 </span>
                 {tier.isPopular && (
                   <Badge className="mb-2 w-fit bg-brand text-brand-foreground">
