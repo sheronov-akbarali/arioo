@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 import Link from "next/link";
 // global-not-found.tsx bypasses the app's normal layout tree entirely, so it
 // must bring its own document shell, fonts, and styles rather than relying
@@ -8,7 +8,7 @@ import Link from "next/link";
 // which only handles notFound() calls from within an already-matched locale route.
 import "./globals.css";
 
-const geistSans = Geist({
+const geistSans = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
