@@ -6,27 +6,29 @@ import {
   toUIMessageStream,
   type UIMessage,
 } from "ai";
-import { eq } from "drizzle-orm";
-import { auth } from "@clerk/nextjs/server";
+import { eq, and } from "drizzle-orm";
 import { db } from "@/db/client";
-import { aiAgents } from "@/db/schema/agents";
-import { messages as messagesTable } from "@/db/schema/conversations";
+import { conversations, messages as messagesTable } from "@/db/schema/conversations";
 import { retrieveRelevantChunks } from "@/lib/ai/retrieval";
 import { listAvailableModels, estimateCostUsd, EMBEDDING_MODEL } from "@/lib/ai/gateway";
+import { getAgentForCurrentUser } from "@/lib/auth/dal";
 
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ agentId: string }> },
 ) {
-  const { userId } = await auth();
-  if (!userId) return new Response("Unauthorized", { status: 401 });
-
   const { agentId } = await params;
-  const [agent] = await db.select().from(aiAgents).where(eq(aiAgents.id, agentId));
+  const agent = await getAgentForCurrentUser(agentId);
   if (!agent) return new Response("Not found", { status: 404 });
 
   const body = (await req.json()) as { messages: UIMessage[]; conversationId: string };
   const { messages: uiMessages, conversationId } = body;
+
+  const [conversation] = await db
+    .select()
+    .from(conversations)
+    .where(and(eq(conversations.id, conversationId), eq(conversations.agentId, agentId)));
+  if (!conversation) return new Response("Not found", { status: 404 });
 
   const lastUserMessage = uiMessages.at(-1);
   const lastUserText =

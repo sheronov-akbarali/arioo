@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Nested git worktrees (checked out under .claude/worktrees/**) carry
+    // their own .next/node_modules — the patterns above only match at repo
+    // root, so without this they leak into lint runs from the main tree.
+    "**/.claude/**",
   ]),
 ]);
 

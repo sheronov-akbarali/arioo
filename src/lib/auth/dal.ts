@@ -52,3 +52,23 @@ export async function requireAgent(locale: string, agentId: string) {
   }
   return { ...context, agent: agent! };
 }
+
+// API routes can't use requireOrganization/requireAgent: those redirect()
+// on failure, which is a Next.js navigation helper that only works from
+// Server Components/Actions, not from a Route Handler. This returns null
+// instead so callers can respond with a proper 401/404 Response.
+export async function getAgentForCurrentUser(agentId: string) {
+  const { userId } = await auth();
+  if (!userId) return null;
+
+  const [membership] = await db
+    .select()
+    .from(memberships)
+    .where(eq(memberships.userId, userId));
+  if (!membership) return null;
+
+  const [agent] = await db.select().from(aiAgents).where(eq(aiAgents.id, agentId));
+  if (!agent || agent.organizationId !== membership.organizationId) return null;
+
+  return agent;
+}

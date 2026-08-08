@@ -25,6 +25,9 @@ export default defineConfig({
     },
   },
   test: {
-    exclude: ["node_modules/**", "tests/e2e/**"],
+    // "**/" prefixes matter here: without them these only match at repo
+    // root, so nested git worktrees under .claude/worktrees/** (which carry
+    // their own node_modules) leak their tests into runs from the main tree.
+    exclude: ["**/node_modules/**", "tests/e2e/**", "**/.claude/**"],
   },
 });

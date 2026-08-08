@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { asc, desc, eq, inArray } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { MessageSquare } from "lucide-react";
 import { db } from "@/db/client";
