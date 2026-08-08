@@ -9,7 +9,7 @@
     "howItWorks": "How it works",
     "login": "Log in",
     "menu": "Menu",
-    "cta": "Get Consultation",
+    "cta": "Start for free",
     "dashboardCta": "Go to dashboard",
     "themeToggle": "Toggle theme"
   },
@@ -17,7 +17,7 @@
     "badge": "AI EMPLOYEES",
     "title": "Hire an AI employee for your business",
     "subtitle": "With Arioo, a business can hire AI into sales, support, HR, and marketing as a full team member. It connects to your systems and learns from company history.",
-    "ctaPrimary": "Get Consultation",
+    "ctaPrimary": "Start for free",
     "ctaSecondary": "See Pricing",
     "diagram": {
       "sources": "Sources",
@@ -178,24 +178,7 @@
           "referral": "10%"
         }
       ]
-    },
-    "formTitle": "Become a partner",
-    "formSubtitle": "Leave your contact details — we'll reach out, answer your questions, and help you choose the right AI employee launch format for your clients."
-  },
-  "leadForm": {
-    "title": "We'll show you how AI can get to work",
-    "subtitle": "We'll review your channels, scenarios, and integrations and show what can be handed off to AI in the very first launch.",
-    "name": "Name",
-    "phone": "Phone number",
-    "submit": "Get Consultation",
-    "submitPending": "Sending...",
-    "freeNote": "Free",
-    "alreadyAccount": "Already have an account?",
-    "alreadyAccountCta": "Log in",
-    "success": "Thank you! We'll get in touch with you shortly.",
-    "errorValidation": "Please check your details and try again.",
-    "errorRateLimit": "Too many attempts. Please wait a moment and try again.",
-    "errorPhone": "Phone number must be in the format +998XXXXXXXXX."
+    }
   },
   "notFound": {
     "title": "Page not found",
@@ -482,7 +465,6 @@
       "hint": "Spend on data storage",
       "notTracked": "Not tracked yet"
     },
-    "requestInvoice": "Request invoice",
     "comingSoon": "Coming soon",
     "history": {
       "title": "Payment history",

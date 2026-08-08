@@ -87,14 +87,8 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
       </div>
 
       <Card>
-        <CardHeader className="flex-row items-center justify-between">
+        <CardHeader>
           <CardTitle>{t("history.title")}</CardTitle>
-          <Button
-            size="sm"
-            variant="outline"
-            nativeButton={false}
-            render={<Link href="/#lead-form">{t("requestInvoice")}</Link>}
-          />
         </CardHeader>
         <CardContent>
           {transactions.length === 0 ? (

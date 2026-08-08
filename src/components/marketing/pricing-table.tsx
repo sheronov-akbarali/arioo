@@ -66,7 +66,7 @@ export function PricingTable() {
                 <Button
                   className="mt-6 w-full bg-brand text-brand-foreground hover:opacity-90"
                   nativeButton={false}
-                  render={<Link href="/#lead-form">{t("cta")}</Link>}
+                  render={<Link href="/sign-up">{t("cta")}</Link>}
                 />
               </CardContent>
             </Card>

@@ -6,7 +6,6 @@ import { PartnerStats } from "@/components/marketing/partner-stats";
 import { PartnerSteps } from "@/components/marketing/partner-steps";
 import { PartnerWhy } from "@/components/marketing/partner-why";
 import { PartnerLevels } from "@/components/marketing/partner-levels";
-import { LeadForm } from "@/components/marketing/lead-form";
 
 export default function PartnersPage() {
   const t = useTranslations("partners");
@@ -23,7 +22,7 @@ export default function PartnersPage() {
           size="lg"
           className="mt-8 bg-brand text-brand-foreground hover:opacity-90"
           nativeButton={false}
-          render={<Link href="/partners/#lead-form">{t("cta")}</Link>}
+          render={<Link href="/sign-up">{t("cta")}</Link>}
         />
         <div className="mt-16">
           <PartnerStats />
@@ -32,7 +31,6 @@ export default function PartnersPage() {
       <PartnerSteps />
       <PartnerWhy />
       <PartnerLevels />
-      <LeadForm title={t("formTitle")} subtitle={t("formSubtitle")} submitLabel={t("cta")} />
     </>
   );
 }
