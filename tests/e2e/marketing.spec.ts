@@ -37,6 +37,14 @@ test("unknown legal document returns a localized 404 page", async ({ page }) => 
   await expect(page.getByRole("button", { name: "Bosh sahifaga qaytish" })).toBeVisible();
 });
 
+test("home page CTA scrolls to the lead form and it is fillable", async ({ page }) => {
+  await page.goto("/uz");
+  await page.getByRole("button", { name: "Konsultatsiya olish" }).first().click();
+  await expect(page.locator("#lead-form")).toBeInViewport();
+  await page.getByLabel("Ism").fill("Test Foydalanuvchi");
+  await page.getByLabel("Telefon raqami").fill("+998901234567");
+});
+
 test("mobile menu exposes the pricing and partners links", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 780 });
   await page.goto("/uz");

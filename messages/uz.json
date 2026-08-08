@@ -17,7 +17,7 @@
     "badge": "AI XODIMLAR",
     "title": "Biznesingiz uchun AI xodimni ishga oling",
     "subtitle": "Arioo yordamida sotuv, qo'llab-quvvatlash, HR va marketing bo'limlariga jamoa a'zosi sifatida AI qo'shing. U kompaniyangiz tizimlariga ulanadi, tarixiy ma'lumotlardan o'rganadi va mustaqil ishlaydi.",
-    "ctaPrimary": "Bepul boshlash",
+    "ctaPrimary": "Konsultatsiya olish",
     "ctaSecondary": "Narxlarni ko'rish",
     "diagram": {
       "sources": "Manbalar",
@@ -179,6 +179,21 @@
         }
       ]
     }
+  },
+  "leadForm": {
+    "title": "AI qanday ishga tushirilishini ko'rsatamiz",
+    "subtitle": "Kanallaringiz, ssenariylaringiz va integratsiyalaringizni ko'rib chiqamiz va birinchi ishga tushirishdayoq nimani AI'ga topshirish mumkinligini ko'rsatamiz.",
+    "name": "Ism",
+    "phone": "Telefon raqami",
+    "submit": "Konsultatsiya olish",
+    "submitPending": "Yuborilmoqda...",
+    "freeNote": "Bepul",
+    "alreadyAccount": "Hisobingiz bormi?",
+    "alreadyAccountCta": "Kirish",
+    "success": "Rahmat! Tez orada siz bilan bog'lanamiz.",
+    "errorValidation": "Iltimos, ma'lumotlarni to'g'ri kiriting.",
+    "errorRateLimit": "Juda ko'p urinish. Biroz kuting va qayta urinib ko'ring.",
+    "errorPhone": "Telefon raqami +998XXXXXXXXX formatida bo'lishi kerak."
   },
   "notFound": {
     "title": "Sahifa topilmadi",

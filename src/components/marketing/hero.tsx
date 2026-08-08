@@ -22,7 +22,7 @@ export function Hero() {
             size="lg"
             className="bg-brand text-brand-foreground hover:opacity-90"
             nativeButton={false}
-            render={<Link href="/sign-up">{t("ctaPrimary")}</Link>}
+            render={<Link href="/#lead-form">{t("ctaPrimary")}</Link>}
           />
           <Button
             size="lg"
