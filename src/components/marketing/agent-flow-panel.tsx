@@ -1,33 +1,37 @@
-import { useTranslations } from "next-intl";
-import { Globe, Send, ShoppingBag, Database, BookOpen, Bot } from "lucide-react";
+"use client";
 
-const SOURCE_ICONS = [Globe, Send, ShoppingBag] as const;
-const SYSTEM_ICONS = [Database, BookOpen] as const;
+import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Globe, Send, ShoppingBag, Database, BookOpen, Bot, type LucideIcon } from "lucide-react";
+
+const SOURCE_ICONS: LucideIcon[] = [Globe, Send, ShoppingBag];
+const SYSTEM_ICONS: LucideIcon[] = [Database, BookOpen];
+const CYCLE_MS = 2500;
 
 function Node({
   icon: Icon,
   label,
   sublabel,
-  emphasis,
+  active,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: LucideIcon;
   label: string;
   sublabel: string;
-  emphasis?: boolean;
+  active: boolean;
 }) {
   return (
     <div
       className={
-        emphasis
-          ? "flex items-center gap-3 rounded-xl border border-brand/40 bg-brand/10 p-3 shadow-[0_0_24px_-8px_var(--brand)]"
-          : "flex items-center gap-3 rounded-xl border border-border bg-card p-3"
+        active
+          ? "relative z-10 flex items-center gap-3 rounded-xl border border-brand bg-brand/10 p-3 shadow-[0_0_24px_-8px_var(--brand)] transition-colors duration-500"
+          : "relative z-10 flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors duration-500"
       }
     >
       <span
         className={
-          emphasis
-            ? "flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand text-brand-foreground"
-            : "flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground"
+          active
+            ? "flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand text-brand-foreground transition-colors duration-500"
+            : "flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors duration-500"
         }
       >
         <Icon className="size-4" />
@@ -40,40 +44,144 @@ function Node({
   );
 }
 
+// Anchor points as percentages of the diagram's bounding box, matching the
+// 3-row source column (top/middle/bottom), the centered agent node, and the
+// 2-row system column. Percentages (not measured pixels) mean no
+// ResizeObserver/layout-effect sync is needed between the cards and the SVG.
+const SOURCE_Y = [12, 50, 88];
+const SYSTEM_Y = [25, 75];
+const AGENT_POINT = { x: 50, y: 50 };
+const SOURCE_X = 2;
+const SYSTEM_X = 98;
+
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setReduced(query.matches);
+    const listener = (e: MediaQueryListEvent) => setReduced(e.matches);
+    query.addEventListener("change", listener);
+    return () => query.removeEventListener("change", listener);
+  }, []);
+  return reduced;
+}
+
 export function AgentFlowPanel() {
   const t = useTranslations("hero.diagram");
+  const reducedMotion = useReducedMotion();
   const sourceKeys = ["website", "telegram", "olx"] as const;
   const systemKeys = ["crm", "knowledge"] as const;
+
+  const [activeSource, setActiveSource] = useState(0);
+  const activeSystem = activeSource % systemKeys.length;
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const id = setInterval(() => {
+      setActiveSource((i) => (i + 1) % sourceKeys.length);
+    }, CYCLE_MS);
+    return () => clearInterval(id);
+  }, [reducedMotion, sourceKeys.length]);
+
+  const sourceToAgentPath = (i: number) =>
+    `M ${SOURCE_X} ${SOURCE_Y[i]} C 30 ${SOURCE_Y[i]}, 30 ${AGENT_POINT.y}, ${AGENT_POINT.x} ${AGENT_POINT.y}`;
+  const agentToSystemPath = (i: number) =>
+    `M ${AGENT_POINT.x} ${AGENT_POINT.y} C 70 ${AGENT_POINT.y}, 70 ${SYSTEM_Y[i]}, ${SYSTEM_X} ${SYSTEM_Y[i]}`;
 
   return (
     <div className="rounded-2xl border border-border bg-card/50 p-6">
       <p className="mb-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
         {t("sources")}
       </p>
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+      <div className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+        <svg
+          aria-hidden
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          className="pointer-events-none absolute inset-0 h-full w-full"
+        >
+          {sourceKeys.map((key, i) => (
+            <path
+              key={key}
+              d={sourceToAgentPath(i)}
+              fill="none"
+              stroke={!reducedMotion && i === activeSource ? "var(--brand)" : "var(--border)"}
+              strokeWidth={0.6}
+              strokeDasharray={!reducedMotion && i === activeSource ? undefined : "2 2"}
+              className="transition-colors duration-500"
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
+          {systemKeys.map((key, i) => (
+            <path
+              key={key}
+              d={agentToSystemPath(i)}
+              fill="none"
+              stroke={!reducedMotion && i === activeSystem ? "var(--brand)" : "var(--border)"}
+              strokeWidth={0.6}
+              strokeDasharray={!reducedMotion && i === activeSystem ? undefined : "2 2"}
+              className="transition-colors duration-500"
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
+          {!reducedMotion && (
+            <>
+              <circle r={1.4} fill="var(--brand)">
+                <animateMotion
+                  key={`source-${activeSource}`}
+                  dur={`${CYCLE_MS / 1000}s`}
+                  repeatCount="1"
+                  path={sourceToAgentPath(activeSource)}
+                />
+              </circle>
+              <circle r={1.4} fill="var(--brand)">
+                <animateMotion
+                  key={`system-${activeSystem}`}
+                  dur={`${CYCLE_MS / 1000}s`}
+                  repeatCount="1"
+                  path={agentToSystemPath(activeSystem)}
+                />
+              </circle>
+            </>
+          )}
+        </svg>
+
         <div className="flex flex-col gap-3">
           {sourceKeys.map((key, i) => {
             const Icon = SOURCE_ICONS[i]!;
-            return <Node key={key} icon={Icon} label={t(`${key}.label`)} sublabel={t(`${key}.sublabel`)} />;
+            return (
+              <Node
+                key={key}
+                icon={Icon}
+                label={t(`${key}.label`)}
+                sublabel={t(`${key}.sublabel`)}
+                active={!reducedMotion && i === activeSource}
+              />
+            );
           })}
         </div>
 
-        <div aria-hidden className="flex h-full flex-col items-center justify-center gap-1 px-1">
-          <span className="h-8 w-px border-l border-dashed border-brand/50" />
-          <span className="h-8 w-px border-l border-dashed border-brand/50" />
-          <span className="h-8 w-px border-l border-dashed border-brand/50" />
-        </div>
+        <div aria-hidden className="w-8" />
 
         <div className="flex flex-col gap-3">
           {systemKeys.map((key, i) => {
             const Icon = SYSTEM_ICONS[i]!;
-            return <Node key={key} icon={Icon} label={t(`${key}.label`)} sublabel={t(`${key}.sublabel`)} />;
+            return (
+              <Node
+                key={key}
+                icon={Icon}
+                label={t(`${key}.label`)}
+                sublabel={t(`${key}.sublabel`)}
+                active={!reducedMotion && i === activeSystem}
+              />
+            );
           })}
         </div>
       </div>
 
-      <div className="mt-4">
-        <Node icon={Bot} label={t("agent.label")} sublabel={t("agent.sublabel")} emphasis />
+      <div className="relative z-10 mt-4">
+        <Node icon={Bot} label={t("agent.label")} sublabel={t("agent.sublabel")} active />
       </div>
     </div>
   );
