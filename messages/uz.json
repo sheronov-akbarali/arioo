@@ -6,9 +6,11 @@
   "nav": {
     "pricing": "Narxlash",
     "partners": "Hamkorlik dasturi",
+    "howItWorks": "Qanday ishlaydi",
     "login": "Kirish",
     "menu": "Menyu",
     "cta": "Konsultatsiya olish",
+    "dashboardCta": "Kabinetga kirish",
     "themeToggle": "Mavzuni almashtirish"
   },
   "hero": {
@@ -103,7 +105,82 @@
       "referral": { "value": "10%gacha", "label": "Hisobni to'ldirishdan referal to'lovlar" },
       "launch": { "value": "5 kun", "label": "Birinchi qo'ng'iroqdan obuna to'lovigacha" },
       "levels": { "value": "3", "label": "Hamkorlik ishtirok darajasi" }
-    }
+    },
+    "steps": {
+      "title": "Birinchi murojaatdan daromadgacha 4 qadam",
+      "items": [
+        {
+          "title": "Mijozni platforma bilan tanishtiring",
+          "description": "Mijozga referal havolangizni ulashasiz va ro'yxatdan o'tishga yordam berasiz. Shu bilan loyiha boshlanadi va sizning hamkorlik kanalingiz qayd etiladi."
+        },
+        {
+          "title": "Birinchi AI xodim smenasini ishga tushiring",
+          "description": "5 ish kuni ichida jamoa demo tayyorlaydi va mijoz vazifalari uchun AI xodimni sozlaydi. Mijoz birinchi ishlaydigan ssenariyni ko'radi va natijani amalda baholaydi."
+        },
+        {
+          "title": "Tijorat shartlarini kelishing",
+          "description": "Demo va birinchi natijadan so'ng mijoz ishga tushirishni tasdiqlaydi. Obuna narxi va xizmat formatini mustaqil belgilaysiz."
+        },
+        {
+          "title": "Hamkor hisobi orqali obunalarni to'lang",
+          "description": "Hamkor balansini to'ldirasiz va mijoz obunasini o'z chegirmangiz bilan to'laysiz, hisob to'ldirishlardan ulush olasiz."
+        }
+      ]
+    },
+    "why": {
+      "title": "Nega TayanchAI hamkorligi",
+      "items": [
+        {
+          "title": "Talabga ega AI mahsuloti",
+          "description": "Mijozga abstrakt innovatsiyani tushuntirish shart emas — u hozir avtomatlashtirsa bo'ladigan aniq vazifalarni ko'radi."
+        },
+        {
+          "title": "Aniq hamkorlik iqtisodiyoti",
+          "description": "Daromad manbalaringiz oldindan aniq: joriy etish, mijoz obunasidan hamkor chegirmasi va hisob to'ldirishdan foiz."
+        },
+        {
+          "title": "Tez ishga tushirish",
+          "description": "Yechim uzoq ishlab chiqish siklisiz joriy etiladi — bu birinchi daromadni tezlashtiradi va jamoa yukini kamaytiradi."
+        },
+        {
+          "title": "Hajm bilan daraja o'sadi",
+          "description": "Hamkor hisobingiz orqali qancha ko'p obuna to'lovi o'tsa, darajangiz va shartlaringiz shuncha yaxshilanadi."
+        }
+      ]
+    },
+    "levels": {
+      "title": "Uchta hamkorlik darajasi",
+      "subtitle": "Obuna chegirmasi va referal to'lovlari bo'yicha farqlanadigan uchta ishtirok darajasi.",
+      "discountLabel": "Chegirma",
+      "conditionLabel": "O'sish sharti",
+      "supportLabel": "Qo'llab-quvvatlash",
+      "referralLabel": "Referal to'lov",
+      "items": [
+        {
+          "name": "3-daraja",
+          "discount": "25%",
+          "condition": "Hamkorlik shartnomasi imzolangandan keyin",
+          "support": "Standart",
+          "referral": "2%"
+        },
+        {
+          "name": "2-daraja",
+          "discount": "35%",
+          "condition": "So'nggi 365 kunda hamkor hisobidan 50 000 000 so'mdan ortiq obuna to'lovidan keyin",
+          "support": "Ustuvor",
+          "referral": "5%"
+        },
+        {
+          "name": "1-daraja",
+          "discount": "50%",
+          "condition": "So'nggi 365 kunda hamkor hisobidan 150 000 000 so'mdan ortiq obuna to'lovidan keyin",
+          "support": "Shaxsiy menejer",
+          "referral": "10%"
+        }
+      ]
+    },
+    "formTitle": "Hamkor bo'ling",
+    "formSubtitle": "Kontakt ma'lumotlaringizni qoldiring — biz bog'lanamiz, savollaringizga javob beramiz va mijozlaringiz uchun to'g'ri AI xodim ishga tushirish formatini tanlashga yordam beramiz."
   },
   "leadForm": {
     "title": "AI qanday ishga tushirilishini ko'rsatamiz",
@@ -113,6 +190,8 @@
     "submit": "Konsultatsiya olish",
     "submitPending": "Yuborilmoqda...",
     "freeNote": "Bepul",
+    "alreadyAccount": "Hisobingiz bormi?",
+    "alreadyAccountCta": "Kirish",
     "success": "Rahmat! Tez orada siz bilan bog'lanamiz.",
     "errorValidation": "Iltimos, ma'lumotlarni to'g'ri kiriting.",
     "errorRateLimit": "Juda ko'p urinish. Biroz kuting va qayta urinib ko'ring.",
@@ -163,6 +242,26 @@
     }
   },
   "settings": {
+    "title": "Sozlamalar",
+    "subtitle": "Loyihangiz, jamoangiz va limitlaringizni boshqaring.",
+    "tabs": {
+      "project": "Loyiha",
+      "team": "Foydalanuvchilar",
+      "limits": "Limitlar",
+      "accounts": "Akkauntlar"
+    },
+    "project": {
+      "save": "Saqlash",
+      "saving": "Saqlanmoqda...",
+      "saved": "Saqlandi.",
+      "error": "Saqlashda xatolik yuz berdi.",
+      "readOnlyHint": "Loyiha ma'lumotlarini faqat egasi yoki administrator o'zgartira oladi."
+    },
+    "limits": {
+      "agents": "AI Xodimlar",
+      "teamMembers": "Jamoa a'zolari",
+      "planHint": "Joriy tarifingiz ({plan}) bo'yicha limit"
+    },
     "accounts": {
       "title": "Ulangan akkauntlar",
       "unlink": "Uzish",
@@ -196,16 +295,25 @@
     "nav": {
       "assistants": "AI Xodimlar",
       "chats": "Suhbatlar",
+      "calls": "Qo'ng'iroqlar",
+      "routines": "Rutinalar",
       "knowledgeBases": "Bilim bazasi",
       "approvals": "Tasdiqlash",
+      "products": "Mahsulotlar",
       "integrations": "Integratsiyalar",
       "statistics": "Statistika",
+      "runs": "Ishga tushirishlar",
+      "codeAgent": "Kod agenti",
+      "referralProgram": "Referral dasturi",
+      "affiliateProgram": "Hamkorlik dasturi",
       "settings": "Sozlamalar",
       "comingSoon": "Tez orada",
       "groups": {
         "work": "Ish",
         "data": "Ma'lumotlar",
-        "monitoring": "Nazorat"
+        "monitoring": "Nazorat",
+        "development": "Rivojlantirish",
+        "partnership": "Hamkorlik"
       }
     },
     "userMenu": {
@@ -298,6 +406,11 @@
     "statusFilters": {
       "all": "Hammasi"
     },
+    "sourceFilters": {
+      "all": "Barchasi",
+      "routines": "Rutinalar",
+      "chats": "Chat va ovoz"
+    },
     "status": {
       "pending": "Kutmoqda",
       "approved": "Tasdiqlangan",
@@ -305,6 +418,248 @@
       "auto_resolved": "Avto-hal qilingan",
       "expired": "Muddati o'tgan"
     }
+  },
+  "statistics": {
+    "title": "Statistika",
+    "subtitle": "AI Xodimlar foydalanishi va xarajatlar tahlili.",
+    "export": "CSV eksport",
+    "range": {
+      "7d": "7 kun",
+      "30d": "30 kun",
+      "month": "Bu oy"
+    },
+    "cards": {
+      "totalSpend": "Jami xarajat",
+      "totalSpendHint": "Tanlangan davr uchun",
+      "assistantsSpend": "AI Xodimlar xarajati",
+      "assistantsSpendHint": "AI model so'rovlari uchun xarajat",
+      "storageSpend": "Saqlash xarajati",
+      "storageSpendHint": "Ma'lumotlarni saqlash uchun xarajat",
+      "notTracked": "Hali kuzatilmayapti"
+    },
+    "dailySpendChart": {
+      "title": "Kunlik xarajat",
+      "subtitle": "Tanlangan davr uchun kunlik xarajat dinamikasi"
+    },
+    "threadsChart": {
+      "title": "Noyob suhbatlar",
+      "subtitle": "Kuniga boshlangan noyob suhbatlar soni"
+    },
+    "comparison": {
+      "title": "Oldingi davr bilan solishtirish",
+      "subtitle": "Tanlangan davrga nisbatan xarajat o'zgarishi",
+      "currentPeriod": "Joriy davr",
+      "previousPeriod": "Oldingi davr",
+      "change": "O'zgarish"
+    },
+    "forecast": {
+      "title": "Oy oxiri prognozi",
+      "subtitle": "Tanlangan davrdagi o'rtacha xarajat asosida",
+      "avgDailySpend": "O'rtacha kunlik xarajat",
+      "daysLeft": "Oyda qolgan kunlar",
+      "forecastTotal": "Oy oxirigacha prognoz"
+    },
+    "empty": "Bu davrda ma'lumot yo'q."
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Tarifingiz va kredit balansingizni shu yerda boshqaring.",
+    "planCard": {
+      "hint": "Tarifingiz platformada nima qila olishingizni belgilaydi.",
+      "changePlan": "Tarifni o'zgartirish"
+    },
+    "balanceCard": {
+      "title": "Balans",
+      "hint": "TAY — platformadagi ichki valyuta. AI xodimlar, vositalar va boshqa funksiyalar uchun sarflanadi.",
+      "topUp": "Hisobni to'ldirish"
+    },
+    "bonusCard": {
+      "title": "Bonuslar",
+      "hint": "TAYb — platforma faolligi va ba'zi obunalar uchun beriladigan qo'shimcha valyuta."
+    },
+    "storageCard": {
+      "title": "Saqlash",
+      "hint": "Ma'lumotlarni saqlash uchun xarajat",
+      "notTracked": "Hali kuzatilmayapti"
+    },
+    "requestInvoice": "Hisob-faktura so'rash",
+    "comingSoon": "Tez orada",
+    "history": {
+      "title": "To'lovlar tarixi",
+      "date": "Sana",
+      "description": "Tavsif",
+      "type": "Turi",
+      "amount": "Summa",
+      "empty": "Hozircha operatsiyalar topilmadi.",
+      "types": {
+        "grant": "Berilgan",
+        "topup": "To'ldirish",
+        "usage": "Sarflangan",
+        "bonus": "Bonus"
+      }
+    }
+  },
+  "chats": {
+    "title": "Suhbatlar",
+    "subtitle": "Barcha AI Xodimlar bilan bo'lgan suhbatlar tarixi.",
+    "empty": "Hozircha suhbatlar yo'q.",
+    "emptyHint": "AI xodim bilan birinchi suhbatni playgroundda boshlang.",
+    "noMessages": "Xabarlar yo'q",
+    "system": "Tizim",
+    "continueInPlayground": "Playgroundda davom ettirish →"
+  },
+  "knowledgeBases": {
+    "title": "Bilim bazasi",
+    "subtitle": "AI Xodimlaringizga yuklangan hujjatlar.",
+    "empty": "Hali hujjat yuklanmagan.",
+    "emptyHint": "AI xodim sahifasida bilim bazasiga birinchi hujjatingizni yuklang.",
+    "manage": "Boshqarish →"
+  },
+  "affiliateProgram": {
+    "title": "Hamkorlik dasturi",
+    "subtitle": "Mijozlarga AI xodim yollashda yordam bering va daromad oling.",
+    "notPartnerYet": "Siz hali hamkor emassiz",
+    "applyHint": "Ariza qoldiring va biz siz bilan bog'lanamiz.",
+    "apply": "Ariza qoldirish"
+  },
+  "referralProgram": {
+    "title": "Referral dasturi",
+    "subtitle": "Do'stlaringizni taklif qiling va ularning hisob to'ldirishlaridan foiz oling.",
+    "balance": "Referral balansi",
+    "withdraw": "Yechib olish",
+    "comingSoon": "Tez orada",
+    "rate": "Sizning stavkangiz",
+    "rateHint": "Stavka tarifingizga bog'liq",
+    "totalInvited": "Jami taklif qilinganlar",
+    "totalEarned": "Jami ishlangan",
+    "linksTitle": "Referral havolalar",
+    "linksSubtitle": "Havolani nusxalab do'stlaringizga yuboring — ular ro'yxatdan o'tishi bilan.",
+    "copy": "Nusxalash",
+    "copied": "Nusxalandi!",
+    "limitsTitle": "Hisoblash limitlari",
+    "dailyLimit": "Kunlik limit",
+    "monthlyLimit": "Oylik limit",
+    "operationsTitle": "Referral operatsiyalari",
+    "operationsEmpty": "Hozircha hisoblanganlar yo'q."
+  },
+  "products": {
+    "title": "Mahsulotlar",
+    "subtitle": "Kanallar orqali sotiladigan tovar va xizmatlar katalogi.",
+    "paymentsNotice": "To'lov yo'llari (Payme/Click) hali ulanmagan — mahsulotlar hozircha faqat katalog sifatida saqlanadi.",
+    "currency": "so'm",
+    "form": {
+      "name": "Nomi",
+      "type": "Turi",
+      "price": "Narxi (so'm)",
+      "submit": "Mahsulot yaratish"
+    },
+    "types": {
+      "item": "Tovar",
+      "digital": "Raqamli",
+      "service": "Xizmat",
+      "affiliate_offer": "Hamkorlik oferta",
+      "referral_offer": "Referral oferta",
+      "lead_magnet": "Lid-magnit"
+    },
+    "status": {
+      "draft": "Qoralama",
+      "active": "Faol",
+      "archived": "Arxivlangan"
+    },
+    "table": {
+      "name": "Nomi",
+      "type": "Turi",
+      "status": "Holat",
+      "price": "Narx"
+    },
+    "empty": "Hali mahsulot yo'q.",
+    "emptyHint": "Birinchi tovar yoki xizmatingizni katalogga qo'shing."
+  },
+  "routines": {
+    "title": "Rutinalar",
+    "subtitle": "CRM va integratsiya hodisalariga asoslangan trigger→harakat avtomatlashtirish.",
+    "engineNotice": "Avtomatlashtirish dvigateli tez orada — hozircha rutinalar qoralama sifatida saqlanadi va avtomatik ishga tushmaydi.",
+    "form": {
+      "name": "Nomi",
+      "trigger": "Trigger turi",
+      "resource": "Resurs",
+      "resourcePlaceholder": "masalan, AmoCRM yangi lid",
+      "submit": "Rutina yaratish"
+    },
+    "triggerTypes": {
+      "crm_event": "CRM hodisasi",
+      "integration_event": "Integratsiya hodisasi",
+      "schedule": "Jadval bo'yicha"
+    },
+    "status": {
+      "draft": "Qoralama"
+    },
+    "table": {
+      "name": "Nomi",
+      "trigger": "Trigger",
+      "resource": "Resurs",
+      "status": "Holat"
+    },
+    "empty": "Hali birorta rutina yo'q.",
+    "emptyHint": "Birinchi ssenariyingizni tasvirlab bering — dvigatel tayyor bo'lganda ishga tusha boshlaydi."
+  },
+  "calls": {
+    "title": "Qo'ng'iroqlar",
+    "subtitle": "AI xodimning kiruvchi va chiquvchi ovozli qo'ng'iroqlari — navbat, kampaniyalar va tarix.",
+    "startCall": "Qo'ng'iroq boshlash",
+    "scheduleCall": "Qo'ng'iroqni rejalashtirish",
+    "comingSoon": "Tez orada",
+    "stats": {
+      "live": "Jonli",
+      "completedToday": "Bugun tugagan",
+      "failed": "Muvaffaqiyatsiz"
+    },
+    "tabs": {
+      "queue": "Navbat",
+      "campaigns": "Kampaniyalar",
+      "history": "Tarix"
+    },
+    "empty": "Jonli qo'ng'iroqlar yo'q",
+    "emptyHint": "Rejalashtirilgan va jonli qo'ng'iroqlar shu yerda ko'rinadi."
+  },
+  "integrations": {
+    "title": "Integratsiyalar",
+    "subtitle": "AI Xodimlaringizni biznes tizimlaringizga ulang.",
+    "connect": "Ulash",
+    "comingSoon": "Tez orada",
+    "categories": {
+      "chat": "Chat",
+      "marketplace": "Marketplace",
+      "crm": "CRM",
+      "voice": "Ovoz",
+      "files": "Fayllar",
+      "git": "Git",
+      "other": "Boshqa"
+    },
+    "providers": {
+      "telegram": { "name": "Telegram", "description": "Telegram bot orqali mijozlar bilan muloqot" },
+      "whatsapp": { "name": "WhatsApp Business", "description": "WhatsApp Business Cloud API orqali xabarlashish" },
+      "websiteWidget": { "name": "Sayt vidjeti", "description": "Veb-saytingizga chat vidjeti o'rnating" },
+      "olx": { "name": "OLX.uz", "description": "OLX.uz e'lonlaridan kelgan so'rovlarni qayta ishlash" },
+      "sip": { "name": "SIP", "description": "Ovozli qo'ng'iroqlar uchun telefoniya ulanishi" },
+      "amocrm": { "name": "amoCRM", "description": "Lidlar va bitimlarni amoCRM bilan sinxronlash" },
+      "bitrix24": { "name": "Bitrix24", "description": "Lidlar va bitimlarni Bitrix24 bilan sinxronlash" },
+      "googleWorkspace": { "name": "Google Sheets/Drive", "description": "Jadval va fayllar bilan ishlash" },
+      "github": { "name": "GitHub", "description": "Repozitoriy va Issues bilan ishlash" },
+      "oneC": { "name": "1C", "description": "1C bilan mahsulot va narxlar integratsiyasi" },
+      "customMcp": { "name": "Custom MCP Server", "description": "O'z vositalaringizni MCP orqali ulang" }
+    }
+  },
+  "runs": {
+    "title": "Ishga tushirishlar",
+    "subtitle": "AI Xodimlar suhbatlarining ishga tushirish tarixi.",
+    "empty": "Hozircha ishga tushirishlar yo'q.",
+    "emptyHint": "AI xodim bilan suhbat boshlanganda shu yerda ko'rinadi.",
+    "agent": "AI Xodim",
+    "started": "Boshlangan",
+    "lastActivity": "Oxirgi faollik",
+    "messages": "Xabarlar",
+    "cost": "Xarajat"
   },
   "invite": {
     "title": "Sizni taklif qilishdi",

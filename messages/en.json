@@ -6,9 +6,11 @@
   "nav": {
     "pricing": "Pricing",
     "partners": "Partner Program",
+    "howItWorks": "How it works",
     "login": "Log in",
     "menu": "Menu",
     "cta": "Get Consultation",
+    "dashboardCta": "Go to dashboard",
     "themeToggle": "Toggle theme"
   },
   "hero": {
@@ -103,7 +105,82 @@
       "referral": { "value": "up to 10%", "label": "referral payouts from top-ups" },
       "launch": { "value": "5 days", "label": "from first call to subscription payment" },
       "levels": { "value": "3", "label": "levels of partner participation" }
-    }
+    },
+    "steps": {
+      "title": "4 steps from first contact to revenue",
+      "items": [
+        {
+          "title": "Introduce the client to the platform",
+          "description": "You share a referral link with the client and help them register. This starts the project and records your partner channel."
+        },
+        {
+          "title": "Launch the first AI employee shift",
+          "description": "Within 5 business days the team prepares a demo and configures an AI employee for the client's tasks. The client sees the first working scenario and evaluates the result in practice."
+        },
+        {
+          "title": "Align on commercial terms",
+          "description": "After the demo and first result, the client confirms the launch. You define subscription pricing and your service format independently."
+        },
+        {
+          "title": "Pay for subscriptions via your partner account",
+          "description": "You top up your partner balance and pay for the client's subscription with your discount, while also earning a percentage from account top-ups."
+        }
+      ]
+    },
+    "why": {
+      "title": "Why partner with TayanchAI",
+      "items": [
+        {
+          "title": "An in-demand AI product",
+          "description": "Clients don't need abstract innovation explained — they see concrete tasks that can be automated right now."
+        },
+        {
+          "title": "Clear partner economics",
+          "description": "Your revenue sources are clear upfront: implementation, a partner discount on client subscriptions, and a percentage from top-ups."
+        },
+        {
+          "title": "Fast go-live",
+          "description": "The solution deploys without a long development cycle, which speeds up first revenue and reduces team load."
+        },
+        {
+          "title": "Your level grows with volume",
+          "description": "The more subscription payments go through your partner account, the higher your level and the better your terms."
+        }
+      ]
+    },
+    "levels": {
+      "title": "Three partner program levels",
+      "subtitle": "Three participation levels with different subscription discounts and referral payouts.",
+      "discountLabel": "Discount",
+      "conditionLabel": "Upgrade condition",
+      "supportLabel": "Support",
+      "referralLabel": "Referral payout",
+      "items": [
+        {
+          "name": "Level 3",
+          "discount": "25%",
+          "condition": "Upon signing the partner agreement",
+          "support": "Standard",
+          "referral": "2%"
+        },
+        {
+          "name": "Level 2",
+          "discount": "35%",
+          "condition": "After 50,000,000 UZS of subscription payments from your partner account over the last 365 days",
+          "support": "Priority",
+          "referral": "5%"
+        },
+        {
+          "name": "Level 1",
+          "discount": "50%",
+          "condition": "After 150,000,000 UZS of subscription payments from your partner account over the last 365 days",
+          "support": "Dedicated manager",
+          "referral": "10%"
+        }
+      ]
+    },
+    "formTitle": "Become a partner",
+    "formSubtitle": "Leave your contact details — we'll reach out, answer your questions, and help you choose the right AI employee launch format for your clients."
   },
   "leadForm": {
     "title": "We'll show you how AI can get to work",
@@ -113,6 +190,8 @@
     "submit": "Get Consultation",
     "submitPending": "Sending...",
     "freeNote": "Free",
+    "alreadyAccount": "Already have an account?",
+    "alreadyAccountCta": "Log in",
     "success": "Thank you! We'll get in touch with you shortly.",
     "errorValidation": "Please check your details and try again.",
     "errorRateLimit": "Too many attempts. Please wait a moment and try again.",
@@ -163,6 +242,26 @@
     }
   },
   "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your project, team, and limits.",
+    "tabs": {
+      "project": "Project",
+      "team": "Users",
+      "limits": "Limits",
+      "accounts": "Accounts"
+    },
+    "project": {
+      "save": "Save",
+      "saving": "Saving...",
+      "saved": "Saved.",
+      "error": "Something went wrong while saving.",
+      "readOnlyHint": "Only the owner or an admin can change project details."
+    },
+    "limits": {
+      "agents": "AI employees",
+      "teamMembers": "Team members",
+      "planHint": "Limit for your current plan ({plan})"
+    },
     "accounts": {
       "title": "Linked accounts",
       "unlink": "Unlink",
@@ -196,16 +295,25 @@
     "nav": {
       "assistants": "AI Employees",
       "chats": "Chats",
+      "calls": "Calls",
+      "routines": "Routines",
       "knowledgeBases": "Knowledge base",
       "approvals": "Approvals",
+      "products": "Products",
       "integrations": "Integrations",
       "statistics": "Statistics",
+      "runs": "Runs",
+      "codeAgent": "Code agent",
+      "referralProgram": "Referral program",
+      "affiliateProgram": "Partner program",
       "settings": "Settings",
       "comingSoon": "Coming soon",
       "groups": {
         "work": "Work",
         "data": "Data",
-        "monitoring": "Monitoring"
+        "monitoring": "Monitoring",
+        "development": "Development",
+        "partnership": "Partnership"
       }
     },
     "userMenu": {
@@ -298,6 +406,11 @@
     "statusFilters": {
       "all": "All"
     },
+    "sourceFilters": {
+      "all": "All",
+      "routines": "Routines",
+      "chats": "Chat & voice"
+    },
     "status": {
       "pending": "Pending",
       "approved": "Approved",
@@ -305,6 +418,248 @@
       "auto_resolved": "Auto-resolved",
       "expired": "Expired"
     }
+  },
+  "statistics": {
+    "title": "Statistics",
+    "subtitle": "Usage and spend analytics for your AI employees.",
+    "export": "Export CSV",
+    "range": {
+      "7d": "7 days",
+      "30d": "30 days",
+      "month": "This month"
+    },
+    "cards": {
+      "totalSpend": "Total spend",
+      "totalSpendHint": "For the selected period",
+      "assistantsSpend": "AI employees spend",
+      "assistantsSpendHint": "Spend on AI model requests",
+      "storageSpend": "Storage spend",
+      "storageSpendHint": "Spend on data storage",
+      "notTracked": "Not tracked yet"
+    },
+    "dailySpendChart": {
+      "title": "Daily spend",
+      "subtitle": "Daily spend trend for the selected period"
+    },
+    "threadsChart": {
+      "title": "Unique threads",
+      "subtitle": "Number of unique conversations started per day"
+    },
+    "comparison": {
+      "title": "Comparison with previous period",
+      "subtitle": "Spend change relative to the selected period",
+      "currentPeriod": "Current period",
+      "previousPeriod": "Previous period",
+      "change": "Change"
+    },
+    "forecast": {
+      "title": "End-of-month forecast",
+      "subtitle": "Based on average spend for the selected period",
+      "avgDailySpend": "Average daily spend",
+      "daysLeft": "Days left in month",
+      "forecastTotal": "End-of-month forecast"
+    },
+    "empty": "No data for this period."
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Manage your plan and credit balance here.",
+    "planCard": {
+      "hint": "Your plan defines what you can do on the platform.",
+      "changePlan": "Change plan"
+    },
+    "balanceCard": {
+      "title": "Balance",
+      "hint": "TAY is the platform's internal currency, spent on AI employees, tools, and other features.",
+      "topUp": "Top up balance"
+    },
+    "bonusCard": {
+      "title": "Bonuses",
+      "hint": "TAYb is an additional currency earned for platform activity and with some subscriptions."
+    },
+    "storageCard": {
+      "title": "Storage",
+      "hint": "Spend on data storage",
+      "notTracked": "Not tracked yet"
+    },
+    "requestInvoice": "Request invoice",
+    "comingSoon": "Coming soon",
+    "history": {
+      "title": "Payment history",
+      "date": "Date",
+      "description": "Description",
+      "type": "Type",
+      "amount": "Amount",
+      "empty": "No transactions found yet.",
+      "types": {
+        "grant": "Granted",
+        "topup": "Top-up",
+        "usage": "Spent",
+        "bonus": "Bonus"
+      }
+    }
+  },
+  "chats": {
+    "title": "Chats",
+    "subtitle": "Conversation history across all your AI employees.",
+    "empty": "No conversations yet.",
+    "emptyHint": "Start your first conversation with an AI employee in the playground.",
+    "noMessages": "No messages",
+    "system": "System",
+    "continueInPlayground": "Continue in playground →"
+  },
+  "knowledgeBases": {
+    "title": "Knowledge base",
+    "subtitle": "Documents uploaded to your AI employees.",
+    "empty": "No documents uploaded yet.",
+    "emptyHint": "Upload your first document to a knowledge base from an AI employee's page.",
+    "manage": "Manage →"
+  },
+  "affiliateProgram": {
+    "title": "Partner program",
+    "subtitle": "Help clients hire AI employees and earn from every implementation.",
+    "notPartnerYet": "You're not a partner yet",
+    "applyHint": "Submit a request and we'll get in touch.",
+    "apply": "Submit request"
+  },
+  "referralProgram": {
+    "title": "Referral program",
+    "subtitle": "Invite friends and earn a percentage from their top-ups.",
+    "balance": "Referral balance",
+    "withdraw": "Withdraw",
+    "comingSoon": "Coming soon",
+    "rate": "Your rate",
+    "rateHint": "The rate depends on your plan",
+    "totalInvited": "Total invited",
+    "totalEarned": "Total earned",
+    "linksTitle": "Referral links",
+    "linksSubtitle": "Copy a link and send it to friends so they can sign up.",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "limitsTitle": "Accrual limits",
+    "dailyLimit": "Daily limit",
+    "monthlyLimit": "Monthly limit",
+    "operationsTitle": "Referral operations",
+    "operationsEmpty": "No accruals found yet."
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Catalog of goods and services sold through your channels.",
+    "paymentsNotice": "Payment paths (Payme/Click) aren't connected yet — products are saved as a catalog only for now.",
+    "currency": "UZS",
+    "form": {
+      "name": "Name",
+      "type": "Type",
+      "price": "Price (UZS)",
+      "submit": "Create product"
+    },
+    "types": {
+      "item": "Item",
+      "digital": "Digital",
+      "service": "Service",
+      "affiliate_offer": "Affiliate offer",
+      "referral_offer": "Referral offer",
+      "lead_magnet": "Lead magnet"
+    },
+    "status": {
+      "draft": "Draft",
+      "active": "Active",
+      "archived": "Archived"
+    },
+    "table": {
+      "name": "Name",
+      "type": "Type",
+      "status": "Status",
+      "price": "Price"
+    },
+    "empty": "No products yet.",
+    "emptyHint": "Add your first item or service to the catalog."
+  },
+  "routines": {
+    "title": "Routines",
+    "subtitle": "Trigger→action automation based on CRM and integration events.",
+    "engineNotice": "The automation engine is coming soon — routines are saved as drafts for now and don't run automatically.",
+    "form": {
+      "name": "Name",
+      "trigger": "Trigger type",
+      "resource": "Resource",
+      "resourcePlaceholder": "e.g. new AmoCRM lead",
+      "submit": "Create routine"
+    },
+    "triggerTypes": {
+      "crm_event": "CRM event",
+      "integration_event": "Integration event",
+      "schedule": "Schedule"
+    },
+    "status": {
+      "draft": "Draft"
+    },
+    "table": {
+      "name": "Name",
+      "trigger": "Trigger",
+      "resource": "Resource",
+      "status": "Status"
+    },
+    "empty": "No routines yet.",
+    "emptyHint": "Describe your first scenario — it'll start firing once the engine is ready."
+  },
+  "calls": {
+    "title": "Calls",
+    "subtitle": "Your AI employee's incoming and outgoing voice calls — queue, campaigns, and history.",
+    "startCall": "Start call",
+    "scheduleCall": "Schedule call",
+    "comingSoon": "Coming soon",
+    "stats": {
+      "live": "Live",
+      "completedToday": "Completed today",
+      "failed": "Failed"
+    },
+    "tabs": {
+      "queue": "Queue",
+      "campaigns": "Campaigns",
+      "history": "History"
+    },
+    "empty": "No live calls",
+    "emptyHint": "Scheduled and live calls will show up here."
+  },
+  "integrations": {
+    "title": "Integrations",
+    "subtitle": "Connect your AI employees to your business systems.",
+    "connect": "Connect",
+    "comingSoon": "Coming soon",
+    "categories": {
+      "chat": "Chat",
+      "marketplace": "Marketplace",
+      "crm": "CRM",
+      "voice": "Voice",
+      "files": "Files",
+      "git": "Git",
+      "other": "Other"
+    },
+    "providers": {
+      "telegram": { "name": "Telegram", "description": "Talk to customers via a Telegram bot" },
+      "whatsapp": { "name": "WhatsApp Business", "description": "Messaging via WhatsApp Business Cloud API" },
+      "websiteWidget": { "name": "Website widget", "description": "Add a chat widget to your website" },
+      "olx": { "name": "OLX.uz", "description": "Process requests from OLX.uz listings" },
+      "sip": { "name": "SIP", "description": "Telephony connection for voice calls" },
+      "amocrm": { "name": "amoCRM", "description": "Sync leads and deals with amoCRM" },
+      "bitrix24": { "name": "Bitrix24", "description": "Sync leads and deals with Bitrix24" },
+      "googleWorkspace": { "name": "Google Sheets/Drive", "description": "Work with spreadsheets and files" },
+      "github": { "name": "GitHub", "description": "Work with repositories and Issues" },
+      "oneC": { "name": "1C", "description": "Product and pricing integration with 1C" },
+      "customMcp": { "name": "Custom MCP Server", "description": "Connect your own tools via MCP" }
+    }
+  },
+  "runs": {
+    "title": "Runs",
+    "subtitle": "Execution history of your AI employees' conversations.",
+    "empty": "No runs yet.",
+    "emptyHint": "This will fill in once a conversation with an AI employee starts.",
+    "agent": "AI employee",
+    "started": "Started",
+    "lastActivity": "Last activity",
+    "messages": "Messages",
+    "cost": "Cost"
   },
   "invite": {
     "title": "You're invited",

@@ -30,6 +30,11 @@ export function Footer() {
                 {tNav("partners")}
               </Link>
             </li>
+            <li>
+              <Link href="/#how-it-works" className="text-muted-foreground hover:text-foreground">
+                {tNav("howItWorks")}
+              </Link>
+            </li>
           </ul>
         </div>
         <div>

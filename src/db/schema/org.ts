@@ -16,6 +16,9 @@ export const organizations = pgTable("organization", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   name: text("name").notNull(),
   industry: text("industry").notNull(),
+  // Matches a PRICING_TIERS id (src/lib/pricing-data.ts) — no FK since pricing
+  // tiers are static app config, not a DB table.
+  plan: text("plan").notNull().default("freemium"),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
 });
 

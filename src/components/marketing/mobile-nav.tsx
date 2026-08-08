@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { MenuIcon } from "lucide-react";
+import { Show } from "@clerk/nextjs";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,13 +50,24 @@ export function MobileNav() {
           >
             {t("partners")}
           </Link>
-          <Link
-            href="/sign-in"
-            className="rounded-md py-2 text-muted-foreground hover:text-foreground"
-            onClick={() => setOpen(false)}
-          >
-            {t("login")}
-          </Link>
+          <Show when="signed-in">
+            <Link
+              href="/dashboard"
+              className="rounded-md py-2 text-muted-foreground hover:text-foreground"
+              onClick={() => setOpen(false)}
+            >
+              {t("dashboardCta")}
+            </Link>
+          </Show>
+          <Show when="signed-out">
+            <Link
+              href="/sign-in"
+              className="rounded-md py-2 text-muted-foreground hover:text-foreground"
+              onClick={() => setOpen(false)}
+            >
+              {t("login")}
+            </Link>
+          </Show>
         </nav>
         <div className="mt-2 flex items-center gap-2 border-t border-border px-4 pt-4">
           <LanguageSwitcher />

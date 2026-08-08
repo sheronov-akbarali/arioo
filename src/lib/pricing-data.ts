@@ -4,6 +4,8 @@ export type PricingTier = {
   priceUZSAnnual: number | null;
   isPopular: boolean;
   isCustom: boolean;
+  // Matches the "N AI xodim" copy in messages/*.json `pricing.tiers.*.employees`.
+  employeeLimit: number;
 };
 
 // MVP placeholder pricing — review with the project owner before real billing goes live.
@@ -11,11 +13,39 @@ export type PricingTier = {
 // matches the "33% tejash / Экономия 33% / 33% savings" badge in messages/*.json
 // (8/12 = 66.7% of monthly*12 => a genuine 33.3% discount, not an arbitrary round number).
 export const PRICING_TIERS: PricingTier[] = [
-  { id: "freemium", priceUZSMonthly: 0, priceUZSAnnual: 0, isPopular: false, isCustom: false },
-  { id: "businessS", priceUZSMonthly: 190000, priceUZSAnnual: 1520000, isPopular: false, isCustom: false },
-  { id: "businessM", priceUZSMonthly: 390000, priceUZSAnnual: 3120000, isPopular: true, isCustom: false },
-  { id: "businessL", priceUZSMonthly: 990000, priceUZSAnnual: 7920000, isPopular: false, isCustom: false },
-  { id: "enterprise", priceUZSMonthly: null, priceUZSAnnual: null, isPopular: false, isCustom: true },
+  { id: "freemium", priceUZSMonthly: 0, priceUZSAnnual: 0, isPopular: false, isCustom: false, employeeLimit: 1 },
+  {
+    id: "businessS",
+    priceUZSMonthly: 190000,
+    priceUZSAnnual: 1520000,
+    isPopular: false,
+    isCustom: false,
+    employeeLimit: 5,
+  },
+  {
+    id: "businessM",
+    priceUZSMonthly: 390000,
+    priceUZSAnnual: 3120000,
+    isPopular: true,
+    isCustom: false,
+    employeeLimit: 20,
+  },
+  {
+    id: "businessL",
+    priceUZSMonthly: 990000,
+    priceUZSAnnual: 7920000,
+    isPopular: false,
+    isCustom: false,
+    employeeLimit: 75,
+  },
+  {
+    id: "enterprise",
+    priceUZSMonthly: null,
+    priceUZSAnnual: null,
+    isPopular: false,
+    isCustom: true,
+    employeeLimit: 200,
+  },
 ];
 
 // Approximate, rounded reference rate for the secondary USD display only —

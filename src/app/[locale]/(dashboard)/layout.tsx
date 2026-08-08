@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/sidebar";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import { OrgSwitcher } from "@/components/dashboard/org-switcher";
+import { BillingWidget } from "@/components/dashboard/billing-widget";
 import { UserMenu } from "@/components/dashboard/user-menu";
 import { requireOrganization } from "@/lib/auth/dal";
 
@@ -27,7 +28,8 @@ export default async function DashboardLayout({
           <OrgSwitcher userId={user.id} activeOrgId={organization.id} />
         </SidebarHeader>
         <SidebarNav />
-        <SidebarFooter>
+        <SidebarFooter className="gap-3">
+          <BillingWidget organizationId={organization.id} plan={organization.plan} />
           <UserMenu name={user.name} />
         </SidebarFooter>
       </Sidebar>

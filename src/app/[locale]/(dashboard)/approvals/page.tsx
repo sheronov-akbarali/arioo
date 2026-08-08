@@ -1,4 +1,4 @@
-import { desc, eq, and } from "drizzle-orm";
+import { desc, eq, and, isNull, isNotNull } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { CheckCircle2 } from "lucide-react";
 import { db } from "@/db/client";
@@ -10,31 +10,52 @@ import { Button } from "@/components/ui/button";
 import { approveAction, rejectAction } from "./actions";
 
 const STATUS_FILTERS = approvalStatus.enumValues;
+// Routines have no conversation (they fire from CRM/integration events);
+// chat/voice approvals always carry the conversation they came from — so
+// this distinction is already representable without a new column.
+const SOURCE_FILTERS = ["routines", "chats"] as const;
 
 export default async function ApprovalsPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ status?: string; source?: string }>;
 }) {
   const { locale } = await params;
-  const { status } = await searchParams;
+  const { status, source } = await searchParams;
   const { organization } = await requireOrganization(locale);
   const t = await getTranslations("approvals");
 
   const activeStatus = STATUS_FILTERS.find((s) => s === status);
+  const activeSource = SOURCE_FILTERS.find((s) => s === source);
 
   const rows = await db
     .select({ approval: approvals, agentName: aiAgents.name })
     .from(approvals)
     .innerJoin(aiAgents, eq(approvals.agentId, aiAgents.id))
     .where(
-      activeStatus
-        ? and(eq(aiAgents.organizationId, organization.id), eq(approvals.status, activeStatus))
-        : eq(aiAgents.organizationId, organization.id),
+      and(
+        eq(aiAgents.organizationId, organization.id),
+        activeStatus ? eq(approvals.status, activeStatus) : undefined,
+        activeSource === "routines" ? isNull(approvals.conversationId) : undefined,
+        activeSource === "chats" ? isNotNull(approvals.conversationId) : undefined,
+      ),
     )
     .orderBy(desc(approvals.createdAt));
+
+  // Each filter dimension links independently while preserving the other's
+  // current value, so switching source doesn't reset the status filter (and
+  // vice versa).
+  function href(next: { status?: string; source?: string }) {
+    const query = new URLSearchParams();
+    const nextStatus = next.status ?? activeStatus;
+    const nextSource = next.source ?? activeSource;
+    if (nextStatus) query.set("status", nextStatus);
+    if (nextSource) query.set("source", nextSource);
+    const qs = query.toString();
+    return qs ? `/approvals?${qs}` : "/approvals";
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -46,9 +67,27 @@ export default async function ApprovalsPage({
       <div className="flex flex-wrap gap-2">
         <Button
           size="sm"
+          variant={!activeSource ? "default" : "outline"}
+          nativeButton={false}
+          render={<Link href={href({ source: "" })}>{t("sourceFilters.all")}</Link>}
+        />
+        {SOURCE_FILTERS.map((s) => (
+          <Button
+            key={s}
+            size="sm"
+            variant={activeSource === s ? "default" : "outline"}
+            nativeButton={false}
+            render={<Link href={href({ source: s })}>{t(`sourceFilters.${s}`)}</Link>}
+          />
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <Button
+          size="sm"
           variant={!activeStatus ? "default" : "outline"}
           nativeButton={false}
-          render={<Link href="/approvals">{t("statusFilters.all")}</Link>}
+          render={<Link href={href({ status: "" })}>{t("statusFilters.all")}</Link>}
         />
         {STATUS_FILTERS.map((s) => (
           <Button
@@ -56,7 +95,7 @@ export default async function ApprovalsPage({
             size="sm"
             variant={activeStatus === s ? "default" : "outline"}
             nativeButton={false}
-            render={<Link href={`/approvals?status=${s}`}>{t(`status.${s}`)}</Link>}
+            render={<Link href={href({ status: s })}>{t(`status.${s}`)}</Link>}
           />
         ))}
       </div>

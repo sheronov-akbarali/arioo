@@ -7,6 +7,7 @@ import { DefaultChatTransport } from "ai";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { MessageBubble } from "@/components/dashboard/chat/message-bubble";
 
 export function PlaygroundChat({
   agentId,
@@ -36,14 +37,15 @@ export function PlaygroundChat({
       {error && <p className="text-destructive text-sm">{error}</p>}
       <div className="flex flex-col gap-3">
         {messages.map((message) => (
-          <div key={message.id} className="whitespace-pre-wrap">
-            <span className="font-medium">
-              {message.role === "user" ? t("you") : t("assistant")}:{" "}
-            </span>
-            {message.parts.map((part, i) =>
-              part.type === "text" ? <span key={`${message.id}-${i}`}>{part.text}</span> : null,
-            )}
-          </div>
+          <MessageBubble
+            key={message.id}
+            role={message.role === "user" ? "user" : "assistant"}
+            label={message.role === "user" ? t("you") : t("assistant")}
+            content={message.parts
+              .filter((part) => part.type === "text")
+              .map((part) => part.text)
+              .join("")}
+          />
         ))}
       </div>
       <form

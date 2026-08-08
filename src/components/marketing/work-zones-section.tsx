@@ -13,7 +13,7 @@ export function WorkZonesSection() {
   const t = useTranslations("workZones");
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16">
+    <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-16">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight">{t("title")}</h2>
         <p className="mt-4 text-muted-foreground">{t("subtitle")}</p>

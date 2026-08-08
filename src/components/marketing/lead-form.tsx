@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +10,15 @@ import { submitConsultationAction, type ConsultationState } from "@/lib/consulta
 
 const initialState: ConsultationState = { status: "idle" };
 
-export function LeadForm() {
+export function LeadForm({
+  title,
+  subtitle,
+  submitLabel,
+}: {
+  title?: string;
+  subtitle?: string;
+  submitLabel?: string;
+}) {
   const t = useTranslations("leadForm");
   const [state, formAction, isPending] = useActionState(submitConsultationAction, initialState);
 
@@ -17,8 +26,8 @@ export function LeadForm() {
     <section id="lead-form" className="mx-auto max-w-lg px-6 py-20">
       <div className="rounded-2xl border border-brand/20 bg-gradient-to-b from-brand/10 to-transparent p-8 sm:p-10">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight">{t("title")}</h2>
-          <p className="mt-4 text-muted-foreground">{t("subtitle")}</p>
+          <h2 className="text-3xl font-bold tracking-tight">{title ?? t("title")}</h2>
+          <p className="mt-4 text-muted-foreground">{subtitle ?? t("subtitle")}</p>
         </div>
 
         {state.status === "success" ? (
@@ -78,9 +87,15 @@ export function LeadForm() {
               disabled={isPending}
               className="w-full bg-brand text-brand-foreground hover:opacity-90"
             >
-              {isPending ? t("submitPending") : t("submit")}
+              {isPending ? t("submitPending") : (submitLabel ?? t("submit"))}
             </Button>
             <p className="text-center text-xs text-muted-foreground">{t("freeNote")}</p>
+            <p className="text-center text-xs text-muted-foreground">
+              {t("alreadyAccount")}{" "}
+              <Link href="/sign-in" className="font-medium text-brand hover:underline">
+                {t("alreadyAccountCta")}
+              </Link>
+            </p>
           </form>
         )}
       </div>

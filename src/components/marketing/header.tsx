@@ -1,5 +1,8 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import { Show, UserButton } from "@clerk/nextjs";
+import { LayoutDashboardIcon } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "./language-switcher";
@@ -30,7 +33,21 @@ export function Header() {
             <ThemeToggle />
           </div>
           <Show when="signed-in">
-            <UserButton userProfileUrl="/settings/accounts" />
+            <UserButton userProfileUrl="/settings/accounts">
+              <UserButton.MenuItems>
+                <UserButton.Link
+                  label={t("dashboardCta")}
+                  href="/dashboard"
+                  labelIcon={<LayoutDashboardIcon className="size-4" />}
+                />
+              </UserButton.MenuItems>
+            </UserButton>
+            <Button
+              size="sm"
+              className="bg-brand text-brand-foreground hover:opacity-90"
+              nativeButton={false}
+              render={<Link href="/dashboard">{t("dashboardCta")}</Link>}
+            />
           </Show>
           <Show when="signed-out">
             <Button
@@ -40,13 +57,13 @@ export function Header() {
               nativeButton={false}
               render={<Link href="/sign-in">{t("login")}</Link>}
             />
+            <Button
+              size="sm"
+              className="bg-brand text-brand-foreground hover:opacity-90"
+              nativeButton={false}
+              render={<Link href="/#lead-form">{t("cta")}</Link>}
+            />
           </Show>
-          <Button
-            size="sm"
-            className="bg-brand text-brand-foreground hover:opacity-90"
-            nativeButton={false}
-            render={<Link href="/#lead-form">{t("cta")}</Link>}
-          />
           <MobileNav />
         </div>
       </div>

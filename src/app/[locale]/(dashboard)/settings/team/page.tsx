@@ -49,7 +49,7 @@ export default async function TeamPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-xl font-semibold">{t("title")}</h1>
+      <h2 className="text-lg font-medium">{t("title")}</h2>
       {canInvite && (
         <form action={action} className="flex gap-2">
           <Input name="email" type="email" placeholder={t("emailPlaceholder")} required />
