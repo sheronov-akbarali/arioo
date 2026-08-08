@@ -8,8 +8,6 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AppClerkProvider } from "@/components/clerk-provider";
-import { Header } from "@/components/marketing/header";
-import { Footer } from "@/components/marketing/footer";
 
 const geistSans = Inter({
   variable: "--font-geist-sans",
@@ -75,11 +73,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body>
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
-            <AppClerkProvider>
-              <Header />
-              <main>{children}</main>
-              <Footer />
-            </AppClerkProvider>
+            <AppClerkProvider>{children}</AppClerkProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
