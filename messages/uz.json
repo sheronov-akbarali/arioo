@@ -180,6 +180,21 @@
       ]
     }
   },
+  "leadForm": {
+    "title": "AI qanday ishga tushirilishini ko'rsatamiz",
+    "subtitle": "Kanallaringiz, ssenariylaringiz va integratsiyalaringizni ko'rib chiqamiz va birinchi ishga tushirishdayoq nimani AI'ga topshirish mumkinligini ko'rsatamiz.",
+    "name": "Ism",
+    "phone": "Telefon raqami",
+    "submit": "Konsultatsiya olish",
+    "submitPending": "Yuborilmoqda...",
+    "freeNote": "Bepul",
+    "alreadyAccount": "Hisobingiz bormi?",
+    "alreadyAccountCta": "Kirish",
+    "success": "Rahmat! Tez orada siz bilan bog'lanamiz.",
+    "errorValidation": "Iltimos, ma'lumotlarni to'g'ri kiriting.",
+    "errorRateLimit": "Juda ko'p urinish. Biroz kuting va qayta urinib ko'ring.",
+    "errorPhone": "Telefon raqami +998XXXXXXXXX formatida bo'lishi kerak."
+  },
   "notFound": {
     "title": "Sahifa topilmadi",
     "description": "Kechirasiz, siz qidirayotgan sahifa mavjud emas yoki ko'chirilgan.",
