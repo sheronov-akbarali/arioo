@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Globe, Send, ShoppingBag, Database, BookOpen, Bot, type LucideIcon } from "lucide-react";
 
-const SOURCE_ICONS: LucideIcon[] = [Globe, Send, ShoppingBag];
-const SYSTEM_ICONS: LucideIcon[] = [Database, BookOpen];
+const SOURCE_ICONS = [Globe, Send, ShoppingBag] as const;
+const SYSTEM_ICONS = [Database, BookOpen] as const;
 const CYCLE_MS = 2500;
 
 function Node({
@@ -127,19 +127,22 @@ export function AgentFlowPanel() {
           ))}
           {!reducedMotion && (
             <>
-              <circle r={1.4} fill="var(--brand)">
+              <circle r={1.4} fill="var(--brand)" className="motion-reduce:hidden">
                 <animateMotion
                   key={`source-${activeSource}`}
-                  dur={`${CYCLE_MS / 1000}s`}
+                  dur={`${CYCLE_MS / 2000}s`}
                   repeatCount="1"
+                  fill="freeze"
                   path={sourceToAgentPath(activeSource)}
                 />
               </circle>
-              <circle r={1.4} fill="var(--brand)">
+              <circle r={1.4} fill="var(--brand)" className="motion-reduce:hidden">
                 <animateMotion
-                  key={`system-${activeSystem}`}
-                  dur={`${CYCLE_MS / 1000}s`}
+                  key={`system-${activeSource}`}
+                  dur={`${CYCLE_MS / 2000}s`}
+                  begin="1.25s"
                   repeatCount="1"
+                  fill="freeze"
                   path={agentToSystemPath(activeSystem)}
                 />
               </circle>
