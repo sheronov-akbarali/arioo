@@ -8,6 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PRICING_TIERS, formatUZS, formatUSDApprox } from "@/lib/pricing-data";
+import { Sparkles, Gem, Zap, Crown, type LucideIcon } from "lucide-react";
+
+const PRICING_TIER_ICONS: Record<(typeof PRICING_TIERS)[number]["id"], LucideIcon> = {
+  freemium: Sparkles,
+  businessS: Sparkles,
+  businessM: Gem,
+  businessL: Zap,
+  enterprise: Crown,
+};
 
 export function PricingTable() {
   const t = useTranslations("pricing");
@@ -27,12 +36,22 @@ export function PricingTable() {
       <div className="mt-10 grid gap-6 lg:grid-cols-5">
         {PRICING_TIERS.map((tier) => {
           const price = period === "monthly" ? tier.priceUZSMonthly : tier.priceUZSAnnual;
+          const Icon = PRICING_TIER_ICONS[tier.id];
           return (
             <Card
               key={tier.id}
               className={tier.isPopular ? "border-brand shadow-lg shadow-brand/10" : ""}
             >
               <CardHeader>
+                <span
+                  className={
+                    tier.isPopular
+                      ? "mb-2 flex size-8 items-center justify-center rounded-lg bg-brand text-brand-foreground"
+                      : "mb-2 flex size-8 items-center justify-center rounded-lg bg-muted text-muted-foreground"
+                  }
+                >
+                  <Icon className="size-4" />
+                </span>
                 {tier.isPopular && (
                   <Badge className="mb-2 w-fit bg-brand text-brand-foreground">
                     {t(`tiers.${tier.id}.popular`)}
