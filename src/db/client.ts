@@ -1,6 +1,6 @@
 import "server-only";
 import { setDefaultResultOrder } from "node:dns";
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle, type NeonHttpDatabase } from "drizzle-orm/neon-http";
 import { neon, neonConfig } from "@neondatabase/serverless";
 import * as schema from "./schema";
 
@@ -26,5 +26,24 @@ neonConfig.fetchFunction = async (url: string | URL | Request, init?: RequestIni
   }
 };
 
-const sql = neon(process.env.DATABASE_URL!);
-export const db = drizzle(sql, { schema });
+// Created lazily, on first query, rather than at module load. Next.js's build
+// step imports route handler modules to collect page data, which would
+// otherwise crash the build if DATABASE_URL isn't present in that context.
+let _db: NeonHttpDatabase<typeof schema> | undefined;
+
+function getDb(): NeonHttpDatabase<typeof schema> {
+  if (!_db) {
+    const sql = neon(process.env.DATABASE_URL!);
+    _db = drizzle(sql, { schema });
+  }
+  return _db;
+}
+
+export const db: NeonHttpDatabase<typeof schema> = new Proxy(
+  {} as NeonHttpDatabase<typeof schema>,
+  {
+    get(_target, prop, receiver) {
+      return Reflect.get(getDb(), prop, receiver);
+    },
+  },
+);
