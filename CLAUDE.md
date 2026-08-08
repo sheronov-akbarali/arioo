@@ -1,4 +1,4 @@
-# TayanchAI
+# Arioo
 
 O'zbekiston bizneslari uchun "AI xodim ijaraga olish" B2B SaaS platformasi. worken.ru
 konsepsiyasining chuqur mahalliylashtirilgan va kuchaytirilgan versiyasi: bizneslar sotuv,
@@ -10,7 +10,7 @@ Original tahlil qilingan mahsulot: https://worken.ru (bizniki emas — faqat kon
 ## Nega bu loyiha va nima uchun worken.ru'dan farq qiladi
 
 worken.ru Rossiya bozori uchun qurilgan (RU/EN, rubl narxlash, Avito, rus to'lov tizimlari).
-TayanchAI xuddi shu g'oyani O'zbekiston bozori uchun qayta quradi va 4 ta muhim joyda undan
+Arioo xuddi shu g'oyani O'zbekiston bozori uchun qayta quradi va 4 ta muhim joyda undan
 ustun bo'lishga harakat qiladi:
 
 1. **WhatsApp Business integratsiyasi** — O'zbekistonda Telegramdan ham keng tarqalgan kanal,
@@ -43,7 +43,7 @@ platforma ekan. Har bir marshrut, uning tarkibi va bizdagi holati quyida:
 | `/approvals` (Needs review) | Statuslar + manba filtri (Barchasi/Rutinalar/Chat va ovoz) | ✅ **qurildi** — statuslar + manba-filtr tablari (`/approvals?status=&source=`) | Qurildi 2026-08-08 |
 | `/vs` (Knowledge bases) | Ro'yxat + "Create base" | ✅ **qurildi** — `/knowledge-bases`, agent bo'yicha guruhlangan hujjatlar ro'yxati (bizda bilim bazasi agent-scoped, worken'da mustaqil) | Qurildi 2026-08-08 |
 | `/products` | Commerce katalogi: tur filtri, status, narx, kanallar | ✅ **qurildi** — `/products`, haqiqiy CRUD + yangi `product` jadvali. To'lov yo'llari (Payme/Click) ulanmagani ochiq ko'rsatiladi | Qurildi 2026-08-08 (katalog, sotuv yo'q) |
-| `/integrations` | Marketplace: 13 provayder + status dashboard + local MCP CLI | ✅ **qurildi** — `/integrations`, TayanchAI'ning o'z 11 provayderi (Avito/VK/HeadHunter o'rniga WhatsApp+OLX.uz). "Ulash" tugmalari ataylab disabled — real OAuth yo'q | Qurildi 2026-08-08 (katalog, ulanish yo'q) |
+| `/integrations` | Marketplace: 13 provayder + status dashboard + local MCP CLI | ✅ **qurildi** — `/integrations`, Arioo'ning o'z 11 provayderi (Avito/VK/HeadHunter o'rniga WhatsApp+OLX.uz). "Ulash" tugmalari ataylab disabled — real OAuth yo'q | Qurildi 2026-08-08 (katalog, ulanish yo'q) |
 | `/stats` (Statistics) | Sana-oralig'i, CSV eksport, xarajat grafigi, prognoz | ✅ **qurildi** — `/statistics`, real `messages.estimatedCostUsd`/`conversations` agregatsiyasi, recharts grafiklar | Qurildi 2026-08-08 |
 | `/workflows` (Runs) | Bot execution tarixi jadvali | ✅ **qurildi** — `/runs`, real suhbat/xabar/xarajat jadvali | Qurildi 2026-08-08 |
 | `/code` (Code Agent) | GitHub repo'ga ulangan kod-agent task runner | Yo'q | **Doirasidan tashqari** — Claude Code/Devin uslubidagi alohida mahsulot, "AI xodim ijaraga olish" emas |
@@ -62,7 +62,7 @@ tugmalari** (qo'ng'iroq boshlash, integratsiya ulash, hisobni to'ldirish, mablag
 ataylab disabled/"Tez orada" qoldirilgan — soxta muvaffaqiyat holatini ko'rsatmaslik uchun.
 Faqat ikkita bo'lim ataylab qurilmagan: `/bots/:id` (Assistant tahrirlash — o'zi alohida
 ulkan mahsulot, alohida faza sifatida qaraladi) va Code Agent/Preview Environments
-(TayanchAI mahsulot doirasidan tashqari — mos ravishda alohida kod-agent mahsuloti va
+(Arioo mahsulot doirasidan tashqari — mos ravishda alohida kod-agent mahsuloti va
 Worken'ning ichki CI vositasi).
 
 ## Texnik stack
@@ -99,7 +99,7 @@ Bitta katta rejaga hammasini oldindan batafsil yozish amaliy emas — har bosqic
 oldin qayta ko'rib chiqiladi.
 
 - [ ] **0 — Fundament**: repo skeleton (Next.js+TS+Tailwind+shadcn), brend/dizayn tizimi
-      (TayanchAI), i18n scaffolding, CI, loyiha konventsiyalari
+      (Arioo), i18n scaffolding, CI, loyiha konventsiyalari
 - [ ] **1 — Marketing sayt**: landing (hero, qanday ishlaydi, 4 ish yo'nalishi), narxlash
       sahifasi (UZS+USD), hamkorlik dasturi sahifasi, konsultatsiya lid-formasi, huquqiy
       hujjatlar, til/tema almashtirgich
@@ -107,7 +107,7 @@ oldin qayta ko'rib chiqiladi.
       akkaunt ulash va faol sessiyalar Clerk'ning `<UserProfile/>` paneli orqali), tashkilot
       yaratish + jamoa taklifi,
       tarif tanlash, Payme/Click + Stripe checkout, obuna boshqaruvi, bo'sh dashboard skeleton,
-      **kredit-asosidagi ichki valyuta** (masalan "TAY") + bonus valyuta, xarajat tarixi
+      **kredit-asosidagi ichki valyuta** (masalan "ARI") + bonus valyuta, xarajat tarixi
       infratuzilmasi (jadval darajasida, UI Phase 3'da)
 - [ ] **3 — AI agent yadrosi**: agent yaratish ustasi (rol tanlash), bilim bazasi yuklash
       (fayl→Blob→embedding), suhbat dvigateli (AI SDK, tool calling), soha shablonlari,

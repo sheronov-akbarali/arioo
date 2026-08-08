@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "TayanchAI — Hire an AI employee",
+    "title": "Arioo — Hire an AI employee",
     "description": "Hire AI into sales, support, HR, and marketing as a full member of your team."
   },
   "nav": {
@@ -16,7 +16,7 @@
   "hero": {
     "badge": "AI EMPLOYEES",
     "title": "Hire an AI employee for your business",
-    "subtitle": "With TayanchAI, a business can hire AI into sales, support, HR, and marketing as a full team member. It connects to your systems and learns from company history.",
+    "subtitle": "With Arioo, a business can hire AI into sales, support, HR, and marketing as a full team member. It connects to your systems and learns from company history.",
     "ctaPrimary": "Get Consultation",
     "ctaSecondary": "See Pricing",
     "diagram": {
@@ -96,7 +96,7 @@
     }
   },
   "partners": {
-    "badge": "TAYANCHAI PARTNER PROGRAM",
+    "badge": "ARIOO PARTNER PROGRAM",
     "title": "Earn by rolling out AI employees",
     "subtitle": "Help clients hire AI employees and earn from every implementation.",
     "cta": "Submit request",
@@ -128,7 +128,7 @@
       ]
     },
     "why": {
-      "title": "Why partner with TayanchAI",
+      "title": "Why partner with Arioo",
       "items": [
         {
           "title": "An in-demand AI product",
@@ -206,7 +206,7 @@
     "tagline": "AI agents for sales, service, and inbound request handling.",
     "menuTitle": "Menu",
     "legalTitle": "Documents",
-    "copyright": "TayanchAI · all rights reserved",
+    "copyright": "Arioo · all rights reserved",
     "status": "All systems operational"
   },
   "legal": {
@@ -219,7 +219,7 @@
   },
   "auth": {
     "signIn": {
-      "title": "Sign in to TayanchAI",
+      "title": "Sign in to Arioo",
       "subtitle": "No password — one click",
       "google": "Continue with Google",
       "github": "Continue with GitHub",
@@ -663,7 +663,7 @@
   },
   "invite": {
     "title": "You're invited",
-    "signInPrompt": "You've been invited to join an organization on TayanchAI — sign in to accept.",
+    "signInPrompt": "You've been invited to join an organization on Arioo — sign in to accept.",
     "returnHint": "After signing in, come back to this invite link and click Accept invite.",
     "signInCta": "Sign in",
     "orgPrompt": "You've been invited to join {orgName}.",

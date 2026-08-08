@@ -20,7 +20,7 @@ export async function sendLeadNotification(lead: {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: chatId,
-        text: `Yangi lid — TayanchAI\nIsm: ${lead.name}\nTelefon: ${lead.phone}`,
+        text: `Yangi lid — Arioo\nIsm: ${lead.name}\nTelefon: ${lead.phone}`,
       }),
     });
     return { ok: response.ok };

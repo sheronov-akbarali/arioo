@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "TayanchAI — AI xodim ijaraga oling",
+    "title": "Arioo — AI xodim ijaraga oling",
     "description": "Sotuv, qo'llab-quvvatlash, HR va marketing bo'limlariga jamoa a'zosi sifatida AI xodim qo'shing."
   },
   "nav": {
@@ -16,7 +16,7 @@
   "hero": {
     "badge": "AI XODIMLAR",
     "title": "Biznesingiz uchun AI xodimni ishga oling",
-    "subtitle": "TayanchAI yordamida sotuv, qo'llab-quvvatlash, HR va marketing bo'limlariga jamoa a'zosi sifatida AI qo'shing. U kompaniyangiz tizimlariga ulanadi, tarixiy ma'lumotlardan o'rganadi va mustaqil ishlaydi.",
+    "subtitle": "Arioo yordamida sotuv, qo'llab-quvvatlash, HR va marketing bo'limlariga jamoa a'zosi sifatida AI qo'shing. U kompaniyangiz tizimlariga ulanadi, tarixiy ma'lumotlardan o'rganadi va mustaqil ishlaydi.",
     "ctaPrimary": "Konsultatsiya olish",
     "ctaSecondary": "Narxlarni ko'rish",
     "diagram": {
@@ -96,7 +96,7 @@
     }
   },
   "partners": {
-    "badge": "TAYANCHAI HAMKORLIK DASTURI",
+    "badge": "ARIOO HAMKORLIK DASTURI",
     "title": "AI xodimlarni joriy qilib daromad oling",
     "subtitle": "Mijozlarga AI xodim yollashda yordam bering va har bir joriy etishdan daromad oling.",
     "cta": "Ariza qoldirish",
@@ -128,7 +128,7 @@
       ]
     },
     "why": {
-      "title": "Nega TayanchAI hamkorligi",
+      "title": "Nega Arioo hamkorligi",
       "items": [
         {
           "title": "Talabga ega AI mahsuloti",
@@ -206,7 +206,7 @@
     "tagline": "Sotuv, xizmat va murojaatlarni qayta ishlash uchun AI agentlar.",
     "menuTitle": "Menyu",
     "legalTitle": "Hujjatlar",
-    "copyright": "TayanchAI · barcha huquqlar himoyalangan",
+    "copyright": "Arioo · barcha huquqlar himoyalangan",
     "status": "Barcha tizimlar ishlayapti"
   },
   "legal": {
@@ -219,7 +219,7 @@
   },
   "auth": {
     "signIn": {
-      "title": "TayanchAI'ga kiring",
+      "title": "Arioo'ga kiring",
       "subtitle": "Parolsiz — bitta tugmani bosing",
       "google": "Google orqali kirish",
       "github": "GitHub orqali kirish",
@@ -663,7 +663,7 @@
   },
   "invite": {
     "title": "Sizni taklif qilishdi",
-    "signInPrompt": "Sizni TayanchAI'dagi tashkilotga qo'shilishga taklif qilishdi — qabul qilish uchun tizimga kiring.",
+    "signInPrompt": "Sizni Arioo'dagi tashkilotga qo'shilishga taklif qilishdi — qabul qilish uchun tizimga kiring.",
     "returnHint": "Tizimga kirgandan so'ng, ushbu taklif havolasiga qaytib, \"Taklifni qabul qilish\" tugmasini bosing.",
     "signInCta": "Tizimga kirish",
     "orgPrompt": "Sizni {orgName} tashkilotiga qo'shilishga taklif qilishdi.",

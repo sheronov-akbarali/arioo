@@ -6,7 +6,7 @@ describe("parseAgentInput", () => {
     const result = parseAgentInput({
       name: "Sotuv boti",
       role: "sales",
-      systemPrompt: "Siz TayanchAI mijozlariga yordam beruvchi sotuv assistentisiz.",
+      systemPrompt: "Siz Arioo mijozlariga yordam beruvchi sotuv assistentisiz.",
       model: "anthropic/claude-sonnet-4.5",
     });
     expect(result.success).toBe(true);

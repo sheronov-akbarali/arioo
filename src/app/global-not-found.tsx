@@ -14,7 +14,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "404 — TayanchAI",
+  title: "404 — Arioo",
   description: "Sahifa topilmadi / Страница не найдена / Page not found",
 };
 

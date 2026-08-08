@@ -12,7 +12,7 @@ export function Footer() {
     <footer className="border-t border-border">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 text-sm sm:grid-cols-3">
         <div>
-          <p className="font-semibold text-foreground">TayanchAI</p>
+          <p className="font-semibold text-foreground">Arioo</p>
           <p className="mt-2 max-w-xs text-muted-foreground">{t("tagline")}</p>
         </div>
         <div>

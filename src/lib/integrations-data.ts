@@ -1,7 +1,7 @@
 // Static catalog — matches the channels/integrations already committed to in
 // CLAUDE.md's roadmap (phases 4-5), not a live-connectable list yet (no OAuth
 // backend exists for any of these). Categories mirror worken.ru's tagging
-// (Chat/CRM/Git/...) but the provider set is TayanchAI's own differentiated
+// (Chat/CRM/Git/...) but the provider set is Arioo's own differentiated
 // lineup (WhatsApp + OLX.uz instead of Avito/VK/Odnoklassniki/HeadHunter).
 export type IntegrationCategory = "chat" | "marketplace" | "crm" | "voice" | "files" | "git" | "other";
 

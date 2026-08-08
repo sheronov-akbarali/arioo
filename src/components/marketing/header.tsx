@@ -16,7 +16,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="text-lg font-semibold">
-          TayanchAI
+          Arioo
         </Link>
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
           <Link href="/pricing" className="hover:text-foreground">

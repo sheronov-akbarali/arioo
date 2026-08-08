@@ -3,10 +3,10 @@ import { parseOrganizationInput } from "./schema";
 
 describe("parseOrganizationInput", () => {
   it("accepts a valid name and industry", () => {
-    const result = parseOrganizationInput({ name: "Tayanch Do'kon", industry: "retail" });
+    const result = parseOrganizationInput({ name: "Arioo Do'kon", industry: "retail" });
     expect(result).toEqual({
       success: true,
-      data: { name: "Tayanch Do'kon", industry: "retail" },
+      data: { name: "Arioo Do'kon", industry: "retail" },
     });
   });
 
