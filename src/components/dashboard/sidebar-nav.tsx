@@ -83,7 +83,12 @@ const SETTINGS_ITEM: NavItem = { key: "settings", icon: Settings, href: "/settin
 
 // Exact-match or nested-route match — e.g. `/assistants` is active for both
 // `/assistants` itself and `/assistants/new` or `/assistants/abc123/chat`.
+// Special case: `/settings/project` is also active for all other settings sub-routes
+// like `/settings/team`, `/settings/limits`, `/settings/accounts`.
 export function isNavItemActive(pathname: string, href: string): boolean {
+  if (href === "/settings/project" && pathname.startsWith("/settings")) {
+    return true;
+  }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
