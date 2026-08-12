@@ -176,11 +176,23 @@ uni qamrab oladigan yangi 5-bosqichli dastur:
       breadcrumb + ⌘K hint (vizual, funksiyasiz) + theme-toggle bilan top-bar
       qo'shildi. Spec: `docs/superpowers/specs/2026-08-12-worken-parity-phase-a-shell-design.md`,
       reja: `docs/superpowers/plans/2026-08-12-worken-parity-phase-a-shell.md`
-- [ ] **B — Marketing sayt pixel-parity**: hero diagrammaga Sales/HR/Marketing
-      tab-almashtirgich va "CALLS" ustuni qo'shish, pricing sahifasini worken'dagidek
-      to'liq token-narxlash jadvallari bilan qayta qurish, partners sahifasini to'liq
-      moslashtirish (stat panel, "STEPS TO REVENUE", 3-daraja jadvali), footer va
-      mobile hamburger-menu strukturasi
+- [x] **B — Marketing sayt pixel-parity** (2026-08-12): hero diagrammaga 4
+      ta bo'lim tab-almashtirgichi (Sotuv/Qo'llab-quvvatlash/HR/Marketing —
+      worken'ning 3 tasi o'rniga Arioo'ning haqiqiy 4 bo'limi) va "Calls"
+      manba-kartasi qo'shildi; pricing sahifasiga real vaqtda Vercel AI
+      Gateway'ning ochiq narxlash API'sidan (`ai-gateway.vercel.sh/v1/models`,
+      2026-08-12'da tekshirilgan) olingan model-bo'yicha token-narxlash
+      jadvali qo'shildi (worken'ning o'z raqamlari emas, haqiqiy joriy
+      provayder narxlari — 5 provayder + embedding modellar bilan boshlangan,
+      kengaytirilishi mumkin); footer'ga disabled Telegram tugmasi (haqiqiy
+      handle yo'qligi sababli "Tez orada" tooltip bilan); mobile-menu
+      to'liq drawer o'rniga worken'dagidek top-anchored dropdown panelga
+      o'tkazildi. Partners sahifasi audit natijasida allaqachon worken bilan
+      yaqin ekani aniqlangani uchun o'zgartirilmadi. Ataylab chetlab
+      qo'yilgan: worken'ning "Worken Drive" desktop-ilova promo banner'i
+      (foydalanuvchi ko'rsatmasiga ko'ra, roadmap'da yo'q). Spec:
+      `docs/superpowers/specs/2026-08-12-worken-parity-phase-b-marketing-design.md`,
+      reja: `docs/superpowers/plans/2026-08-12-worken-parity-phase-b-marketing.md`
 - [ ] **C — Dashboard'ning 13 ta sahifasini worken bilan bittalab solishtirib
       tuzatish**: filter-pill'lar, empty-state'lar, jadval ustunlari, statistika
       kartalari worken'ning aniq taksonomiyasiga moslashtiriladi (yuqoridagi eski
