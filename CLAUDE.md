@@ -108,7 +108,7 @@ oldin qayta ko'rib chiqiladi.
       (agentlik hamkorlik dasturi + oddiy foydalanuvchi referral, limitlar bilan), xavfsizlik/
       muvofiqlik tekshiruvi (O'zbekiston shaxsiy ma'lumotlar qonuni), yuklama testi
 
-Hozirgi holat: **0-2a bosqichlar tugallangan (marketing sayt, Clerk auth, onboarding,
+Hozirgi holat: **0-2 bosqichlar tugallangan (marketing sayt, Clerk auth, onboarding,
 dashboard skeleton). 3-bosqich (AI agent yadrosi) amalga oshirilgan** — agent yaratish
 ustasi, bilim bazasi (Vercel Blob + pgvector), playground chat (AI Gateway), placeholder
 Tools paneli, approvals navbat. **AI Gateway'da to'lov kartasi yo'qligi sababli haqiqiy
@@ -119,84 +119,30 @@ Speclar: `docs/superpowers/specs/2026-08-04-foundation-marketing-site-design.md`
 `docs/superpowers/specs/2026-08-05-auth-cabinet-design.md` (eskirgan, Clerk migratsiyasidan
 oldin yozilgan), `docs/superpowers/specs/2026-08-07-ai-agent-core-design.md`
 
-## worken.ru bilan vizual/UX bir-xillik — qolgan ishlar
-
-worken.ru'ning marketing saytini Chrome'da sahifama-sahifa (bosh sahifa, narxlash,
-hamkorlik dasturi, footer) jonli o'rganib, bizning saytimiz bilan solishtirish natijasida
-aniqlangan farqlar bosqichlarga bo'lingan. Har bir bosqich alohida spec+plan+implementatsiya
-tsiklidan o'tadi (`superpowers:brainstorming` → spec → `superpowers:writing-plans` →
-subagent-driven ijro).
-
-- [x] **1a — Dashboard shell bug + hero animatsiyasi** (2026-08-08): marketing
-      `Header`/`Footer` dashboard'ni o'rab olib, ikkita header/begona footer ko'rsatib
-      turgan xato tuzatildi (`(marketing)` route-group ajratildi); bosh sahifadagi statik
-      "manbalar → AI xodim → tizimlar" diagrammasi worken.ru'dagidek animatsion SVG
-      diagrammaga aylantirildi (suzib boruvchi nuqta, navbat bilan yorishish,
-      `prefers-reduced-motion` qo'llab-quvvatlash). Spec:
-      `docs/superpowers/specs/2026-08-08-dashboard-shell-and-hero-animation-design.md`
-- [x] **1b — Hamkorlik/narxlash sahifalari** (2026-08-08): `/partners` sahifasiga haqiqiy
-      ariza-forma qo'shildi (mavjud konsultatsiya/Telegram lid-pipeline'ni qayta ishlatib,
-      manba ajratish bilan — "Manba: partners"), narxlash kartalariga har bir tarif uchun
-      ikonka qo'shildi. Spec: `docs/superpowers/specs/2026-08-08-worken-parity-phase1-design.md`
-- [ ] **2 — Dashboard'ning barcha sahifalarini vizual jihatdan izchil qilish**: yuqoridagi
-      "Raqobatchi chuqur tahlili" jadvalida ro'yxatlangan 13 ta allaqachon qurilgan
-      dashboard sahifasini (`/assistants`, `/chats`, `/calls`, `/routines`, `/approvals`,
-      `/knowledge-bases`, `/products`, `/integrations`, `/statistics`, `/runs`, `/billing`,
-      `/affiliate-program`, `/referral-program`, `/settings/*`) worken.ru'ning
-      authenticated panelidagi darajada vizual izchil, tartibli qilish — bo'sh holatlar,
-      karta uslubi, bo'shliqlar, tipografiya bir xil tizimga keltiriladi. Yangi funksiya
-      qo'shilmaydi, faqat mavjud sahifalar jilosi. Katta hajmi sababli bir nechta kichik
-      spec+plan tsikliga bo'linishi kerak (masalan, sahifa guruhlari bo'yicha).
-- [ ] **3 — Infratuzilma talab qiladigan, keyingi bosqichlarga bog'liq elementlar**
-      (hozircha rejalashtirilmagan, alohida qaror kerak):
-      - worken.ru'ning har-model token-asosli narxlash jadvali (OpenAI/Anthropic/Google/
-        DeepSeek/Qwen/Sber, prompt/completion alohida) — bizning UZS-obuna modelimizdan
-        butunlay farqli, metrlashtirilgan AI Gateway billing infratuzilmasini talab
-        qiladi (Phase 6 "xarajat ko'rsatish"ga bog'liq, hozircha yo'q)
-      - "Worken Drive" uslubidagi desktop ilova (fayl sinxronizatsiyasi bilim bazasiga) —
-        umuman roadmap'da yo'q, alohida mahsulot qarori kerak
-
 ## worken.ru bilan to'liq (birga-bir) parity dasturi — 2026-08-12'dan boshlab
 
 2026-08-12'da worken.ru'ning marketing sayti VA autentifikatsiyalangan paneli Chrome'da
-(haqiqiy hisob bilan tizimga kirilgan holda) sahifama-sahifa qayta, chuqurroq tahlil
-qilindi (audit natijasi: dizayn token'lari, sidebar tuzilishi, har bir dashboard
-sahifasining aniq tarkibi, `/bots/:id` assistant-tahrirlash sahifasining to'liq maydon
-inventari). Foydalanuvchi ko'rsatmasi: landing sahifa VA dashboard'ning ichki ko'rinishi
-**detalma-detal worken.ru bilan bir xil** bo'lishi kerak, **faqat accent rangi to'q ko'k**
-(worken'ning to'q sariq rangi o'rniga). Bu yuqoridagi eski "1a/1b/2/3" ro'yxatidan kattaroq,
-uni qamrab oladigan yangi 5-bosqichli dastur:
+(haqiqiy hisob bilan tizimga kirilgan holda) sahifama-sahifa chuqur tahlil qilindi (audit
+natijasi: dizayn token'lari, sidebar tuzilishi, har bir dashboard sahifasining aniq tarkibi,
+`/bots/:id` assistant-tahrirlash sahifasining to'liq maydon inventari). Foydalanuvchi
+ko'rsatmasi: landing sahifa VA dashboard'ning ichki ko'rinishi **detalma-detal worken.ru
+bilan bir xil** bo'lishi kerak, **faqat accent rangi to'q ko'k** (worken'ning to'q sariq
+rangi o'rniga). 5-bosqichli dastur (**A va B bosqichlari 2026-08-12'da bajarildi va
+tugallandi** — tafsilotlar `docs/superpowers/specs/2026-08-12-worken-parity-phase-a-shell-design.md`,
+`docs/superpowers/plans/2026-08-12-worken-parity-phase-a-shell.md`,
+`docs/superpowers/specs/2026-08-12-worken-parity-phase-b-marketing-design.md`,
+`docs/superpowers/plans/2026-08-12-worken-parity-phase-b-marketing.md` fayllarida saqlangan;
+git tarixi: A — `f6d133f` gacha bo'lgan commit'lar, B — `e836a86` gacha). **Ishni shu yerdan,
+C-bosqichdan davom ettirish kerak:**
 
-- [x] **A — Dizayn token'lari + dashboard shell** (2026-08-12): `--brand`/`--ring`/
-      `--sidebar-primary`/`--sidebar-ring` to'q ko'kka almashtirildi (qolgan barcha
-      token — fon/matn/card/border — worken bilan avvaldan bir xil edi); sidebar
-      worken'dagidek doimiy 48px icon-only rail'ga o'tkazildi, hover tooltip va
-      active-route highlight qo'shildi, "sig'may qolish" xatosi worken'dan ham
-      yaxshiroq (haqiqiy scroll, worken shunchaki yashiradi) tuzatildi; dashboard'ga
-      breadcrumb + ⌘K hint (vizual, funksiyasiz) + theme-toggle bilan top-bar
-      qo'shildi. Spec: `docs/superpowers/specs/2026-08-12-worken-parity-phase-a-shell-design.md`,
-      reja: `docs/superpowers/plans/2026-08-12-worken-parity-phase-a-shell.md`
-- [x] **B — Marketing sayt pixel-parity** (2026-08-12): hero diagrammaga 4
-      ta bo'lim tab-almashtirgichi (Sotuv/Qo'llab-quvvatlash/HR/Marketing —
-      worken'ning 3 tasi o'rniga Arioo'ning haqiqiy 4 bo'limi) va "Calls"
-      manba-kartasi qo'shildi; pricing sahifasiga real vaqtda Vercel AI
-      Gateway'ning ochiq narxlash API'sidan (`ai-gateway.vercel.sh/v1/models`,
-      2026-08-12'da tekshirilgan) olingan model-bo'yicha token-narxlash
-      jadvali qo'shildi (worken'ning o'z raqamlari emas, haqiqiy joriy
-      provayder narxlari — 5 provayder + embedding modellar bilan boshlangan,
-      kengaytirilishi mumkin); footer'ga disabled Telegram tugmasi (haqiqiy
-      handle yo'qligi sababli "Tez orada" tooltip bilan); mobile-menu
-      to'liq drawer o'rniga worken'dagidek top-anchored dropdown panelga
-      o'tkazildi. Partners sahifasi audit natijasida allaqachon worken bilan
-      yaqin ekani aniqlangani uchun o'zgartirilmadi. Ataylab chetlab
-      qo'yilgan: worken'ning "Worken Drive" desktop-ilova promo banner'i
-      (foydalanuvchi ko'rsatmasiga ko'ra, roadmap'da yo'q). Spec:
-      `docs/superpowers/specs/2026-08-12-worken-parity-phase-b-marketing-design.md`,
-      reja: `docs/superpowers/plans/2026-08-12-worken-parity-phase-b-marketing.md`
 - [ ] **C — Dashboard'ning 13 ta sahifasini worken bilan bittalab solishtirib
-      tuzatish**: filter-pill'lar, empty-state'lar, jadval ustunlari, statistika
-      kartalari worken'ning aniq taksonomiyasiga moslashtiriladi (yuqoridagi eski
-      "2"-band shu bosqichga birlashtirildi)
+      tuzatish**: `/assistants`, `/chats`, `/calls`, `/routines`, `/approvals`,
+      `/knowledge-bases`, `/products`, `/integrations`, `/statistics`, `/runs`,
+      `/billing`, `/affiliate-program`, `/referral-program`, `/settings/*` — filter-
+      pill'lar, empty-state'lar, jadval ustunlari, statistika kartalari worken'ning
+      aniq taksonomiyasiga moslashtiriladi. Yangi funksiya qo'shilmaydi, faqat
+      mavjud sahifalar jilosi. Katta hajmi sababli bir nechta kichik spec+plan
+      tsikliga bo'linishi kerak (masalan, sahifa guruhlari bo'yicha).
 - [ ] **D — `/assistants/:id` (Assistant tahrirlash) to'liq qurilishi**: AI/Chats/
       Calls/Knowledge-bases — 20+ sozlama bloki (avval "alohida mahsulot" deb
       chetlab qo'yilgan edi, endi foydalanuvchi so'roviga ko'ra qurilishi rejalashtirilgan)
