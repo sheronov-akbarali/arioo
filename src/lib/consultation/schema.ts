@@ -16,7 +16,11 @@ const consultationSchema = z.object({
     .string()
     .trim()
     .regex(/^\+998\d{9}$/, "Phone must match +998XXXXXXXXX"),
-  source: z.string().max(40).optional(),
+  source: z
+    .string()
+    .max(40)
+    .regex(NO_CONTROL_CHARS, "Source must not contain control characters")
+    .optional(),
 });
 
 export type ConsultationInput = z.infer<typeof consultationSchema>;

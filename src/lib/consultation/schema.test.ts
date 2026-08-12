@@ -72,4 +72,13 @@ describe("parseConsultationInput", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("rejects a source containing newlines that could forge Telegram lines", () => {
+    const result = parseConsultationInput({
+      name: "Akbarali",
+      phone: "+998901234567",
+      source: "x\nIsm: Fake\nTelefon: +998000000000",
+    });
+    expect(result.success).toBe(false);
+  });
 });
