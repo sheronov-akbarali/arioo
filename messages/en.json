@@ -229,6 +229,8 @@
   },
   "footer": {
     "tagline": "AI agents for sales, service, and inbound request handling.",
+    "telegramCta": "Message us on Telegram",
+    "comingSoon": "Coming soon",
     "menuTitle": "Menu",
     "legalTitle": "Documents",
     "copyright": "Arioo · all rights reserved",

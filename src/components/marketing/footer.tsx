@@ -1,5 +1,8 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { Button } from "@/components/ui/button";
+import { Send } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const LEGAL_DOCS = ["offer", "privacy", "terms", "cookies", "consent"] as const;
 
@@ -14,6 +17,17 @@ export function Footer() {
         <div>
           <p className="font-semibold text-foreground">Arioo</p>
           <p className="mt-2 max-w-xs text-muted-foreground">{t("tagline")}</p>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button variant="outline" size="sm" disabled className="mt-4 gap-2" />
+              }
+            >
+              <Send className="size-4" />
+              {t("telegramCta")}
+            </TooltipTrigger>
+            <TooltipContent>{t("comingSoon")}</TooltipContent>
+          </Tooltip>
         </div>
         <div>
           <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
