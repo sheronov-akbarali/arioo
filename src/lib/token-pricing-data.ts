@@ -100,5 +100,5 @@ export function formatUzsPer1k(usdPerToken: number): string {
 
 export function formatUsdPer1k(usdPerToken: number): string {
   const usd = usdPerToken * 1000;
-  return `$${usd.toFixed(4)}`;
+  return `$${usd.toFixed(6)}`;
 }
