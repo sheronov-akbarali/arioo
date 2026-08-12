@@ -156,6 +156,47 @@ subagent-driven ijro).
       - "Worken Drive" uslubidagi desktop ilova (fayl sinxronizatsiyasi bilim bazasiga) —
         umuman roadmap'da yo'q, alohida mahsulot qarori kerak
 
+## worken.ru bilan to'liq (birga-bir) parity dasturi — 2026-08-12'dan boshlab
+
+2026-08-12'da worken.ru'ning marketing sayti VA autentifikatsiyalangan paneli Chrome'da
+(haqiqiy hisob bilan tizimga kirilgan holda) sahifama-sahifa qayta, chuqurroq tahlil
+qilindi (audit natijasi: dizayn token'lari, sidebar tuzilishi, har bir dashboard
+sahifasining aniq tarkibi, `/bots/:id` assistant-tahrirlash sahifasining to'liq maydon
+inventari). Foydalanuvchi ko'rsatmasi: landing sahifa VA dashboard'ning ichki ko'rinishi
+**detalma-detal worken.ru bilan bir xil** bo'lishi kerak, **faqat accent rangi to'q ko'k**
+(worken'ning to'q sariq rangi o'rniga). Bu yuqoridagi eski "1a/1b/2/3" ro'yxatidan kattaroq,
+uni qamrab oladigan yangi 5-bosqichli dastur:
+
+- [x] **A — Dizayn token'lari + dashboard shell** (2026-08-12): `--brand`/`--ring`/
+      `--sidebar-primary`/`--sidebar-ring` to'q ko'kka almashtirildi (qolgan barcha
+      token — fon/matn/card/border — worken bilan avvaldan bir xil edi); sidebar
+      worken'dagidek doimiy 48px icon-only rail'ga o'tkazildi, hover tooltip va
+      active-route highlight qo'shildi, "sig'may qolish" xatosi worken'dan ham
+      yaxshiroq (haqiqiy scroll, worken shunchaki yashiradi) tuzatildi; dashboard'ga
+      breadcrumb + ⌘K hint (vizual, funksiyasiz) + theme-toggle bilan top-bar
+      qo'shildi. Spec: `docs/superpowers/specs/2026-08-12-worken-parity-phase-a-shell-design.md`,
+      reja: `docs/superpowers/plans/2026-08-12-worken-parity-phase-a-shell.md`
+- [ ] **B — Marketing sayt pixel-parity**: hero diagrammaga Sales/HR/Marketing
+      tab-almashtirgich va "CALLS" ustuni qo'shish, pricing sahifasini worken'dagidek
+      to'liq token-narxlash jadvallari bilan qayta qurish, partners sahifasini to'liq
+      moslashtirish (stat panel, "STEPS TO REVENUE", 3-daraja jadvali), footer va
+      mobile hamburger-menu strukturasi
+- [ ] **C — Dashboard'ning 13 ta sahifasini worken bilan bittalab solishtirib
+      tuzatish**: filter-pill'lar, empty-state'lar, jadval ustunlari, statistika
+      kartalari worken'ning aniq taksonomiyasiga moslashtiriladi (yuqoridagi eski
+      "2"-band shu bosqichga birlashtirildi)
+- [ ] **D — `/assistants/:id` (Assistant tahrirlash) to'liq qurilishi**: AI/Chats/
+      Calls/Knowledge-bases — 20+ sozlama bloki (avval "alohida mahsulot" deb
+      chetlab qo'yilgan edi, endi foydalanuvchi so'roviga ko'ra qurilishi rejalashtirilgan)
+      + haqiqiy SIP qo'ng'iroq siyosati UI'si
+- [ ] **E — Haqiqiy backend funksionallik**: SIP qo'ng'iroq, 13 ta OAuth
+      integratsiya, Payme/Click/Stripe to'lov — roadmap'dagi 4-6-bosqichlar bilan
+      bir xil, eng oxirida (tashqi provayder tanlovlari kerak)
+
+Har bir bosqich alohida spec (`superpowers:brainstorming`) → reja
+(`superpowers:writing-plans`) → ijro (`superpowers:subagent-driven-development`)
+tsiklidan o'tadi, xuddi A-bosqich kabi.
+
 ## Rivojlantirish konventsiyalari
 
 - Barcha foydalanuvchiga ko'rinadigan matn uch tilda: `uz` (standart), `ru`, `en`
