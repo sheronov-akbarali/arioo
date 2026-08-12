@@ -2,9 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Globe, Send, ShoppingBag, Database, BookOpen, Bot, type LucideIcon } from "lucide-react";
+import {
+  Globe,
+  Send,
+  ShoppingBag,
+  PhoneCall,
+  Database,
+  BookOpen,
+  Bot,
+  type LucideIcon,
+} from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const SOURCE_ICONS = [Globe, Send, ShoppingBag] as const;
+const SOURCE_ICONS = [Globe, Send, ShoppingBag, PhoneCall] as const;
 const SYSTEM_ICONS = [Database, BookOpen] as const;
 const CYCLE_MS = 2500;
 
@@ -45,10 +55,11 @@ function Node({
 }
 
 // Anchor points as percentages of the diagram's bounding box, matching the
-// 3-row source column (top/middle/bottom), the centered agent node, and the
-// 2-row system column. Percentages (not measured pixels) mean no
-// ResizeObserver/layout-effect sync is needed between the cards and the SVG.
-const SOURCE_Y = [12, 50, 88];
+// 4-row source column (website/telegram/olx/calls), the centered agent
+// node, and the 2-row system column. Percentages (not measured pixels)
+// mean no ResizeObserver/layout-effect sync is needed between the cards
+// and the SVG.
+const SOURCE_Y = [8, 36, 64, 92];
 const SYSTEM_Y = [25, 75];
 const AGENT_POINT = { x: 50, y: 50 };
 const SOURCE_X = 2;
@@ -67,12 +78,16 @@ function useReducedMotion() {
   return reduced;
 }
 
+const DEPARTMENT_KEYS = ["sales", "support", "hr", "marketing"] as const;
+type Department = (typeof DEPARTMENT_KEYS)[number];
+
 export function AgentFlowPanel() {
   const t = useTranslations("hero.diagram");
   const reducedMotion = useReducedMotion();
-  const sourceKeys = ["website", "telegram", "olx"] as const;
+  const sourceKeys = ["website", "telegram", "olx", "calls"] as const;
   const systemKeys = ["crm", "knowledge"] as const;
 
+  const [department, setDepartment] = useState<Department>("sales");
   const [activeSource, setActiveSource] = useState(0);
   const activeSystem = activeSource % systemKeys.length;
 
@@ -91,6 +106,15 @@ export function AgentFlowPanel() {
 
   return (
     <div className="rounded-2xl border border-border bg-card/50 p-6">
+      <Tabs value={department} onValueChange={(v) => setDepartment(v as Department)}>
+        <TabsList className="mb-4">
+          {DEPARTMENT_KEYS.map((key) => (
+            <TabsTrigger key={key} value={key}>
+              {t(`departments.${key}`)}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
       <p className="mb-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
         {t("sources")}
       </p>
@@ -184,7 +208,12 @@ export function AgentFlowPanel() {
       </div>
 
       <div className="relative z-10 mt-4">
-        <Node icon={Bot} label={t("agent.label")} sublabel={t("agent.sublabel")} active />
+        <Node
+          icon={Bot}
+          label={t(`agent.${department}.label`)}
+          sublabel={t(`agent.${department}.sublabel`)}
+          active
+        />
       </div>
     </div>
   );

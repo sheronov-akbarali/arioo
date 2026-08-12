@@ -24,9 +24,21 @@
       "website": { "label": "Сайт", "sublabel": "Новые лиды" },
       "telegram": { "label": "Telegram", "sublabel": "Диалоги" },
       "olx": { "label": "OLX.uz", "sublabel": "Запросы по объявлениям" },
+      "calls": { "label": "Звонки", "sublabel": "Телефонные лиды" },
       "crm": { "label": "CRM", "sublabel": "Сделки" },
       "knowledge": { "label": "База знаний", "sublabel": "Вопросы и ответы" },
-      "agent": { "label": "AI-сотрудник", "sublabel": "Квалифицирует и отвечает" }
+      "departments": {
+        "sales": "Продажи",
+        "support": "Поддержка",
+        "hr": "HR",
+        "marketing": "Маркетинг"
+      },
+      "agent": {
+        "sales": { "label": "AI Продажи", "sublabel": "Квалифицирует лиды и отвечает" },
+        "support": { "label": "AI Поддержка", "sublabel": "Решает обращения и эскалирует" },
+        "hr": { "label": "AI HR", "sublabel": "Отбирает кандидатов и планирует" },
+        "marketing": { "label": "AI Маркетинг", "sublabel": "Готовит контент и кампании" }
+      }
     }
   },
   "workZones": {

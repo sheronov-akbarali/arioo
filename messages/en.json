@@ -24,9 +24,21 @@
       "website": { "label": "Website", "sublabel": "New leads" },
       "telegram": { "label": "Telegram", "sublabel": "Dialogs" },
       "olx": { "label": "OLX.uz", "sublabel": "Listing inquiries" },
+      "calls": { "label": "Calls", "sublabel": "Phone leads" },
       "crm": { "label": "CRM", "sublabel": "Deals" },
       "knowledge": { "label": "Knowledge base", "sublabel": "Q&A" },
-      "agent": { "label": "AI Employee", "sublabel": "Qualifies and replies" }
+      "departments": {
+        "sales": "Sales",
+        "support": "Support",
+        "hr": "HR",
+        "marketing": "Marketing"
+      },
+      "agent": {
+        "sales": { "label": "AI Sales", "sublabel": "Qualifies leads and replies" },
+        "support": { "label": "AI Support", "sublabel": "Resolves tickets and escalates" },
+        "hr": { "label": "AI HR", "sublabel": "Screens candidates and schedules" },
+        "marketing": { "label": "AI Marketing", "sublabel": "Drafts content and campaigns" }
+      }
     }
   },
   "workZones": {

@@ -24,9 +24,21 @@
       "website": { "label": "Veb-sayt", "sublabel": "Yangi lidlar" },
       "telegram": { "label": "Telegram", "sublabel": "Dialoglar" },
       "olx": { "label": "OLX.uz", "sublabel": "E'lon so'rovlari" },
+      "calls": { "label": "Qo'ng'iroqlar", "sublabel": "Telefon lidlari" },
       "crm": { "label": "CRM", "sublabel": "Bitimlar" },
       "knowledge": { "label": "Bilim bazasi", "sublabel": "Savol-javoblar" },
-      "agent": { "label": "AI Xodim", "sublabel": "Malakalashtiradi va javob beradi" }
+      "departments": {
+        "sales": "Sotuv",
+        "support": "Qo'llab-quvvatlash",
+        "hr": "HR",
+        "marketing": "Marketing"
+      },
+      "agent": {
+        "sales": { "label": "AI Sotuv", "sublabel": "Lidlarni malakalashtiradi va javob beradi" },
+        "support": { "label": "AI Qo'llab-quvvatlash", "sublabel": "Murojaatlarni hal qiladi va eskalatsiya qiladi" },
+        "hr": { "label": "AI HR", "sublabel": "Nomzodlarni saralaydi va uchrashuv belgilaydi" },
+        "marketing": { "label": "AI Marketing", "sublabel": "Kontent va kampaniyalar tayyorlaydi" }
+      }
     }
   },
   "workZones": {
