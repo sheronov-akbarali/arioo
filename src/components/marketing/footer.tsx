@@ -18,13 +18,11 @@ export function Footer() {
           <p className="font-semibold text-foreground">Arioo</p>
           <p className="mt-2 max-w-xs text-muted-foreground">{t("tagline")}</p>
           <Tooltip>
-            <TooltipTrigger
-              render={
-                <Button variant="outline" size="sm" disabled className="mt-4 gap-2" />
-              }
-            >
-              <Send className="size-4" />
-              {t("telegramCta")}
+            <TooltipTrigger render={<span tabIndex={-1} className="mt-4 inline-block" />}>
+              <Button variant="outline" size="sm" disabled className="gap-2">
+                <Send className="size-4" />
+                {t("telegramCta")}
+              </Button>
             </TooltipTrigger>
             <TooltipContent>{t("comingSoon")}</TooltipContent>
           </Tooltip>
