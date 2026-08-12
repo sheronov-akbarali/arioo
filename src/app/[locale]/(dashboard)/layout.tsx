@@ -9,6 +9,7 @@ import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import { OrgSwitcher } from "@/components/dashboard/org-switcher";
 import { BillingWidget } from "@/components/dashboard/billing-widget";
 import { UserMenu } from "@/components/dashboard/user-menu";
+import { DashboardTopbar } from "@/components/dashboard/dashboard-topbar";
 import { requireOrganization } from "@/lib/auth/dal";
 
 export default async function DashboardLayout({
@@ -33,7 +34,10 @@ export default async function DashboardLayout({
           <UserMenu name={user.name} />
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset>{children}</SidebarInset>
+      <SidebarInset>
+        <DashboardTopbar />
+        {children}
+      </SidebarInset>
     </SidebarProvider>
   );
 }

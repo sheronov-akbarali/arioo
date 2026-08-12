@@ -323,6 +323,9 @@
     "userMenu": {
       "signOut": "Sign out",
       "anonymous": "User"
+    },
+    "topbar": {
+      "commandPaletteHint": "Command palette (coming soon)"
     }
   },
   "assistants": {

@@ -323,6 +323,9 @@
     "userMenu": {
       "signOut": "Chiqish",
       "anonymous": "Foydalanuvchi"
+    },
+    "topbar": {
+      "commandPaletteHint": "Buyruqlar paneli (tez orada)"
     }
   },
   "assistants": {
