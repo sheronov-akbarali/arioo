@@ -31,7 +31,7 @@ export function MobileNav() {
       >
         <MenuIcon />
       </SheetTrigger>
-      <SheetContent side="right" className="w-72">
+      <SheetContent side="top" className="rounded-b-2xl border-x-0 border-t-0">
         <SheetHeader>
           <SheetTitle>{t("menu")}</SheetTitle>
         </SheetHeader>
