@@ -5,6 +5,7 @@ import "server-only";
 export async function sendLeadNotification(lead: {
   name: string;
   phone: string;
+  source?: string;
 }): Promise<{ ok: boolean }> {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_LEADS_CHAT_ID;
@@ -20,7 +21,9 @@ export async function sendLeadNotification(lead: {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: chatId,
-        text: `Yangi lid — Arioo\nIsm: ${lead.name}\nTelefon: ${lead.phone}`,
+        text: `Yangi lid — Arioo\nIsm: ${lead.name}\nTelefon: ${lead.phone}${
+          lead.source ? `\nManba: ${lead.source}` : ""
+        }`,
       }),
     });
     return { ok: response.ok };

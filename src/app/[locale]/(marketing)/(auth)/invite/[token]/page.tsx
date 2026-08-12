@@ -8,7 +8,7 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 // Reused from the team-settings action module rather than duplicated —
 // invites are created/listed there and accepted here.
-import { acceptInviteAction } from "../../../(dashboard)/settings/team/actions";
+import { acceptInviteAction } from "@/app/[locale]/(dashboard)/settings/team/actions";
 
 export default async function InvitePage({
   params,

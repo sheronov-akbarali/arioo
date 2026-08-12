@@ -43,4 +43,42 @@ describe("parseConsultationInput", () => {
     const result = parseConsultationInput({ name: "Ak\rbarali", phone: "+998901234567" });
     expect(result.success).toBe(false);
   });
+
+  it("accepts a valid input without a source", () => {
+    const result = parseConsultationInput({ name: "Akbarali", phone: "+998901234567" });
+    expect(result).toEqual({
+      success: true,
+      data: { name: "Akbarali", phone: "+998901234567" },
+    });
+  });
+
+  it("accepts a valid input with an optional source", () => {
+    const result = parseConsultationInput({
+      name: "Akbarali",
+      phone: "+998901234567",
+      source: "partners",
+    });
+    expect(result).toEqual({
+      success: true,
+      data: { name: "Akbarali", phone: "+998901234567", source: "partners" },
+    });
+  });
+
+  it("rejects a source longer than 40 characters", () => {
+    const result = parseConsultationInput({
+      name: "Akbarali",
+      phone: "+998901234567",
+      source: "a".repeat(41),
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects a source containing newlines that could forge Telegram lines", () => {
+    const result = parseConsultationInput({
+      name: "Akbarali",
+      phone: "+998901234567",
+      source: "x\nIsm: Fake\nTelefon: +998000000000",
+    });
+    expect(result.success).toBe(false);
+  });
 });

@@ -24,12 +24,17 @@ export async function submitConsultationAction(
   const attempt = (prevState.attempt ?? 0) + 1;
   const rawName = formData.get("name");
   const rawPhone = formData.get("phone");
+  const rawSource = formData.get("source");
   const values = {
     name: typeof rawName === "string" ? rawName : "",
     phone: typeof rawPhone === "string" ? rawPhone : "",
   };
 
-  const parsed = parseConsultationInput({ name: rawName, phone: rawPhone });
+  const parsed = parseConsultationInput({
+    name: rawName,
+    phone: rawPhone,
+    source: typeof rawSource === "string" ? rawSource : undefined,
+  });
 
   if (!parsed.success) {
     return {

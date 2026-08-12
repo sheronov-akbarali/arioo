@@ -6,6 +6,7 @@ import { PartnerStats } from "@/components/marketing/partner-stats";
 import { PartnerSteps } from "@/components/marketing/partner-steps";
 import { PartnerWhy } from "@/components/marketing/partner-why";
 import { PartnerLevels } from "@/components/marketing/partner-levels";
+import { LeadForm } from "@/components/marketing/lead-form";
 
 export default function PartnersPage() {
   const t = useTranslations("partners");
@@ -31,6 +32,12 @@ export default function PartnersPage() {
       <PartnerSteps />
       <PartnerWhy />
       <PartnerLevels />
+      <LeadForm
+        title={t("leadForm.title")}
+        subtitle={t("leadForm.subtitle")}
+        submitLabel={t("leadForm.submit")}
+        source="partners"
+      />
     </>
   );
 }

@@ -14,10 +14,14 @@ export function LeadForm({
   title,
   subtitle,
   submitLabel,
+  freeNote,
+  source,
 }: {
   title?: string;
   subtitle?: string;
   submitLabel?: string;
+  freeNote?: string;
+  source?: string;
 }) {
   const t = useTranslations("leadForm");
   const [state, formAction, isPending] = useActionState(submitConsultationAction, initialState);
@@ -50,6 +54,7 @@ export function LeadForm({
             key={state.attempt ?? 0}
             className="mt-8 space-y-4"
           >
+            {source && <input type="hidden" name="source" value={source} />}
             <div>
               <Label htmlFor="name">{t("name")}</Label>
               <Input
@@ -89,7 +94,7 @@ export function LeadForm({
             >
               {isPending ? t("submitPending") : (submitLabel ?? t("submit"))}
             </Button>
-            <p className="text-center text-xs text-muted-foreground">{t("freeNote")}</p>
+            <p className="text-center text-xs text-muted-foreground">{freeNote ?? t("freeNote")}</p>
             <p className="text-center text-xs text-muted-foreground">
               {t("alreadyAccount")}{" "}
               <Link href="/sign-in" className="font-medium text-brand hover:underline">
