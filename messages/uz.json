@@ -71,6 +71,16 @@
     "perYear": "/yil",
     "currency": "so'm",
     "cta": "Tanlash",
+    "tokenTable": {
+      "title": "Model bo'yicha token narxlari",
+      "subtitle": "Tarif kreditlari har bir model provayderining aniq narxida, ustama qo'shilmasdan token bo'yicha sarflanadi.",
+      "modelColumn": "Model",
+      "promptColumn": "Prompt / 1000 token",
+      "completionColumn": "Javob / 1000 token",
+      "priceColumn": "Narx / 1000 token",
+      "embeddingTitle": "Embedding modellar",
+      "footnote": "Har bir AI xodimning model tanlagichida yana ko'proq model mavjud."
+    },
     "tiers": {
       "freemium": {
         "name": "FREEMIUM",

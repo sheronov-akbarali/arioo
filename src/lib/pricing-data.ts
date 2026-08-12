@@ -50,7 +50,7 @@ export const PRICING_TIERS: PricingTier[] = [
 
 // Approximate, rounded reference rate for the secondary USD display only —
 // not a live FX rate. Revisit before real billing goes live.
-const UZS_PER_USD = 12700;
+export const UZS_PER_USD = 12700;
 
 // `currency` is the already-translated currency label (messages `pricing.currency`).
 // This module is a pure data/formatting helper with no access to next-intl, so

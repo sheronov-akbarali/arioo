@@ -71,6 +71,16 @@
     "perYear": "/yr",
     "currency": "UZS",
     "cta": "Choose",
+    "tokenTable": {
+      "title": "Model-by-model token pricing",
+      "subtitle": "Plan credits are spent per token, at the exact rate each model's provider charges — no markup.",
+      "modelColumn": "Model",
+      "promptColumn": "Prompt / 1,000 tokens",
+      "completionColumn": "Completion / 1,000 tokens",
+      "priceColumn": "Price / 1,000 tokens",
+      "embeddingTitle": "Embedding models",
+      "footnote": "More models are available directly inside each AI employee's model picker."
+    },
     "tiers": {
       "freemium": {
         "name": "FREEMIUM",

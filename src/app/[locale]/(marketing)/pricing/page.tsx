@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { PricingTable } from "@/components/marketing/pricing-table";
+import { TokenPricingTable } from "@/components/marketing/token-pricing-table";
 
 export default function PricingPage() {
   const t = useTranslations("pricing");
@@ -13,6 +14,7 @@ export default function PricingPage() {
       <div className="mt-12">
         <PricingTable />
       </div>
+      <TokenPricingTable />
     </section>
   );
 }
