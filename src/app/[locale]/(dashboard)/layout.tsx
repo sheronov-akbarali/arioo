@@ -22,8 +22,8 @@ export default async function DashboardLayout({
   const { user, organization } = await requireOrganization(locale);
 
   return (
-    <SidebarProvider>
-      <Sidebar>
+    <SidebarProvider open={false} onOpenChange={() => {}}>
+      <Sidebar collapsible="icon">
         <SidebarHeader>
           <OrgSwitcher userId={user.id} activeOrgId={organization.id} />
         </SidebarHeader>
