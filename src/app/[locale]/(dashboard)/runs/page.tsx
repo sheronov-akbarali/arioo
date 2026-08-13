@@ -1,4 +1,4 @@
-import { desc, eq, inArray } from "drizzle-orm";
+import { desc, eq, inArray, and } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { Activity } from "lucide-react";
 import { db } from "@/db/client";
@@ -7,17 +7,35 @@ import { aiAgents } from "@/db/schema/agents";
 import { requireOrganization } from "@/lib/auth/dal";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-export default async function RunsPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function RunsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ agentId?: string }>;
+}) {
   const { locale } = await params;
+  const { agentId } = await searchParams;
   const { organization } = await requireOrganization(locale);
   const t = await getTranslations("runs");
+
+  const orgAgents = await db
+    .select({ id: aiAgents.id, name: aiAgents.name })
+    .from(aiAgents)
+    .where(eq(aiAgents.organizationId, organization.id));
 
   const threads = await db
     .select({ conversation: conversations, agentId: aiAgents.id, agentName: aiAgents.name })
     .from(conversations)
     .innerJoin(aiAgents, eq(conversations.agentId, aiAgents.id))
-    .where(eq(aiAgents.organizationId, organization.id))
+    .where(
+      and(
+        eq(aiAgents.organizationId, organization.id),
+        agentId ? eq(aiAgents.id, agentId) : undefined,
+      ),
+    )
     .orderBy(desc(conversations.startedAt));
 
   const threadIds = threads.map((row) => row.conversation.id);
@@ -47,10 +65,35 @@ export default async function RunsPage({ params }: { params: Promise<{ locale: s
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-xl font-semibold">{t("title")}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+      <div className="flex items-start gap-3">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+          <Activity className="size-5" />
+        </span>
+        <div>
+          <h1 className="text-xl font-semibold">{t("title")}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+        </div>
       </div>
+
+      {orgAgents.length > 1 && (
+        <div className="flex flex-wrap gap-2">
+          <Button
+            size="sm"
+            variant={!agentId ? "default" : "outline"}
+            nativeButton={false}
+            render={<Link href="/runs">{t("agentFilters.all")}</Link>}
+          />
+          {orgAgents.map((agent) => (
+            <Button
+              key={agent.id}
+              size="sm"
+              variant={agentId === agent.id ? "default" : "outline"}
+              nativeButton={false}
+              render={<Link href={`/runs?agentId=${agent.id}`}>{agent.name}</Link>}
+            />
+          ))}
+        </div>
+      )}
 
       {threads.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border py-16 text-center">
