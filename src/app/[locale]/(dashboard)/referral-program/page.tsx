@@ -12,6 +12,7 @@ import { CopyLinkButton } from "@/components/dashboard/copy-link-button";
 
 const DAILY_LIMIT = 100;
 const MONTHLY_LIMIT = 1000;
+const PERIODS = ["all", "today", "week", "month"] as const;
 
 export default async function ReferralProgramPage({
   params,
@@ -31,7 +32,6 @@ export default async function ReferralProgramPage({
   const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   const startOfMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
 
-  const PERIODS = ["all", "today", "week", "month"] as const;
   const activePeriod = PERIODS.find((p) => p === period) ?? "all";
 
   const dayOfWeek = now.getUTCDay();
@@ -86,6 +86,18 @@ export default async function ReferralProgramPage({
           <h1 className="text-xl font-semibold">{t("title")}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {PERIODS.map((p) => (
+          <Button
+            key={p}
+            size="sm"
+            variant={activePeriod === p ? "default" : "outline"}
+            nativeButton={false}
+            render={<Link href={p === "all" ? "/referral-program" : `/referral-program?period=${p}`}>{t(`periodFilters.${p}`)}</Link>}
+          />
+        ))}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-4">
@@ -186,18 +198,6 @@ export default async function ReferralProgramPage({
           </div>
         </CardContent>
       </Card>
-
-      <div className="flex flex-wrap gap-2">
-        {PERIODS.map((p) => (
-          <Button
-            key={p}
-            size="sm"
-            variant={activePeriod === p ? "default" : "outline"}
-            nativeButton={false}
-            render={<Link href={p === "all" ? "/referral-program" : `/referral-program?period=${p}`}>{t(`periodFilters.${p}`)}</Link>}
-          />
-        ))}
-      </div>
 
       <Card>
         <CardHeader>
