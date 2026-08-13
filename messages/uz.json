@@ -493,6 +493,77 @@
         },
         "pauseDurationMinutesLabel": "To'xtatib turish davomiyligi (daqiqa)",
         "save": "Saqlash"
+      },
+      "calls": {
+        "policyTitle": "Qo'ng'iroqlar siyosati",
+        "policySubtitle": "Yo'nalish, oyna va yozib olish qoidalari — viruts liniyaga chiqishidan oldin qo'llaniladi",
+        "enabledLabel": "Qo'ng'iroqlarni yoqish",
+        "directionLabel": "Yo'nalish",
+        "directionOptions": {
+          "off": "O'chirilgan",
+          "inbound": "Kiruvchi",
+          "outbound": "Chiquvchi",
+          "both": "Ikkalasi"
+        },
+        "windowTitle": "Qo'ng'iroq oynasi",
+        "windowTimezoneModeLabel": "Vaqt zonasi",
+        "windowTimezoneModeOptions": {
+          "same_as_chat": "Chat sozlamalari bilan bir xil",
+          "custom": "Alohida"
+        },
+        "windowStartLabel": "Boshlanish (SS:DD)",
+        "windowEndLabel": "Tugash (SS:DD)",
+        "offWindowBehaviorLabel": "Oyna tashqarisida",
+        "offWindowBehaviorOptions": {
+          "reject": "Rad etish",
+          "voicemail_task": "Ovozli xabar/vazifa"
+        },
+        "audienceTitle": "Auditoriya va chastota",
+        "requireExistingThreadLabel": "Faqat mavjud suhbat bo'yicha chiquvchi qo'ng'iroq",
+        "respectDncLabel": "\"Qo'ng'iroq qilmang\" (DNC) ro'yxatini hisobga olish",
+        "maxAttemptsLabel": "Davr uchun maksimal urinish",
+        "attemptsPeriodDaysLabel": "Davr (kun)",
+        "recordingTitle": "Yozib olish va limitlar",
+        "recordingModeLabel": "Yozib olish rejimi",
+        "recordingModeOptions": {
+          "off": "O'chirilgan",
+          "record": "Yozib olish",
+          "record_announce": "Yozib olish + ogohlantirish"
+        },
+        "disclosureScriptLabel": "Ogohlantirish matni",
+        "maxDurationMinutesLabel": "Maksimal davomiylik (daqiqa)",
+        "maxParallelLinesLabel": "Parallel liniyalar soni",
+        "channelTitle": "Kanal va raqamlar",
+        "channelHint": "Konnektorning o'zi Integratsiyalar bo'limida sozlanadi. Bu yerda faqat raqam biriktiriladi.",
+        "sipIntegrationRefLabel": "SIP konnektor",
+        "sipIntegrationRefPlaceholder": "Konnektor tanlanmagan",
+        "outboundDidLabel": "Chiquvchi raqam (DID)",
+        "lineScriptTitle": "Liniyadagi ssenariy",
+        "lineScriptHint": "Asosiy AI ko'rsatmasiga faqat qo'ng'iroq vaqtida qo'shiladi",
+        "lineInstructionLabel": "Qo'ng'iroq uchun qo'shimcha ko'rsatma",
+        "callModelLabel": "Qo'ng'iroq modeli",
+        "callVoiceLabel": "Liniyadagi ovoz",
+        "defaultModeLabel": "Standart rejim",
+        "defaultModeOptions": {
+          "supervised": "Nazorat остида (operator aralashishi mumkin)",
+          "autonomous": "Mustaqil"
+        },
+        "maxActionsPerReplyLabel": "Bitta javobga maksimal harakat",
+        "toolsModeTitle": "Liniyadagi vositalar",
+        "toolsModeHint": "Vositalar to'plami AI bo'limidan olinadi, bu yerda faqat tasdiqlash rejimi qattiqlashtiriladi",
+        "confirmationModeLabel": "O'zgarish kiritadigan harakatlar uchun tasdiqlash",
+        "confirmationModeOptions": {
+          "always": "Har doim tasdiqlash bilan",
+          "per_tool": "Chatlardagi kabi",
+          "read_only": "Faqat o'qish"
+        },
+        "afterCallTitle": "Qo'ng'iroqdan keyin",
+        "saveSummaryToThreadLabel": "Xulosa va transkriptni suhbatga saqlash",
+        "syncCrmLabel": "CRM bilan sinxronlash",
+        "escalationTitle": "Eskalatsiya",
+        "escalationTargetLabel": "Qayerga uzatish",
+        "escalationTriggerWordsLabel": "Uzatish uchun trigger so'zlar (har birini alohida qatorga yozing)",
+        "save": "Saqlash"
       }
     },
     "knowledge": {

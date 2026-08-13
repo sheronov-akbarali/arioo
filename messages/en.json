@@ -493,6 +493,77 @@
         },
         "pauseDurationMinutesLabel": "Pause duration (min)",
         "save": "Save"
+      },
+      "calls": {
+        "policyTitle": "Call policy",
+        "policySubtitle": "Direction, window, and recording rules — applied before the agent goes live",
+        "enabledLabel": "Enable calls",
+        "directionLabel": "Direction",
+        "directionOptions": {
+          "off": "Off",
+          "inbound": "Inbound",
+          "outbound": "Outbound",
+          "both": "Both"
+        },
+        "windowTitle": "Call window",
+        "windowTimezoneModeLabel": "Time zone",
+        "windowTimezoneModeOptions": {
+          "same_as_chat": "Same as chat settings",
+          "custom": "Custom"
+        },
+        "windowStartLabel": "Start (HH:MM)",
+        "windowEndLabel": "End (HH:MM)",
+        "offWindowBehaviorLabel": "Outside the window",
+        "offWindowBehaviorOptions": {
+          "reject": "Reject",
+          "voicemail_task": "Voicemail + task"
+        },
+        "audienceTitle": "Audience and frequency",
+        "requireExistingThreadLabel": "Outbound only with an existing thread",
+        "respectDncLabel": "Respect the Do-Not-Call (DNC) list",
+        "maxAttemptsLabel": "Max attempts per period",
+        "attemptsPeriodDaysLabel": "Period (days)",
+        "recordingTitle": "Recording and limits",
+        "recordingModeLabel": "Recording mode",
+        "recordingModeOptions": {
+          "off": "Off",
+          "record": "Record",
+          "record_announce": "Record + announce"
+        },
+        "disclosureScriptLabel": "Disclosure script",
+        "maxDurationMinutesLabel": "Max duration (minutes)",
+        "maxParallelLinesLabel": "Parallel lines",
+        "channelTitle": "Channel and numbers",
+        "channelHint": "The connector itself is configured under Integrations. Here you only attach a number.",
+        "sipIntegrationRefLabel": "SIP connector",
+        "sipIntegrationRefPlaceholder": "No connector selected",
+        "outboundDidLabel": "Outbound number (DID)",
+        "lineScriptTitle": "On-call script",
+        "lineScriptHint": "Added to the main AI instruction only for the duration of the call",
+        "lineInstructionLabel": "Additional call instruction",
+        "callModelLabel": "Call model",
+        "callVoiceLabel": "On-call voice",
+        "defaultModeLabel": "Default mode",
+        "defaultModeOptions": {
+          "supervised": "Supervised (operator can step in)",
+          "autonomous": "Autonomous"
+        },
+        "maxActionsPerReplyLabel": "Max actions per reply",
+        "toolsModeTitle": "Tools on call",
+        "toolsModeHint": "The tool set comes from the AI tab — here you can only tighten confirmation",
+        "confirmationModeLabel": "Confirmation for actions with side effects",
+        "confirmationModeOptions": {
+          "always": "Always confirm",
+          "per_tool": "Same as chats",
+          "read_only": "Read-only"
+        },
+        "afterCallTitle": "After the call",
+        "saveSummaryToThreadLabel": "Save summary and transcript to the thread",
+        "syncCrmLabel": "Sync with CRM",
+        "escalationTitle": "Escalation",
+        "escalationTargetLabel": "Escalation target",
+        "escalationTriggerWordsLabel": "Trigger words for escalation (one per line)",
+        "save": "Save"
       }
     },
     "knowledge": {
