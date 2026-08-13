@@ -4,6 +4,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { db } from "@/db/client";
 import { invites, memberships } from "@/db/schema/org";
 import { requireOrganization } from "@/lib/auth/dal";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { inviteMemberAction } from "./actions";
@@ -50,6 +51,7 @@ export default async function TeamPage({
   return (
     <div className="flex flex-col gap-6">
       <h2 className="text-lg font-medium">{t("title")}</h2>
+      <p className="text-sm text-muted-foreground">{t("membersFound", { count: members.length })}</p>
       {canInvite && (
         <form action={action} className="flex gap-2">
           <Input name="email" type="email" placeholder={t("emailPlaceholder")} required />
@@ -58,8 +60,9 @@ export default async function TeamPage({
       )}
       <ul className="flex flex-col gap-2">
         {members.map((member) => (
-          <li key={member.userId} className="rounded-lg border p-3">
-            {member.name ?? member.email ?? member.userId} — {member.role}
+          <li key={member.userId} className="flex items-center justify-between gap-2 rounded-lg border p-3">
+            <span>{member.name ?? member.email ?? member.userId}</span>
+            <Badge variant={member.role === "member" ? "outline" : "default"}>{t(`roles.${member.role}`)}</Badge>
           </li>
         ))}
         {pendingInvites
