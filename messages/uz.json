@@ -502,6 +502,10 @@
       "daysLeft": "Oyda qolgan kunlar",
       "forecastTotal": "Oy oxirigacha prognoz"
     },
+    "modelSpend": {
+      "title": "Model bo'yicha xarajat",
+      "subtitle": "Tanlangan davr uchun modellar bo'yicha xarajat taqsimoti"
+    },
     "empty": "Bu davrda ma'lumot yo'q."
   },
   "billing": {
@@ -687,6 +691,10 @@
     "subtitle": "AI Xodimlaringizni biznes tizimlaringizga ulang.",
     "connect": "Ulash",
     "comingSoon": "Tez orada",
+    "searchPlaceholder": "Nomi bo'yicha qidirish...",
+    "categoryFilters": {
+      "all": "Hammasi"
+    },
     "categories": {
       "chat": "Chat",
       "marketplace": "Marketplace",

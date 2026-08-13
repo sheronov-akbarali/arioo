@@ -502,6 +502,10 @@
       "daysLeft": "Days left in month",
       "forecastTotal": "End-of-month forecast"
     },
+    "modelSpend": {
+      "title": "Spend by model",
+      "subtitle": "Spend distribution by model for the selected period"
+    },
     "empty": "No data for this period."
   },
   "billing": {
@@ -687,6 +691,10 @@
     "subtitle": "Connect your AI employees to your business systems.",
     "connect": "Connect",
     "comingSoon": "Coming soon",
+    "searchPlaceholder": "Search by name...",
+    "categoryFilters": {
+      "all": "All"
+    },
     "categories": {
       "chat": "Chat",
       "marketplace": "Marketplace",
