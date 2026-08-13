@@ -454,6 +454,45 @@
         "agentStepsTitle": "Шаги агента",
         "maxStepsWithoutToolsLabel": "Максимум шагов без инструментов",
         "maxStepsWithToolsLabel": "Максимум шагов с инструментами"
+      },
+      "chats": {
+        "profileTitle": "Профиль ассистента",
+        "profileSubtitle": "Укажите имя и описание, которые будут видны в списках",
+        "descriptionLabel": "Описание",
+        "basicSettingsTitle": "Основные настройки",
+        "greetingMessageLabel": "Приветственное сообщение",
+        "replyDelaySecondsLabel": "Задержка перед ответом (сек)",
+        "timezoneLabel": "Часовой пояс",
+        "voiceListeningTitle": "Голос и прослушивание",
+        "voiceReactionLabel": "Реакция на голосовые сообщения",
+        "voiceReactionOptions": {
+          "none": "Без реакции",
+          "reply_text": "Ответ текстом",
+          "reply_voice": "Ответ голосом"
+        },
+        "ttsVoiceLabel": "Голос TTS",
+        "ttsModelLabel": "Модель TTS",
+        "voiceReactionTextLabel": "Текст голосовой реакции",
+        "limitsTitle": "Лимиты и ограничения",
+        "limitsEnabledLabel": "Включить лимит",
+        "limitTypeLabel": "Тип лимита",
+        "limitTypeOptions": {
+          "none": "Не выбрано",
+          "messages": "Сообщения",
+          "tokens": "Токены",
+          "workens": "Worken'ы"
+        },
+        "limitValueLabel": "Значение лимита",
+        "limitMessageLabel": "Сообщение при достижении лимита",
+        "stopWordsLabel": "Стоп-слова (по одному на строку)",
+        "triggersTitle": "Триггеры",
+        "operatorTriggerLabel": "Реакция на сообщение оператора",
+        "operatorTriggerOptions": {
+          "keep_going": "Продолжить диалог",
+          "pause": "Приостановить"
+        },
+        "pauseDurationMinutesLabel": "Длительность паузы (мин)",
+        "save": "Сохранить"
       }
     },
     "knowledge": {

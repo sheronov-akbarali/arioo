@@ -17,6 +17,6 @@ export function optionalText(maxLength: number) {
   return z.preprocess(emptyToNull, z.string().trim().max(maxLength).nullable());
 }
 
-export function optionalEnum<T extends [string, ...string[]]>(values: T) {
+export function optionalEnum<const T extends [string, ...string[]]>(values: T) {
   return z.preprocess(emptyToNull, z.enum(values).nullable());
 }

@@ -454,6 +454,45 @@
         "agentStepsTitle": "Agent qadamlari",
         "maxStepsWithoutToolsLabel": "Vositalarsiz maksimal qadam",
         "maxStepsWithToolsLabel": "Vositalar bilan maksimal qadam"
+      },
+      "chats": {
+        "profileTitle": "Assistent profili",
+        "profileSubtitle": "Nom va tavsif kiriting, keyinroq ro'yxatlarda ko'rinadi",
+        "descriptionLabel": "Tavsif",
+        "basicSettingsTitle": "Asosiy sozlamalar",
+        "greetingMessageLabel": "Salomlashish xabari",
+        "replyDelaySecondsLabel": "Javob berishdan oldingi kechikish (soniya)",
+        "timezoneLabel": "Vaqt zonasi",
+        "voiceListeningTitle": "Ovoz va tinglash",
+        "voiceReactionLabel": "Ovozli xabarlarga reaktsiya",
+        "voiceReactionOptions": {
+          "none": "Reaksiya yo'q",
+          "reply_text": "Matn bilan javob",
+          "reply_voice": "Ovoz bilan javob"
+        },
+        "ttsVoiceLabel": "TTS ovozi",
+        "ttsModelLabel": "TTS modeli",
+        "voiceReactionTextLabel": "Ovozli reaksiya matni",
+        "limitsTitle": "Limitlar va cheklovlar",
+        "limitsEnabledLabel": "Limitni yoqish",
+        "limitTypeLabel": "Limit turi",
+        "limitTypeOptions": {
+          "none": "Tanlanmagan",
+          "messages": "Xabarlar",
+          "tokens": "Tokenlar",
+          "workens": "Workenlar"
+        },
+        "limitValueLabel": "Limit qiymati",
+        "limitMessageLabel": "Limitga yetganda ko'rsatiladigan xabar",
+        "stopWordsLabel": "Stop-so'zlar (har birini alohida qatorga yozing)",
+        "triggersTitle": "Triggerlar",
+        "operatorTriggerLabel": "Operator xabariga reaktsiya",
+        "operatorTriggerOptions": {
+          "keep_going": "Suhbatni davom ettirish",
+          "pause": "To'xtatib turish"
+        },
+        "pauseDurationMinutesLabel": "To'xtatib turish davomiyligi (daqiqa)",
+        "save": "Saqlash"
       }
     },
     "knowledge": {

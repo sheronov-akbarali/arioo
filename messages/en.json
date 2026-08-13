@@ -454,6 +454,45 @@
         "agentStepsTitle": "Agent steps",
         "maxStepsWithoutToolsLabel": "Max steps without tools",
         "maxStepsWithToolsLabel": "Max steps with tools"
+      },
+      "chats": {
+        "profileTitle": "Assistant profile",
+        "profileSubtitle": "Name and description shown in lists",
+        "descriptionLabel": "Description",
+        "basicSettingsTitle": "Basic settings",
+        "greetingMessageLabel": "Greeting message",
+        "replyDelaySecondsLabel": "Delay before replying (sec)",
+        "timezoneLabel": "Time zone",
+        "voiceListeningTitle": "Voice and listening",
+        "voiceReactionLabel": "Reaction to voice messages",
+        "voiceReactionOptions": {
+          "none": "Do not react",
+          "reply_text": "Reply with text",
+          "reply_voice": "Reply with voice"
+        },
+        "ttsVoiceLabel": "TTS voice",
+        "ttsModelLabel": "TTS model",
+        "voiceReactionTextLabel": "Voice reaction text",
+        "limitsTitle": "Limits and restrictions",
+        "limitsEnabledLabel": "Enable limit",
+        "limitTypeLabel": "Limit type",
+        "limitTypeOptions": {
+          "none": "Not selected",
+          "messages": "Messages",
+          "tokens": "Tokens",
+          "workens": "Workens"
+        },
+        "limitValueLabel": "Limit value",
+        "limitMessageLabel": "Message shown when the limit is reached",
+        "stopWordsLabel": "Stop words (one per line)",
+        "triggersTitle": "Triggers",
+        "operatorTriggerLabel": "Reaction to an operator message",
+        "operatorTriggerOptions": {
+          "keep_going": "Keep the conversation going",
+          "pause": "Pause"
+        },
+        "pauseDurationMinutesLabel": "Pause duration (min)",
+        "save": "Save"
       }
     },
     "knowledge": {
