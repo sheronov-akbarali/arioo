@@ -8,6 +8,7 @@ import { requireOrganization } from "@/lib/auth/dal";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { MessageBubble } from "@/components/dashboard/chat/message-bubble";
+import { ChatsList, type ChatThread } from "@/components/dashboard/chats/chats-list";
 
 export default async function ChatsPage({
   params,
@@ -65,6 +66,17 @@ export default async function ChatsPage({
     timeStyle: "short",
   });
 
+  const threadItems: ChatThread[] = sortedThreads.map((row) => {
+    const last = lastMessageByThread.get(row.conversation.id);
+    return {
+      id: row.conversation.id,
+      agentName: row.agentName,
+      lastMessagePreview: last?.content ?? t("noMessages"),
+      timestampLabel: dtf.format(last?.createdAt ?? row.conversation.startedAt),
+      isActive: active?.conversation.id === row.conversation.id,
+    };
+  });
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -84,34 +96,7 @@ export default async function ChatsPage({
         </div>
       ) : (
         <div className="grid gap-4 lg:grid-cols-[320px_1fr]">
-          <Card className="max-h-[70vh] overflow-y-auto p-0">
-            <ul className="divide-y divide-border">
-              {sortedThreads.map((row) => {
-                const last = lastMessageByThread.get(row.conversation.id);
-                const isActive = active?.conversation.id === row.conversation.id;
-                return (
-                  <li key={row.conversation.id}>
-                    <Link
-                      href={`/chats?conversation=${row.conversation.id}`}
-                      className={
-                        "block px-4 py-3 transition-colors hover:bg-muted " + (isActive ? "bg-muted" : "")
-                      }
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="font-medium">{row.agentName}</p>
-                        <span className="text-xs text-muted-foreground">
-                          {dtf.format(last?.createdAt ?? row.conversation.startedAt)}
-                        </span>
-                      </div>
-                      <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
-                        {last?.content ?? t("noMessages")}
-                      </p>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </Card>
+          <ChatsList threads={threadItems} />
 
           <Card className="flex max-h-[70vh] flex-col gap-4 overflow-y-auto p-4">
             {active ? (
