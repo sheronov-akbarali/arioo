@@ -1,4 +1,5 @@
 import { desc, eq } from "drizzle-orm";
+import { CreditCard } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/db/client";
 import { creditTransactions } from "@/db/schema/billing";
@@ -33,11 +34,19 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
     timeStyle: "short",
   });
 
+  const paymentTransactions = transactions.filter((tx) => tx.amount >= 0);
+  const expenseTransactions = transactions.filter((tx) => tx.amount < 0);
+
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-xl font-semibold">{t("title")}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+      <div className="flex items-start gap-3">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+          <CreditCard className="size-5" />
+        </span>
+        <div>
+          <h1 className="text-xl font-semibold">{t("title")}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+        </div>
       </div>
 
       <Card>
@@ -91,7 +100,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
           <CardTitle>{t("history.title")}</CardTitle>
         </CardHeader>
         <CardContent>
-          {transactions.length === 0 ? (
+          {paymentTransactions.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">{t("history.empty")}</p>
           ) : (
             <div className="overflow-x-auto">
@@ -105,15 +114,48 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map((tx) => (
+                  {paymentTransactions.map((tx) => (
                     <tr key={tx.id} className="border-b border-border last:border-0">
                       <td className="py-2 pr-4 text-muted-foreground">{dtf.format(tx.createdAt)}</td>
                       <td className="py-2 pr-4">{tx.description}</td>
                       <td className="py-2 pr-4 text-muted-foreground">{t(`history.types.${tx.type}`)}</td>
-                      <td
-                        className={`py-2 text-right font-medium ${tx.amount >= 0 ? "text-brand" : "text-foreground"}`}
-                      >
-                        {tx.amount >= 0 ? "+" : ""}
+                      <td className="py-2 text-right font-medium text-brand">
+                        +{tx.amount.toFixed(2)}W
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("history.expenseTitle")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {expenseTransactions.length === 0 ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">{t("history.expenseEmpty")}</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border text-left text-xs text-muted-foreground">
+                    <th className="py-2 pr-4 font-medium">{t("history.date")}</th>
+                    <th className="py-2 pr-4 font-medium">{t("history.description")}</th>
+                    <th className="py-2 pr-4 font-medium">{t("history.type")}</th>
+                    <th className="py-2 text-right font-medium">{t("history.amount")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {expenseTransactions.map((tx) => (
+                    <tr key={tx.id} className="border-b border-border last:border-0">
+                      <td className="py-2 pr-4 text-muted-foreground">{dtf.format(tx.createdAt)}</td>
+                      <td className="py-2 pr-4">{tx.description}</td>
+                      <td className="py-2 pr-4 text-muted-foreground">{t(`history.types.${tx.type}`)}</td>
+                      <td className="py-2 text-right font-medium text-foreground">
                         {tx.amount.toFixed(2)}W
                       </td>
                     </tr>
