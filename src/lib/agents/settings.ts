@@ -6,31 +6,43 @@ import { agentCallPolicy } from "@/db/schema/agent-call-policy";
 import { agentKnowledgeSettings } from "@/db/schema/agent-knowledge-settings";
 
 export async function getOrCreateChatSettings(agentId: string) {
+  const [created] = await db
+    .insert(agentChatSettings)
+    .values({ agentId })
+    .onConflictDoNothing({ target: agentChatSettings.agentId })
+    .returning();
+  if (created) return created;
   const [existing] = await db
     .select()
     .from(agentChatSettings)
     .where(eq(agentChatSettings.agentId, agentId));
-  if (existing) return existing;
-  const [created] = await db.insert(agentChatSettings).values({ agentId }).returning();
-  return created!;
+  return existing!;
 }
 
 export async function getOrCreateCallPolicy(agentId: string) {
+  const [created] = await db
+    .insert(agentCallPolicy)
+    .values({ agentId })
+    .onConflictDoNothing({ target: agentCallPolicy.agentId })
+    .returning();
+  if (created) return created;
   const [existing] = await db
     .select()
     .from(agentCallPolicy)
     .where(eq(agentCallPolicy.agentId, agentId));
-  if (existing) return existing;
-  const [created] = await db.insert(agentCallPolicy).values({ agentId }).returning();
-  return created!;
+  return existing!;
 }
 
 export async function getOrCreateKnowledgeSettings(agentId: string) {
+  const [created] = await db
+    .insert(agentKnowledgeSettings)
+    .values({ agentId })
+    .onConflictDoNothing({ target: agentKnowledgeSettings.agentId })
+    .returning();
+  if (created) return created;
   const [existing] = await db
     .select()
     .from(agentKnowledgeSettings)
     .where(eq(agentKnowledgeSettings.agentId, agentId));
-  if (existing) return existing;
-  const [created] = await db.insert(agentKnowledgeSettings).values({ agentId }).returning();
-  return created!;
+  return existing!;
 }

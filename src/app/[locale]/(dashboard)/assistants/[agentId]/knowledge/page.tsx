@@ -32,7 +32,6 @@ export default async function KnowledgeBasePage({
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-6">
-        <h1 className="text-xl font-semibold">{t("title")}</h1>
         <form action={uploadAction} className="flex items-center gap-2">
           <input type="file" name="file" accept=".txt,.md" required />
           <Button type="submit">{t("upload")}</Button>

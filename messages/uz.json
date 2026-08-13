@@ -496,7 +496,7 @@
       },
       "calls": {
         "policyTitle": "Qo'ng'iroqlar siyosati",
-        "policySubtitle": "Yo'nalish, oyna va yozib olish qoidalari — viruts liniyaga chiqishidan oldin qo'llaniladi",
+        "policySubtitle": "Yo'nalish, oyna va yozib olish qoidalari — virtual xodim liniyaga chiqishidan oldin qo'llaniladi",
         "enabledLabel": "Qo'ng'iroqlarni yoqish",
         "directionLabel": "Yo'nalish",
         "directionOptions": {
@@ -545,7 +545,7 @@
         "callVoiceLabel": "Liniyadagi ovoz",
         "defaultModeLabel": "Standart rejim",
         "defaultModeOptions": {
-          "supervised": "Nazorat остида (operator aralashishi mumkin)",
+          "supervised": "Nazorat ostida (operator aralashishi mumkin)",
           "autonomous": "Mustaqil"
         },
         "maxActionsPerReplyLabel": "Bitta javobga maksimal harakat",
