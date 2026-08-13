@@ -5,7 +5,7 @@ import { aiAgents } from "@/db/schema/agents";
 import { requireOrganization } from "@/lib/auth/dal";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { AssistantsGrid } from "@/components/dashboard/assistants/assistants-grid";
 
 export default async function AssistantsPage({
   params,
@@ -30,18 +30,7 @@ export default async function AssistantsPage({
       {agents.length === 0 ? (
         <p className="text-muted-foreground">{t("empty")}</p>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2">
-          {agents.map((agent) => (
-            <Card key={agent.id}>
-              <CardHeader>
-                <CardTitle>
-                  <Link href={`/assistants/${agent.id}`}>{agent.name}</Link>
-                </CardTitle>
-                <p className="text-muted-foreground text-sm">{t(`roles.${agent.role}`)}</p>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
+        <AssistantsGrid agents={agents} />
       )}
     </div>
   );
