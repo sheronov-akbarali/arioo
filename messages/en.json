@@ -450,6 +450,10 @@
       "routines": "Routines",
       "chats": "Chat & voice"
     },
+    "search": {
+      "placeholder": "Search by type...",
+      "apply": "Apply"
+    },
     "status": {
       "pending": "Pending",
       "approved": "Approved",
@@ -640,8 +644,10 @@
       "name": "Name",
       "trigger": "Trigger",
       "resource": "Resource",
-      "status": "Status"
+      "status": "Status",
+      "lastFired": "Last fired"
     },
+    "foundCount": "{count} routines found",
     "empty": "No routines yet.",
     "emptyHint": "Describe your first scenario — it'll start firing once the engine is ready."
   },
@@ -701,7 +707,10 @@
     "started": "Started",
     "lastActivity": "Last activity",
     "messages": "Messages",
-    "cost": "Cost"
+    "cost": "Cost",
+    "agentFilters": {
+      "all": "All"
+    }
   },
   "invite": {
     "title": "You're invited",

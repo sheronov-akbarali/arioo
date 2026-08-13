@@ -450,6 +450,10 @@
       "routines": "Rutinalar",
       "chats": "Chat va ovoz"
     },
+    "search": {
+      "placeholder": "Tur bo'yicha qidirish...",
+      "apply": "Qo'llash"
+    },
     "status": {
       "pending": "Kutmoqda",
       "approved": "Tasdiqlangan",
@@ -640,8 +644,10 @@
       "name": "Nomi",
       "trigger": "Trigger",
       "resource": "Resurs",
-      "status": "Holat"
+      "status": "Holat",
+      "lastFired": "So'nggi ishga tushish"
     },
+    "foundCount": "{count} ta rutina topildi",
     "empty": "Hali birorta rutina yo'q.",
     "emptyHint": "Birinchi ssenariyingizni tasvirlab bering — dvigatel tayyor bo'lganda ishga tusha boshlaydi."
   },
@@ -701,7 +707,10 @@
     "started": "Boshlangan",
     "lastActivity": "Oxirgi faollik",
     "messages": "Xabarlar",
-    "cost": "Xarajat"
+    "cost": "Xarajat",
+    "agentFilters": {
+      "all": "Hammasi"
+    }
   },
   "invite": {
     "title": "Sizni taklif qilishdi",
