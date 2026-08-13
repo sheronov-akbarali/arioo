@@ -5,8 +5,7 @@ import { db } from "@/db/client";
 import { knowledgeDocuments } from "@/db/schema/knowledge";
 import { aiAgents } from "@/db/schema/agents";
 import { requireOrganization } from "@/lib/auth/dal";
-import { Link } from "@/i18n/navigation";
-import { Card, CardContent } from "@/components/ui/card";
+import { KnowledgeBasesGrid } from "@/components/dashboard/knowledge-bases/knowledge-bases-grid";
 
 export default async function KnowledgeBasesPage({
   params,
@@ -16,7 +15,6 @@ export default async function KnowledgeBasesPage({
   const { locale } = await params;
   const { organization } = await requireOrganization(locale);
   const t = await getTranslations("knowledgeBases");
-  const tStatus = await getTranslations("assistants.knowledge.status");
 
   const rows = await db
     .select({ document: knowledgeDocuments, agentId: aiAgents.id, agentName: aiAgents.name })
@@ -33,6 +31,16 @@ export default async function KnowledgeBasesPage({
     bucket.documents.push(row);
     byAgent.set(row.agentId, bucket);
   }
+
+  const groups = [...byAgent.entries()].map(([agentId, bucket]) => ({
+    agentId,
+    agentName: bucket.agentName,
+    documents: bucket.documents.map(({ document }) => ({
+      id: document.id,
+      filename: document.filename,
+      status: document.status,
+    })),
+  }));
 
   return (
     <div className="flex flex-col gap-6">
@@ -52,31 +60,7 @@ export default async function KnowledgeBasesPage({
           </div>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {[...byAgent.entries()].map(([agentId, bucket]) => (
-            <Card key={agentId}>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium">{bucket.agentName}</p>
-                  <Link
-                    href={`/assistants/${agentId}/knowledge`}
-                    className="text-xs font-medium text-brand hover:underline"
-                  >
-                    {t("manage")}
-                  </Link>
-                </div>
-                <ul className="mt-3 flex flex-col gap-2">
-                  {bucket.documents.map(({ document }) => (
-                    <li key={document.id} className="flex items-center justify-between text-sm">
-                      <span className="truncate">{document.filename}</span>
-                      <span className="text-xs text-muted-foreground">{tStatus(document.status)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <KnowledgeBasesGrid groups={groups} />
       )}
     </div>
   );
