@@ -574,7 +574,20 @@
         "processing": "Qayta ishlanmoqda",
         "ready": "Tayyor",
         "error": "Xato"
-      }
+      },
+      "settingsTitle": "Asosiy sozlamalar",
+      "settingsSubtitle": "Embedding modeli va barcha bilim bazalari uchun standart qiymatlar",
+      "embeddingModelLabel": "Embedding modeli",
+      "relevanceThresholdLabel": "Standart moslik chegarasi (0-1)",
+      "maxResultsLabel": "Standart maksimal natijalar soni",
+      "searchContextTitle": "Qidiruv va kontekst",
+      "maxContextTokensLabel": "RAG konteksti uchun maksimal token soni",
+      "aggregationStrategyLabel": "Natijalarni birlashtirish strategiyasi",
+      "aggregationStrategyOptions": {
+        "merge": "Birlashtirish (barcha bazalar natijalari qo'shiladi)",
+        "priority": "Ustuvorlik (bazalar tartibi bo'yicha)"
+      },
+      "saveSettings": "Sozlamalarni saqlash"
     },
     "chat": {
       "title": "{name} bilan sinov suhbati",

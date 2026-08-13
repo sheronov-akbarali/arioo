@@ -574,7 +574,20 @@
         "processing": "Processing",
         "ready": "Ready",
         "error": "Error"
-      }
+      },
+      "settingsTitle": "Basic settings",
+      "settingsSubtitle": "Embedding model and default values for all knowledge bases",
+      "embeddingModelLabel": "Embedding model",
+      "relevanceThresholdLabel": "Default relevance threshold (0-1)",
+      "maxResultsLabel": "Default maximum number of results",
+      "searchContextTitle": "Search and context",
+      "maxContextTokensLabel": "Maximum tokens for RAG context",
+      "aggregationStrategyLabel": "Result aggregation strategy",
+      "aggregationStrategyOptions": {
+        "merge": "Merge (combines results from all stores)",
+        "priority": "Priority (uses stores in order)"
+      },
+      "saveSettings": "Save settings"
     },
     "chat": {
       "title": "Test chat with {name}",

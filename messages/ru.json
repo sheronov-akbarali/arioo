@@ -574,7 +574,20 @@
         "processing": "Обрабатывается",
         "ready": "Готово",
         "error": "Ошибка"
-      }
+      },
+      "settingsTitle": "Основные настройки",
+      "settingsSubtitle": "Модель эмбеддинга и значения по умолчанию для всех баз знаний",
+      "embeddingModelLabel": "Модель эмбеддинга",
+      "relevanceThresholdLabel": "Порог релевантности по умолчанию (0-1)",
+      "maxResultsLabel": "Максимум результатов по умолчанию",
+      "searchContextTitle": "Поиск и контекст",
+      "maxContextTokensLabel": "Максимум токенов для RAG-контекста",
+      "aggregationStrategyLabel": "Стратегия объединения результатов",
+      "aggregationStrategyOptions": {
+        "merge": "Объединение (результаты всех баз суммируются)",
+        "priority": "Приоритет (по порядку баз)"
+      },
+      "saveSettings": "Сохранить настройки"
     },
     "chat": {
       "title": "Тестовый чат с {name}",
