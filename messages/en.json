@@ -392,7 +392,69 @@
       },
       "connect": "Connect",
       "test": "Test",
-      "noChannelsConnected": "No channels connected"
+      "noChannelsConnected": "No channels connected",
+      "ai": {
+        "nameLabel": "Name",
+        "roleLabel": "Role",
+        "systemPromptLabel": "System prompt",
+        "modelLabel": "Model",
+        "save": "Save",
+        "roles": {
+          "sales": "Sales",
+          "support": "Support",
+          "hr": "HR",
+          "marketing": "Marketing"
+        },
+        "tools": {
+          "title": "Integrations (Tools)",
+          "subtitle": "Choose which tools the assistant can use",
+          "comingSoon": "Coming soon",
+          "groups": {
+            "internalSystem": "Internal system",
+            "googleSheets": "Google Sheets/Drive",
+            "github": "GitHub"
+          },
+          "descriptions": {
+            "internalSystem": "Manage organization and team data",
+            "googleSheets": "Read and write spreadsheets and files",
+            "github": "Work with repositories and code"
+          }
+        },
+        "coreSettingsTitle": "Core settings",
+        "coreSettingsSubtitle": "Memory, formatting, and conversation-control settings",
+        "topPLabel": "Top P",
+        "temperatureLabel": "Temperature",
+        "maxTokensLabel": "Max tokens",
+        "readOnlyModeLabel": "Read-only mode",
+        "readOnlyModeHint": "The agent reads memory but won't save new messages",
+        "recentMessagesCountLabel": "Recent messages included in context",
+        "autoTitleGenerationLabel": "Auto-generate thread title",
+        "semanticSearchEnabledLabel": "Semantic search (RAG)",
+        "memoryIsolationLabel": "Memory isolation",
+        "memoryIsolationOptions": {
+          "user": "Per user",
+          "thread": "Per thread"
+        },
+        "memoryTemplateModeLabel": "Memory template type",
+        "memoryTemplateModeOptions": {
+          "freeform": "Free-form text",
+          "schema": "Schema (JSON)"
+        },
+        "memoryTemplateLabel": "Memory template",
+        "responseFormattingTitle": "Response formatting",
+        "removeEmojisLabel": "Remove emojis",
+        "removeMarkdownLabel": "Remove Markdown",
+        "interruptionTitle": "Agent interruption",
+        "interruptionModeLabel": "Mode",
+        "interruptionModeOptions": {
+          "queue": "Queue (default)",
+          "abort_restart": "Abort and restart",
+          "drop_restart": "Drop and restart"
+        },
+        "agentStepsTitle": "Agent steps",
+        "maxStepsWithoutToolsLabel": "Max steps without tools",
+        "maxStepsWithToolsLabel": "Max steps with tools"
+      }
     },
     "knowledge": {
       "title": "Knowledge base",

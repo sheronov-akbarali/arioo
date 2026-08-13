@@ -392,7 +392,69 @@
       },
       "connect": "Подключить",
       "test": "Протестировать",
-      "noChannelsConnected": "Каналы не подключены"
+      "noChannelsConnected": "Каналы не подключены",
+      "ai": {
+        "nameLabel": "Название",
+        "roleLabel": "Роль",
+        "systemPromptLabel": "Системный промпт",
+        "modelLabel": "Модель",
+        "save": "Сохранить",
+        "roles": {
+          "sales": "Продажи",
+          "support": "Поддержка",
+          "hr": "HR",
+          "marketing": "Маркетинг"
+        },
+        "tools": {
+          "title": "Интеграции (Tools)",
+          "subtitle": "Выберите, какие инструменты может использовать ассистент",
+          "comingSoon": "Скоро",
+          "groups": {
+            "internalSystem": "Внутренняя система",
+            "googleSheets": "Google Sheets/Drive",
+            "github": "GitHub"
+          },
+          "descriptions": {
+            "internalSystem": "Управление данными организации и команды",
+            "googleSheets": "Чтение и запись таблиц и файлов",
+            "github": "Работа с репозиториями и кодом"
+          }
+        },
+        "coreSettingsTitle": "Основные настройки",
+        "coreSettingsSubtitle": "Настройки памяти, форматирования и управления диалогом",
+        "topPLabel": "Top P",
+        "temperatureLabel": "Temperature",
+        "maxTokensLabel": "Максимум токенов",
+        "readOnlyModeLabel": "Режим только для чтения",
+        "readOnlyModeHint": "Ассистент читает память, но не сохраняет новые сообщения",
+        "recentMessagesCountLabel": "Число последних сообщений в контексте",
+        "autoTitleGenerationLabel": "Автогенерация названия диалога",
+        "semanticSearchEnabledLabel": "Семантический поиск (RAG)",
+        "memoryIsolationLabel": "Изоляция памяти",
+        "memoryIsolationOptions": {
+          "user": "По пользователю",
+          "thread": "По диалогу"
+        },
+        "memoryTemplateModeLabel": "Тип шаблона памяти",
+        "memoryTemplateModeOptions": {
+          "freeform": "Свободный текст",
+          "schema": "Схема (JSON)"
+        },
+        "memoryTemplateLabel": "Шаблон памяти",
+        "responseFormattingTitle": "Форматирование ответов",
+        "removeEmojisLabel": "Удалять эмодзи",
+        "removeMarkdownLabel": "Удалять Markdown",
+        "interruptionTitle": "Прерывание диалога",
+        "interruptionModeLabel": "Режим",
+        "interruptionModeOptions": {
+          "queue": "Очередь (по умолчанию)",
+          "abort_restart": "Прервать и перезапустить",
+          "drop_restart": "Отменить и перезапустить"
+        },
+        "agentStepsTitle": "Шаги агента",
+        "maxStepsWithoutToolsLabel": "Максимум шагов без инструментов",
+        "maxStepsWithToolsLabel": "Максимум шагов с инструментами"
+      }
     },
     "knowledge": {
       "title": "База знаний",

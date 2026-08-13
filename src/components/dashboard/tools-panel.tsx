@@ -8,7 +8,7 @@ const TOOL_GROUPS = [
 ] as const;
 
 export async function ToolsPanel() {
-  const t = await getTranslations("assistants.detail.tools");
+  const t = await getTranslations("assistants.detail.ai.tools");
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-border p-5">
       <div>

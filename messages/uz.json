@@ -392,7 +392,69 @@
       },
       "connect": "Ulash",
       "test": "Sinab ko'rish",
-      "noChannelsConnected": "Kanallar ulanmagan"
+      "noChannelsConnected": "Kanallar ulanmagan",
+      "ai": {
+        "nameLabel": "Nomi",
+        "roleLabel": "Rol",
+        "systemPromptLabel": "Tizim prompti",
+        "modelLabel": "Model",
+        "save": "Saqlash",
+        "roles": {
+          "sales": "Sotuv",
+          "support": "Qo'llab-quvvatlash",
+          "hr": "HR",
+          "marketing": "Marketing"
+        },
+        "tools": {
+          "title": "Integratsiyalar (Tools)",
+          "subtitle": "Assistent qaysi vositalardan foydalanishi mumkinligini tanlang",
+          "comingSoon": "Tez orada",
+          "groups": {
+            "internalSystem": "Ichki tizim",
+            "googleSheets": "Google Sheets/Drive",
+            "github": "GitHub"
+          },
+          "descriptions": {
+            "internalSystem": "Tashkilot va jamoa ma'lumotlarini boshqarish",
+            "googleSheets": "Elektron jadval va fayllarni o'qish/yozish",
+            "github": "Repozitoriyalar va kod bilan ishlash"
+          }
+        },
+        "coreSettingsTitle": "Asosiy sozlamalar",
+        "coreSettingsSubtitle": "Xotira, formatlash va suhbatni boshqarish sozlamalari",
+        "topPLabel": "Top P",
+        "temperatureLabel": "Temperature",
+        "maxTokensLabel": "Maksimal token soni",
+        "readOnlyModeLabel": "Faqat o'qish rejimi",
+        "readOnlyModeHint": "Yoqilsa, assistent xotirani o'qiydi, lekin yangi xabar saqlamaydi",
+        "recentMessagesCountLabel": "Kontekstga kiritiladigan so'nggi xabarlar soni",
+        "autoTitleGenerationLabel": "Suhbat nomini avtomatik yaratish",
+        "semanticSearchEnabledLabel": "Semantik qidiruv (RAG)",
+        "memoryIsolationLabel": "Xotira izolyatsiyasi",
+        "memoryIsolationOptions": {
+          "user": "Foydalanuvchi bo'yicha",
+          "thread": "Suhbat bo'yicha"
+        },
+        "memoryTemplateModeLabel": "Xotira shabloni turi",
+        "memoryTemplateModeOptions": {
+          "freeform": "Erkin matn",
+          "schema": "Sxema (JSON)"
+        },
+        "memoryTemplateLabel": "Xotira shabloni",
+        "responseFormattingTitle": "Javob formatlash",
+        "removeEmojisLabel": "Emojilarni olib tashlash",
+        "removeMarkdownLabel": "Markdown'ni olib tashlash",
+        "interruptionTitle": "Suhbatni to'xtatib qo'yish",
+        "interruptionModeLabel": "Rejim",
+        "interruptionModeOptions": {
+          "queue": "Navbat (standart)",
+          "abort_restart": "To'xtatib qayta boshlash",
+          "drop_restart": "Bekor qilib qayta boshlash"
+        },
+        "agentStepsTitle": "Agent qadamlari",
+        "maxStepsWithoutToolsLabel": "Vositalarsiz maksimal qadam",
+        "maxStepsWithToolsLabel": "Vositalar bilan maksimal qadam"
+      }
     },
     "knowledge": {
       "title": "Bilim bazasi",
