@@ -79,22 +79,13 @@ Har bir bosqich alohida `docs/superpowers/specs/` hujjati va implementatsiya rej
 Bitta katta rejaga hammasini oldindan batafsil yozish amaliy emas — har bosqich boshlanishidan
 oldin qayta ko'rib chiqiladi.
 
-- [x] **0 — Fundament**: repo skeleton (Next.js+TS+Tailwind+shadcn), brend/dizayn tizimi
-      (Arioo), i18n scaffolding, CI, loyiha konventsiyalari
-- [x] **1 — Marketing sayt**: landing (hero, qanday ishlaydi, 4 ish yo'nalishi), narxlash
-      sahifasi (UZS+USD), hamkorlik dasturi sahifasi, konsultatsiya lid-formasi, huquqiy
+- [x] **0 — Fundament**: repo skeleton, brend/dizayn tizimi, i18n scaffolding, CI
+- [x] **1 — Marketing sayt**: landing, narxlash, hamkorlik dasturi, lid-forma, huquqiy
       hujjatlar, til/tema almashtirgich
-- [x] **2 — Auth + billing**: ro'yxatdan o'tish/kirish (Clerk — Google OAuth + email/parol,
-      akkaunt ulash va faol sessiyalar Clerk'ning `<UserProfile/>` paneli orqali), tashkilot
-      yaratish + jamoa taklifi,
-      tarif tanlash, Payme/Click + Stripe checkout, obuna boshqaruvi, bo'sh dashboard skeleton,
-      **kredit-asosidagi ichki valyuta** (masalan "ARI") + bonus valyuta, xarajat tarixi
-      infratuzilmasi (jadval darajasida, UI Phase 3'da)
-- [x] **3 — AI agent yadrosi**: agent yaratish ustasi (rol tanlash), bilim bazasi yuklash
-      (fayl→Blob→embedding), suhbat dvigateli (AI SDK, tool calling), soha shablonlari,
-      **human-in-the-loop approvals navbati** (kutmoqda/tasdiqlangan/rad etilgan/avto-hal
-      qilingan/muddati o'tgan statuslari bilan), **har suhbat/model bo'yicha xarajat
-      ko'rsatish**, agentga integratsiyalarni yoqib-o'chirish paneli (Tools)
+- [x] **2 — Auth + billing**: Clerk auth, tashkilot+jamoa, tarif tanlash, Payme/Click+Stripe
+      checkout, kredit-asosidagi ichki valyuta ("ARI") infratuzilmasi
+- [x] **3 — AI agent yadrosi**: agent yaratish ustasi, bilim bazasi (Blob+embedding), suhbat
+      dvigateli, soha shablonlari, human-in-the-loop approvals, xarajat ko'rsatish, Tools paneli
 - [ ] **4 — Kanal integratsiyalari**: Telegram bot connector, WhatsApp Business Cloud API,
       sayt chat-vidjeti, OLX.uz lid-intake, **ovozli qo'ng'iroq muvofiqlik tizimi** (ish
       soatlari, "Qo'ng'iroq qilmang" ro'yxati, davr uchun urinishlar chastotasi, faqat
@@ -122,42 +113,49 @@ oldin yozilgan), `docs/superpowers/specs/2026-08-07-ai-agent-core-design.md`
 ## worken.ru bilan to'liq (birga-bir) parity dasturi — 2026-08-12'dan boshlab
 
 2026-08-12'da worken.ru'ning marketing sayti VA autentifikatsiyalangan paneli Chrome'da
-(haqiqiy hisob bilan tizimga kirilgan holda) sahifama-sahifa chuqur tahlil qilindi (audit
-natijasi: dizayn token'lari, sidebar tuzilishi, har bir dashboard sahifasining aniq tarkibi,
-`/bots/:id` assistant-tahrirlash sahifasining to'liq maydon inventari). Foydalanuvchi
-ko'rsatmasi: landing sahifa VA dashboard'ning ichki ko'rinishi **detalma-detal worken.ru
-bilan bir xil** bo'lishi kerak, **faqat accent rangi to'q ko'k** (worken'ning to'q sariq
-rangi o'rniga). 5-bosqichli dastur (**A va B bosqichlari 2026-08-12'da bajarildi va
-tugallandi** — tafsilotlar `docs/superpowers/specs/2026-08-12-worken-parity-phase-a-shell-design.md`,
-`docs/superpowers/plans/2026-08-12-worken-parity-phase-a-shell.md`,
-`docs/superpowers/specs/2026-08-12-worken-parity-phase-b-marketing-design.md`,
-`docs/superpowers/plans/2026-08-12-worken-parity-phase-b-marketing.md` fayllarida saqlangan;
-git tarixi: A — `f6d133f` gacha bo'lgan commit'lar, B — `e836a86` gacha). **Ishni shu yerdan,
-C-bosqichdan davom ettirish kerak:**
+sahifama-sahifa chuqur tahlil qilindi. Foydalanuvchi ko'rsatmasi: landing sahifa VA
+dashboard'ning ichki ko'rinishi **detalma-detal worken.ru bilan bir xil** bo'lishi kerak,
+**faqat accent rangi to'q ko'k** (worken'ning to'q sariq rangi o'rniga).
 
-- [x] **C — Dashboard'ning 13 ta sahifasini worken bilan bittalab solishtirib
-      tuzatish**: filter-pill'lar, empty-state'lar, jadval ustunlari, statistika
-      kartalari worken'ning aniq taksonomiyasiga moslashtirildi. Yangi funksiya
-      qo'shilmadi, faqat mavjud sahifalar jilosi. Sahifa guruhlari bo'yicha 6 ta
-      kichik spec+plan+ijro tsikliga bo'lindi va barchasi 2026-08-13'da `main`'ga
-      qo'shildi va GitHub'ga push qilindi:
-  - [x] **Group 1 — Agent flow** (`/assistants`, `/chats`, `/calls`,
-        `/knowledge-bases`): commit `9d92e6e`..`95eb557`
-  - [x] **Group 2 — Automation** (`/routines`, `/approvals`, `/runs`):
-        commit `0202ae7`..`fd59f84`
-  - [x] **Group 3 — Commerce** (`/products`, `/billing`): commit `6c32f10`..`3192238`
-  - [x] **Group 4 — Integrations & analytics** (`/integrations`, `/statistics`):
-        commit `8768a61`..`e16374e`
-  - [x] **Group 5 — Partnerships** (`/affiliate-program`, `/referral-program`):
-        commit `c3c6b7d`..`411afb7`
-  - [x] **Group 6 — Settings** (`/settings/*`): commit `6375dde`..`8c0e356`
+- [x] **A — Shell/dizayn tizimi** — spec/plan: `docs/superpowers/specs/2026-08-12-worken-parity-phase-a-shell-design.md`
+- [x] **B — Marketing sayt parity** — spec/plan: `docs/superpowers/specs/2026-08-12-worken-parity-phase-b-marketing-design.md`
+- [x] **C — Dashboard'ning 13 ta sahifasini worken bilan bittalab solishtirib tuzatish**
+      (filter-pill'lar, empty-state'lar, jadval ustunlari, statistika kartalari) — 6 ta
+      kichik spec+plan+ijro tsikliga bo'lindi, barchasi 2026-08-13'da `main`'ga qo'shildi
 - [ ] **D — `/assistants/:id` (Assistant tahrirlash) to'liq qurilishi**: AI/Chats/
-      Calls/Knowledge-bases — 20+ sozlama bloki (avval "alohida mahsulot" deb
-      chetlab qo'yilgan edi, endi foydalanuvchi so'roviga ko'ra qurilishi rejalashtirilgan)
-      + haqiqiy SIP qo'ng'iroq siyosati UI'si
+      Calls/Knowledge-bases — 20+ sozlama bloki + haqiqiy SIP qo'ng'iroq siyosati UI'si
 - [ ] **E — Haqiqiy backend funksionallik**: SIP qo'ng'iroq, 13 ta OAuth
       integratsiya, Payme/Click/Stripe to'lov — roadmap'dagi 4-6-bosqichlar bilan
       bir xil, eng oxirida (tashqi provayder tanlovlari kerak)
+- [ ] **F — Marketing kanal va sayt analitikasi kengaytmasi** (worken.ru'da yo'q,
+      Arioo'ning o'ziga xos differensiatori): `/statistics` sahifasiga yangi "Marketing
+      kanallari" tab'i sifatida qo'shiladi
+  - Telegram kanal analitikasi — a'zolar dinamikasi, post reach/views, engagement
+    rate, faol vaqtlar (Telegram Bot API, kanal admin sifatida ulanish)
+  - YouTube kanal analitikasi — obunachilar o'sishi, ko'rishlar, watch time, CTR
+    (YouTube Data API v3 + YouTube Analytics API, OAuth — qo'lda integratsiya)
+  - Instagram/Facebook (Meta) Insights — WhatsApp bilan bitta Meta App orqali OAuth
+    ulanadi, shu sababli arzon qo'shimcha
+  - Sayt statistikasi — Vercel Web Analytics (birinchi navbatda, Marketplace orqali
+    oson ulanadi) + chat-vidjet orqali traffic→lid conversion funnel
+  - OLX.uz e'lon statistikasi — ko'rishlar, qo'ng'iroqlar/xabarlar soni (API imkoniga
+    qarab)
+  - Bularning barchasi alohida `superpowers:brainstorming` → spec → plan tsiklidan
+    o'tadi, 6-bosqichdagi "ishonchli real-time analitika dashboardlari" ishini
+    kengaytiradi
+- [ ] **G — Boshqa platforma takomillashtirish g'oyalari** (backlog, hali bosqichga
+      biriktirilmagan):
+  - Suhbatlar ustida sentiment/intent tahlili (AI orqali "norozi mijoz", "sotib
+    olishga tayyor" kabi avtomatik teglash, approvals navbatiga signal sifatida)
+  - Agent promptlari uchun A/B testing — ikki sozlamani solishtirib konversiya
+    bo'yicha g'olibni tanlash
+  - Barcha suhbatlar bo'yicha full-text transkript qidiruv (support jamoasi uchun)
+  - Multi-agent handoff — masalan sotuv agenti lidni HR/support agentiga avtomatik
+    uzatishi (Routines bosqichining tabiiy kengaytmasi)
+  - White-label/agentlik rejimi — hamkorlik dasturi ishtirokchilari Arioo'ni o'z
+    brendi ostida taqdim etishi (referral dasturini kuchaytiradi)
+  - Telegram/WhatsApp tez-tez ishlatiladigan xabar shablonlari kutubxonasi (soha
+    shabloniga bog'liq)
 
 Har bir bosqich alohida spec (`superpowers:brainstorming`) → reja
 (`superpowers:writing-plans`) → ijro (`superpowers:subagent-driven-development`)
