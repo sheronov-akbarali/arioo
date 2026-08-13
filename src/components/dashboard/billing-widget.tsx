@@ -1,22 +1,29 @@
 import { getTranslations } from "next-intl/server";
+import { CreditCard } from "lucide-react";
 import { getOrganizationCredits } from "@/lib/billing/queries";
 import { PRICING_TIERS } from "@/lib/pricing-data";
 import { Link } from "@/i18n/navigation";
+import { SidebarMenuButton } from "@/components/ui/sidebar";
 
 export async function BillingWidget({ organizationId, plan }: { organizationId: string; plan: string }) {
-  const t = await getTranslations("billing");
   const tPricing = await getTranslations("pricing");
   const credits = await getOrganizationCredits(organizationId);
   const tier = PRICING_TIERS.find((tier) => tier.id === plan) ?? PRICING_TIERS[0];
+  const tierName = tPricing(`tiers.${tier.id}.name`);
 
+  // The dashboard sidebar is permanently locked to icon-rail mode (see
+  // (dashboard)/layout.tsx), so this renders as a single icon button —
+  // matching SidebarMenuButton's built-in collapsed-state tooltip, the same
+  // pattern SidebarNav uses for every other rail item.
   return (
-    <Link
-      href="/billing"
-      className="block rounded-lg border border-border bg-card p-3 text-sm transition-colors hover:border-brand/40"
+    <SidebarMenuButton
+      render={<Link href="/billing" />}
+      tooltip={`${tierName} — ${credits.balance.toFixed(2)}W`}
     >
-      <p className="text-xs font-medium text-muted-foreground">{tPricing(`tiers.${tier.id}.name`)}</p>
-      <p className="mt-1 text-lg font-bold">{credits.balance.toFixed(2)}W</p>
-      <span className="mt-2 inline-flex text-xs font-medium text-brand">{t("planCard.changePlan")}</span>
-    </Link>
+      <CreditCard />
+      <span>
+        {tierName} — {credits.balance.toFixed(2)}W
+      </span>
+    </SidebarMenuButton>
   );
 }
