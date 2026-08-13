@@ -27,27 +27,31 @@ export function ChatsList({ threads }: { threads: ChatThread[] }) {
       <div className="px-2 pt-1">
         <ListSearchInput placeholder={t("searchPlaceholder")} value={query} onChange={setQuery} />
       </div>
-      <ul className="divide-y divide-border">
-        {filtered.map((thread) => (
-          <li key={thread.id}>
-            <Link
-              href={`/chats?conversation=${thread.id}`}
-              className={
-                "block px-4 py-3 transition-colors hover:bg-muted " +
-                (thread.isActive ? "bg-muted" : "")
-              }
-            >
-              <div className="flex items-center justify-between gap-2">
-                <p className="font-medium">{thread.agentName}</p>
-                <span className="text-xs text-muted-foreground">{thread.timestampLabel}</span>
-              </div>
-              <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
-                {thread.lastMessagePreview}
-              </p>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {query.trim() !== "" && filtered.length === 0 ? (
+        <p className="py-8 text-center text-sm text-muted-foreground">{t("noResults")}</p>
+      ) : (
+        <ul className="divide-y divide-border">
+          {filtered.map((thread) => (
+            <li key={thread.id}>
+              <Link
+                href={`/chats?conversation=${thread.id}`}
+                className={
+                  "block px-4 py-3 transition-colors hover:bg-muted " +
+                  (thread.isActive ? "bg-muted" : "")
+                }
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-medium">{thread.agentName}</p>
+                  <span className="text-xs text-muted-foreground">{thread.timestampLabel}</span>
+                </div>
+                <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
+                  {thread.lastMessagePreview}
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </Card>
   );
 }

@@ -17,7 +17,12 @@ export default async function AssistantsPage({
   const t = await getTranslations("assistants");
 
   const agents = await db
-    .select()
+    .select({
+      id: aiAgents.id,
+      name: aiAgents.name,
+      role: aiAgents.role,
+      status: aiAgents.status,
+    })
     .from(aiAgents)
     .where(eq(aiAgents.organizationId, organization.id));
 

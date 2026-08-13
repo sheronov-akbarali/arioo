@@ -23,16 +23,20 @@ export function AssistantsGrid({ agents }: { agents: Agent[] }) {
   return (
     <div className="flex flex-col gap-4">
       <ListSearchInput placeholder={t("searchPlaceholder")} value={query} onChange={setQuery} />
-      <div className="grid gap-3 sm:grid-cols-2">
-        {filtered.map((agent) => (
-          <AssistantCard
-            key={agent.id}
-            agent={agent}
-            roleLabel={t(`roles.${agent.role}`)}
-            statusLabel={t(`statusLabels.${agent.status}`)}
-          />
-        ))}
-      </div>
+      {query.trim() !== "" && filtered.length === 0 ? (
+        <p className="py-8 text-center text-sm text-muted-foreground">{t("noResults")}</p>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {filtered.map((agent) => (
+            <AssistantCard
+              key={agent.id}
+              agent={agent}
+              roleLabel={t(`roles.${agent.role}`)}
+              statusLabel={t(`statusLabels.${agent.status}`)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

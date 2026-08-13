@@ -33,34 +33,40 @@ export function KnowledgeBasesGrid({ groups }: { groups: Group[] }) {
   return (
     <div className="flex flex-col gap-4">
       <ListSearchInput placeholder={t("searchPlaceholder")} value={query} onChange={setQuery} />
-      <div className="grid gap-4 sm:grid-cols-2">
-        {filteredGroups.map((group) => (
-          <Card key={group.agentId}>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="size-4 text-brand" />
-                  <p className="font-medium">{group.agentName}</p>
+      {normalized !== "" && filteredGroups.length === 0 ? (
+        <p className="py-8 text-center text-sm text-muted-foreground">{t("noResults")}</p>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {filteredGroups.map((group) => (
+            <Card key={group.agentId}>
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <BookOpen className="size-4 text-brand" />
+                    <p className="font-medium">{group.agentName}</p>
+                  </div>
+                  <Link
+                    href={`/assistants/${group.agentId}/knowledge`}
+                    className="text-xs font-medium text-brand hover:underline"
+                  >
+                    {t("manage")}
+                  </Link>
                 </div>
-                <Link
-                  href={`/assistants/${group.agentId}/knowledge`}
-                  className="text-xs font-medium text-brand hover:underline"
-                >
-                  {t("manage")}
-                </Link>
-              </div>
-              <ul className="mt-3 flex flex-col gap-2">
-                {group.documents.map((document) => (
-                  <li key={document.id} className="flex items-center justify-between text-sm">
-                    <span className="truncate">{document.filename}</span>
-                    <Badge variant={STATUS_VARIANT[document.status]}>{tStatus(document.status)}</Badge>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                <ul className="mt-3 flex flex-col gap-2">
+                  {group.documents.map((document) => (
+                    <li key={document.id} className="flex items-center justify-between text-sm">
+                      <span className="truncate">{document.filename}</span>
+                      <Badge variant={STATUS_VARIANT[document.status]}>
+                        {tStatus(document.status)}
+                      </Badge>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

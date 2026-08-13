@@ -427,6 +427,7 @@
       "error": "Failed to get a response, please try again."
     },
     "searchPlaceholder": "Search by name...",
+    "noResults": "No results found",
     "statusLabels": {
       "draft": "Draft",
       "active": "Active"
@@ -544,7 +545,8 @@
     "noMessages": "No messages",
     "system": "System",
     "continueInPlayground": "Continue in playground →",
-    "searchPlaceholder": "Search by agent or message..."
+    "searchPlaceholder": "Search by agent or message...",
+    "noResults": "No results found"
   },
   "knowledgeBases": {
     "title": "Knowledge base",
@@ -552,7 +554,8 @@
     "empty": "No documents uploaded yet.",
     "emptyHint": "Upload your first document to a knowledge base from an AI employee's page.",
     "manage": "Manage →",
-    "searchPlaceholder": "Search by filename..."
+    "searchPlaceholder": "Search by filename...",
+    "noResults": "No results found"
   },
   "affiliateProgram": {
     "title": "Partner program",

@@ -427,6 +427,7 @@
       "error": "Javob olishda xatolik, qayta urinib ko'ring."
     },
     "searchPlaceholder": "Nomi bo'yicha qidirish...",
+    "noResults": "Hech narsa topilmadi",
     "statusLabels": {
       "draft": "Qoralama",
       "active": "Faol"
@@ -544,7 +545,8 @@
     "noMessages": "Xabarlar yo'q",
     "system": "Tizim",
     "continueInPlayground": "Playgroundda davom ettirish →",
-    "searchPlaceholder": "Agent yoki xabar bo'yicha qidirish..."
+    "searchPlaceholder": "Agent yoki xabar bo'yicha qidirish...",
+    "noResults": "Hech narsa topilmadi"
   },
   "knowledgeBases": {
     "title": "Bilim bazasi",
@@ -552,7 +554,8 @@
     "empty": "Hali hujjat yuklanmagan.",
     "emptyHint": "AI xodim sahifasida bilim bazasiga birinchi hujjatingizni yuklang.",
     "manage": "Boshqarish →",
-    "searchPlaceholder": "Fayl nomi bo'yicha qidirish..."
+    "searchPlaceholder": "Fayl nomi bo'yicha qidirish...",
+    "noResults": "Hech narsa topilmadi"
   },
   "affiliateProgram": {
     "title": "Hamkorlik dasturi",
