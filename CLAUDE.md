@@ -135,14 +135,22 @@ tugallandi** — tafsilotlar `docs/superpowers/specs/2026-08-12-worken-parity-ph
 git tarixi: A — `f6d133f` gacha bo'lgan commit'lar, B — `e836a86` gacha). **Ishni shu yerdan,
 C-bosqichdan davom ettirish kerak:**
 
-- [ ] **C — Dashboard'ning 13 ta sahifasini worken bilan bittalab solishtirib
-      tuzatish**: `/assistants`, `/chats`, `/calls`, `/routines`, `/approvals`,
-      `/knowledge-bases`, `/products`, `/integrations`, `/statistics`, `/runs`,
-      `/billing`, `/affiliate-program`, `/referral-program`, `/settings/*` — filter-
-      pill'lar, empty-state'lar, jadval ustunlari, statistika kartalari worken'ning
-      aniq taksonomiyasiga moslashtiriladi. Yangi funksiya qo'shilmaydi, faqat
-      mavjud sahifalar jilosi. Katta hajmi sababli bir nechta kichik spec+plan
-      tsikliga bo'linishi kerak (masalan, sahifa guruhlari bo'yicha).
+- [x] **C — Dashboard'ning 13 ta sahifasini worken bilan bittalab solishtirib
+      tuzatish**: filter-pill'lar, empty-state'lar, jadval ustunlari, statistika
+      kartalari worken'ning aniq taksonomiyasiga moslashtirildi. Yangi funksiya
+      qo'shilmadi, faqat mavjud sahifalar jilosi. Sahifa guruhlari bo'yicha 6 ta
+      kichik spec+plan+ijro tsikliga bo'lindi va barchasi 2026-08-13'da `main`'ga
+      qo'shildi va GitHub'ga push qilindi:
+  - [x] **Group 1 — Agent flow** (`/assistants`, `/chats`, `/calls`,
+        `/knowledge-bases`): commit `9d92e6e`..`95eb557`
+  - [x] **Group 2 — Automation** (`/routines`, `/approvals`, `/runs`):
+        commit `0202ae7`..`fd59f84`
+  - [x] **Group 3 — Commerce** (`/products`, `/billing`): commit `6c32f10`..`3192238`
+  - [x] **Group 4 — Integrations & analytics** (`/integrations`, `/statistics`):
+        commit `8768a61`..`e16374e`
+  - [x] **Group 5 — Partnerships** (`/affiliate-program`, `/referral-program`):
+        commit `c3c6b7d`..`411afb7`
+  - [x] **Group 6 — Settings** (`/settings/*`): commit `6375dde`..`8c0e356`
 - [ ] **D — `/assistants/:id` (Assistant tahrirlash) to'liq qurilishi**: AI/Chats/
       Calls/Knowledge-bases — 20+ sozlama bloki (avval "alohida mahsulot" deb
       chetlab qo'yilgan edi, endi foydalanuvchi so'roviga ko'ra qurilishi rejalashtirilgan)
