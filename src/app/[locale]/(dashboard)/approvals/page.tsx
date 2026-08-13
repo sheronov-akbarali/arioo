@@ -7,6 +7,7 @@ import { aiAgents } from "@/db/schema/agents";
 import { requireOrganization } from "@/lib/auth/dal";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { approveAction, rejectAction } from "./actions";
 
 const STATUS_FILTERS = approvalStatus.enumValues;
@@ -57,12 +58,14 @@ export default async function ApprovalsPage({
   // Each filter dimension links independently while preserving the other's
   // current value, so switching source doesn't reset the status filter (and
   // vice versa).
-  function href(next: { status?: string; source?: string }) {
+  function href(next: { status?: string; source?: string; search?: string }) {
     const query = new URLSearchParams();
     const nextStatus = next.status ?? activeStatus;
     const nextSource = next.source ?? activeSource;
+    const nextSearch = next.search ?? activeSearch;
     if (nextStatus) query.set("status", nextStatus);
     if (nextSource) query.set("source", nextSource);
+    if (nextSearch) query.set("search", nextSearch);
     const qs = query.toString();
     return qs ? `/approvals?${qs}` : "/approvals";
   }
@@ -122,12 +125,12 @@ export default async function ApprovalsPage({
       <form action={`/${locale}/approvals`} method="get" className="flex gap-2">
         {activeStatus && <input type="hidden" name="status" value={activeStatus} />}
         {activeSource && <input type="hidden" name="source" value={activeSource} />}
-        <input
+        <Input
           type="text"
           name="search"
           defaultValue={activeSearch}
           placeholder={t("search.placeholder")}
-          className="h-8 w-full max-w-xs rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="max-w-xs"
         />
         <Button type="submit" size="sm" variant="outline">
           {t("search.apply")}
