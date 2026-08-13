@@ -533,6 +533,8 @@
       "type": "Turi",
       "amount": "Summa",
       "empty": "Hozircha operatsiyalar topilmadi.",
+      "expenseTitle": "Xarajatlar tarixi",
+      "expenseEmpty": "Hozircha xarajatlar topilmadi.",
       "types": {
         "grant": "Berilgan",
         "topup": "To'ldirish",
@@ -611,6 +613,16 @@
       "draft": "Qoralama",
       "active": "Faol",
       "archived": "Arxivlangan"
+    },
+    "statusFilters": {
+      "all": "Hammasi"
+    },
+    "typeFilters": {
+      "all": "Hammasi"
+    },
+    "search": {
+      "placeholder": "Nomi bo'yicha qidirish...",
+      "apply": "Qo'llash"
     },
     "table": {
       "name": "Nomi",

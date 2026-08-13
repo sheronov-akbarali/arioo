@@ -533,6 +533,8 @@
       "type": "Тип",
       "amount": "Сумма",
       "empty": "Операции пока не найдены.",
+      "expenseTitle": "История расходов",
+      "expenseEmpty": "Расходов пока не найдено.",
       "types": {
         "grant": "Начислено",
         "topup": "Пополнение",
@@ -611,6 +613,16 @@
       "draft": "Черновик",
       "active": "Активен",
       "archived": "В архиве"
+    },
+    "statusFilters": {
+      "all": "Все"
+    },
+    "typeFilters": {
+      "all": "Все"
+    },
+    "search": {
+      "placeholder": "Поиск по названию...",
+      "apply": "Применить"
     },
     "table": {
       "name": "Название",

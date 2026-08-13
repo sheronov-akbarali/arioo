@@ -533,6 +533,8 @@
       "type": "Type",
       "amount": "Amount",
       "empty": "No transactions found yet.",
+      "expenseTitle": "Expense history",
+      "expenseEmpty": "No expenses found yet.",
       "types": {
         "grant": "Granted",
         "topup": "Top-up",
@@ -611,6 +613,16 @@
       "draft": "Draft",
       "active": "Active",
       "archived": "Archived"
+    },
+    "statusFilters": {
+      "all": "All"
+    },
+    "typeFilters": {
+      "all": "All"
+    },
+    "search": {
+      "placeholder": "Search by name...",
+      "apply": "Apply"
     },
     "table": {
       "name": "Name",
