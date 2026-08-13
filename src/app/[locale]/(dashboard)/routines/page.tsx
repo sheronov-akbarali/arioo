@@ -25,12 +25,17 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-xl font-semibold">{t("title")}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
-        <Badge variant="outline" className="mt-3">
-          {t("engineNotice")}
-        </Badge>
+      <div className="flex items-start gap-3">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+          <Repeat2 className="size-5" />
+        </span>
+        <div>
+          <h1 className="text-xl font-semibold">{t("title")}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+          <Badge variant="outline" className="mt-3">
+            {t("engineNotice")}
+          </Badge>
+        </div>
       </div>
 
       <Card>
@@ -61,6 +66,10 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
         </CardContent>
       </Card>
 
+      {rows.length > 0 && (
+        <p className="text-sm text-muted-foreground">{t("foundCount", { count: rows.length })}</p>
+      )}
+
       {rows.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border py-16 text-center">
           <span className="flex size-12 items-center justify-center rounded-full bg-brand/10 text-brand">
@@ -81,6 +90,7 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
                   <th className="px-4 py-3 font-medium">{t("table.trigger")}</th>
                   <th className="px-4 py-3 font-medium">{t("table.resource")}</th>
                   <th className="px-4 py-3 font-medium">{t("table.status")}</th>
+                  <th className="px-4 py-3 font-medium">{t("table.lastFired")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -92,6 +102,7 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
                     <td className="px-4 py-3">
                       <Badge variant="outline">{t(`status.${routine.status}`)}</Badge>
                     </td>
+                    <td className="px-4 py-3 text-muted-foreground">—</td>
                   </tr>
                 ))}
               </tbody>
