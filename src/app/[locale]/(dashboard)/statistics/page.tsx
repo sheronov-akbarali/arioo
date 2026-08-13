@@ -1,4 +1,5 @@
 import { and, eq, gte, isNotNull } from "drizzle-orm";
+import { BarChart3 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/db/client";
 import { conversations, messages } from "@/db/schema/conversations";
@@ -10,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SpendChart } from "@/components/dashboard/statistics/spend-chart";
 import { ThreadsChart } from "@/components/dashboard/statistics/threads-chart";
 import { ExportCsvButton } from "@/components/dashboard/statistics/export-csv-button";
+import { ModelSpendBreakdown } from "@/components/dashboard/statistics/model-spend-breakdown";
 
 const RANGES = ["7d", "30d", "month"] as const;
 type Range = (typeof RANGES)[number];
@@ -53,6 +55,7 @@ export default async function StatisticsPage({
       costUsd: messages.estimatedCostUsd,
       createdAt: messages.createdAt,
       conversationId: messages.conversationId,
+      model: aiAgents.model,
     })
     .from(messages)
     .innerJoin(conversations, eq(messages.conversationId, conversations.id))
@@ -73,6 +76,7 @@ export default async function StatisticsPage({
     .where(and(eq(aiAgents.organizationId, organization.id), gte(conversations.startedAt, previousStart)));
 
   const dailyCost = new Map<string, number>();
+  const costByModel = new Map<string, number>();
   let currentTotal = 0;
   let previousTotal = 0;
   for (const row of costRows) {
@@ -81,6 +85,7 @@ export default async function StatisticsPage({
       currentTotal += cost;
       const key = dayKey(row.createdAt);
       dailyCost.set(key, (dailyCost.get(key) ?? 0) + cost);
+      costByModel.set(row.model, (costByModel.get(row.model) ?? 0) + cost);
     } else {
       previousTotal += cost;
     }
@@ -130,12 +135,25 @@ export default async function StatisticsPage({
   const avgDailySpend = currentTotal / periodDays;
   const forecastTotal = avgDailySpend * daysLeftInMonth;
 
+  const modelSpendRows = [...costByModel.entries()]
+    .map(([model, costUsd]) => ({
+      model,
+      costUsd,
+      percent: currentTotal > 0 ? (costUsd / currentTotal) * 100 : 0,
+    }))
+    .sort((a, b) => b.costUsd - a.costUsd);
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold">{t("title")}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+        <div className="flex items-start gap-3">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+            <BarChart3 className="size-5" />
+          </span>
+          <div>
+            <h1 className="text-xl font-semibold">{t("title")}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+          </div>
         </div>
         <ExportCsvButton rows={csvRows} label={t("export")} />
       </div>
@@ -185,6 +203,18 @@ export default async function StatisticsPage({
           <SpendChart data={spendSeries} />
         </CardContent>
       </Card>
+
+      {modelSpendRows.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("modelSpend.title")}</CardTitle>
+            <p className="text-sm text-muted-foreground">{t("modelSpend.subtitle")}</p>
+          </CardHeader>
+          <CardContent>
+            <ModelSpendBreakdown rows={modelSpendRows} />
+          </CardContent>
+        </Card>
+      )}
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
