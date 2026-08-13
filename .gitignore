@@ -50,3 +50,4 @@ next-env.d.ts
 # Claude Code local tooling (worktrees, SDD ledgers/reports) — never shipped
 .claude/
 .superpowers/
+.worktrees/
