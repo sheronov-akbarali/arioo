@@ -310,7 +310,13 @@
       "title": "Team members",
       "emailPlaceholder": "email@example.com",
       "invite": "Send invite",
-      "pending": "pending"
+      "pending": "pending",
+      "roles": {
+        "owner": "Owner",
+        "admin": "Admin",
+        "member": "Member"
+      },
+      "membersFound": "{count} members"
     }
   },
   "dashboard": {

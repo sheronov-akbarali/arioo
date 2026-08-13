@@ -310,7 +310,13 @@
       "title": "Участники команды",
       "emailPlaceholder": "email@example.com",
       "invite": "Отправить приглашение",
-      "pending": "ожидает"
+      "pending": "ожидает",
+      "roles": {
+        "owner": "Владелец",
+        "admin": "Администратор",
+        "member": "Участник"
+      },
+      "membersFound": "Участников: {count}"
     }
   },
   "dashboard": {

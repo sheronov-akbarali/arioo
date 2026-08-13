@@ -310,7 +310,13 @@
       "title": "Jamoa a'zolari",
       "emailPlaceholder": "email@misol.uz",
       "invite": "Taklif yuborish",
-      "pending": "kutilmoqda"
+      "pending": "kutilmoqda",
+      "roles": {
+        "owner": "Egasi",
+        "admin": "Administrator",
+        "member": "A'zo"
+      },
+      "membersFound": "{count} ta a'zo"
     }
   },
   "dashboard": {
