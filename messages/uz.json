@@ -592,7 +592,17 @@
     "dailyLimit": "Kunlik limit",
     "monthlyLimit": "Oylik limit",
     "operationsTitle": "Referral operatsiyalari",
-    "operationsEmpty": "Hozircha hisoblanganlar yo'q."
+    "operationsEmpty": "Hozircha hisoblanganlar yo'q.",
+    "linkLabels": {
+      "home": "Bosh sahifa",
+      "signUp": "Ro'yxatdan o'tish sahifasi"
+    },
+    "periodFilters": {
+      "all": "Barchasi",
+      "today": "Bugun",
+      "week": "Bu hafta",
+      "month": "Bu oy"
+    }
   },
   "products": {
     "title": "Mahsulotlar",

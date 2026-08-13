@@ -592,7 +592,17 @@
     "dailyLimit": "Daily limit",
     "monthlyLimit": "Monthly limit",
     "operationsTitle": "Referral operations",
-    "operationsEmpty": "No accruals found yet."
+    "operationsEmpty": "No accruals found yet.",
+    "linkLabels": {
+      "home": "Home page",
+      "signUp": "Sign-up page"
+    },
+    "periodFilters": {
+      "all": "All time",
+      "today": "Today",
+      "week": "This week",
+      "month": "This month"
+    }
   },
   "products": {
     "title": "Products",

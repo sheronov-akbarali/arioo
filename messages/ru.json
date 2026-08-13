@@ -592,7 +592,17 @@
     "dailyLimit": "Дневной лимит",
     "monthlyLimit": "Месячный лимит",
     "operationsTitle": "Реферальные операции",
-    "operationsEmpty": "Начислений пока нет."
+    "operationsEmpty": "Начислений пока нет.",
+    "linkLabels": {
+      "home": "Главная страница",
+      "signUp": "Страница регистрации"
+    },
+    "periodFilters": {
+      "all": "Все время",
+      "today": "Сегодня",
+      "week": "Эта неделя",
+      "month": "Этот месяц"
+    }
   },
   "products": {
     "title": "Продукты",
