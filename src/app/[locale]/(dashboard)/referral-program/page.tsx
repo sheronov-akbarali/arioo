@@ -1,9 +1,11 @@
 import { and, desc, eq, gte } from "drizzle-orm";
+import { Link2 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/db/client";
 import { referralOperations } from "@/db/schema/referrals";
 import { requireOrganization } from "@/lib/auth/dal";
 import { getOrCreateReferralAccount } from "@/lib/referrals/queries";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CopyLinkButton } from "@/components/dashboard/copy-link-button";
@@ -13,10 +15,13 @@ const MONTHLY_LIMIT = 1000;
 
 export default async function ReferralProgramPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ period?: string }>;
 }) {
   const { locale } = await params;
+  const { period } = await searchParams;
   const { organization } = await requireOrganization(locale);
   const t = await getTranslations("referralProgram");
 
@@ -26,11 +31,32 @@ export default async function ReferralProgramPage({
   const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   const startOfMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
 
+  const PERIODS = ["all", "today", "week", "month"] as const;
+  const activePeriod = PERIODS.find((p) => p === period) ?? "all";
+
+  const dayOfWeek = now.getUTCDay();
+  const daysSinceMonday = (dayOfWeek + 6) % 7;
+  const startOfWeek = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - daysSinceMonday));
+
+  const periodStart =
+    activePeriod === "today"
+      ? startOfDay
+      : activePeriod === "week"
+        ? startOfWeek
+        : activePeriod === "month"
+          ? startOfMonth
+          : null;
+
   const [operations, todayOps, monthOps] = await Promise.all([
     db
       .select()
       .from(referralOperations)
-      .where(eq(referralOperations.organizationId, organization.id))
+      .where(
+        and(
+          eq(referralOperations.organizationId, organization.id),
+          periodStart ? gte(referralOperations.createdAt, periodStart) : undefined,
+        ),
+      )
       .orderBy(desc(referralOperations.createdAt))
       .limit(50),
     db
@@ -52,9 +78,14 @@ export default async function ReferralProgramPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-xl font-semibold">{t("title")}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+      <div className="flex items-start gap-3">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+          <Link2 className="size-5" />
+        </span>
+        <div>
+          <h1 className="text-xl font-semibold">{t("title")}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-4">
@@ -94,22 +125,28 @@ export default async function ReferralProgramPage({
           <CardTitle>{t("linksTitle")}</CardTitle>
           <p className="text-sm text-muted-foreground">{t("linksSubtitle")}</p>
         </CardHeader>
-        <CardContent className="flex flex-wrap gap-3">
-          <div className="flex items-center gap-2">
-            <span className="rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground">
-              {`/${locale}?ref=${account.code}`}
-            </span>
-            <CopyLinkButton path={`/${locale}?ref=${account.code}`} label={t("copy")} copiedLabel={t("copied")} />
+        <CardContent className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <p className="text-xs font-medium text-muted-foreground">{t("linkLabels.home")}</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground">
+                {`/${locale}?ref=${account.code}`}
+              </span>
+              <CopyLinkButton path={`/${locale}?ref=${account.code}`} label={t("copy")} copiedLabel={t("copied")} />
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground">
-              {`/${locale}/sign-up?ref=${account.code}`}
-            </span>
-            <CopyLinkButton
-              path={`/${locale}/sign-up?ref=${account.code}`}
-              label={t("copy")}
-              copiedLabel={t("copied")}
-            />
+          <div className="flex flex-col gap-1.5">
+            <p className="text-xs font-medium text-muted-foreground">{t("linkLabels.signUp")}</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground">
+                {`/${locale}/sign-up?ref=${account.code}`}
+              </span>
+              <CopyLinkButton
+                path={`/${locale}/sign-up?ref=${account.code}`}
+                label={t("copy")}
+                copiedLabel={t("copied")}
+              />
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -149,6 +186,18 @@ export default async function ReferralProgramPage({
           </div>
         </CardContent>
       </Card>
+
+      <div className="flex flex-wrap gap-2">
+        {PERIODS.map((p) => (
+          <Button
+            key={p}
+            size="sm"
+            variant={activePeriod === p ? "default" : "outline"}
+            nativeButton={false}
+            render={<Link href={p === "all" ? "/referral-program" : `/referral-program?period=${p}`}>{t(`periodFilters.${p}`)}</Link>}
+          />
+        ))}
+      </div>
 
       <Card>
         <CardHeader>
