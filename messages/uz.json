@@ -384,34 +384,15 @@
       }
     },
     "detail": {
-      "nameLabel": "Nomi",
-      "roleLabel": "Rol",
-      "systemPromptLabel": "Tizim prompti",
-      "modelLabel": "Model",
-      "save": "Saqlash",
-      "knowledgeLink": "Bilim bazasi",
-      "chatLink": "Sinash",
-      "roles": {
-        "sales": "Sotuv",
-        "support": "Qo'llab-quvvatlash",
-        "hr": "HR",
-        "marketing": "Marketing"
+      "tabs": {
+        "ai": "AI",
+        "chats": "Chatlar",
+        "calls": "Qo'ng'iroqlar",
+        "knowledge": "Bilim bazalari"
       },
-      "tools": {
-        "title": "Integratsiyalar (Tools)",
-        "subtitle": "Agent qaysi vositalardan foydalana olishini tanlang",
-        "comingSoon": "Tez orada",
-        "groups": {
-          "internalSystem": "Ichki tizim",
-          "googleSheets": "Google Sheets/Drive",
-          "github": "GitHub"
-        },
-        "descriptions": {
-          "internalSystem": "Tashkilot va jamoa ma'lumotlarini boshqarish",
-          "googleSheets": "Jadval va fayllarni o'qish/yozish",
-          "github": "Repozitoriy va kod bilan ishlash"
-        }
-      }
+      "connect": "Ulash",
+      "test": "Sinab ko'rish",
+      "noChannelsConnected": "Kanallar ulanmagan"
     },
     "knowledge": {
       "title": "Bilim bazasi",

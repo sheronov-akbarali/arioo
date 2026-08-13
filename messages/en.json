@@ -384,34 +384,15 @@
       }
     },
     "detail": {
-      "nameLabel": "Name",
-      "roleLabel": "Role",
-      "systemPromptLabel": "System prompt",
-      "modelLabel": "Model",
-      "save": "Save",
-      "knowledgeLink": "Knowledge base",
-      "chatLink": "Try it",
-      "roles": {
-        "sales": "Sales",
-        "support": "Support",
-        "hr": "HR",
-        "marketing": "Marketing"
+      "tabs": {
+        "ai": "AI",
+        "chats": "Chats",
+        "calls": "Calls",
+        "knowledge": "Knowledge bases"
       },
-      "tools": {
-        "title": "Integrations (Tools)",
-        "subtitle": "Choose which tools the assistant can use",
-        "comingSoon": "Coming soon",
-        "groups": {
-          "internalSystem": "Internal system",
-          "googleSheets": "Google Sheets/Drive",
-          "github": "GitHub"
-        },
-        "descriptions": {
-          "internalSystem": "Manage organization and team data",
-          "googleSheets": "Read and write spreadsheets and files",
-          "github": "Work with repositories and code"
-        }
-      }
+      "connect": "Connect",
+      "test": "Test",
+      "noChannelsConnected": "No channels connected"
     },
     "knowledge": {
       "title": "Knowledge base",

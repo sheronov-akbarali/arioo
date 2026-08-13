@@ -384,34 +384,15 @@
       }
     },
     "detail": {
-      "nameLabel": "Название",
-      "roleLabel": "Роль",
-      "systemPromptLabel": "Системный промпт",
-      "modelLabel": "Модель",
-      "save": "Сохранить",
-      "knowledgeLink": "База знаний",
-      "chatLink": "Проверить",
-      "roles": {
-        "sales": "Продажи",
-        "support": "Поддержка",
-        "hr": "HR",
-        "marketing": "Маркетинг"
+      "tabs": {
+        "ai": "ИИ",
+        "chats": "Чаты",
+        "calls": "Звонки",
+        "knowledge": "Базы знаний"
       },
-      "tools": {
-        "title": "Интеграции (Tools)",
-        "subtitle": "Выберите, какими инструментами может пользоваться агент",
-        "comingSoon": "Скоро",
-        "groups": {
-          "internalSystem": "Внутренняя система",
-          "googleSheets": "Google Sheets/Drive",
-          "github": "GitHub"
-        },
-        "descriptions": {
-          "internalSystem": "Управление данными организации и команды",
-          "googleSheets": "Чтение и запись таблиц и файлов",
-          "github": "Работа с репозиториями и кодом"
-        }
-      }
+      "connect": "Подключить",
+      "test": "Протестировать",
+      "noChannelsConnected": "Каналы не подключены"
     },
     "knowledge": {
       "title": "База знаний",
