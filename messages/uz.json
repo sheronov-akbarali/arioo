@@ -425,7 +425,14 @@
       "placeholder": "Xabar yozing...",
       "send": "Yuborish",
       "error": "Javob olishda xatolik, qayta urinib ko'ring."
-    }
+    },
+    "searchPlaceholder": "Nomi bo'yicha qidirish...",
+    "statusLabels": {
+      "draft": "Qoralama",
+      "active": "Faol"
+    },
+    "copyId": "ID nusxalash",
+    "idCopied": "Nusxalandi"
   },
   "approvals": {
     "title": "Tasdiqlash navbati",
@@ -536,14 +543,16 @@
     "emptyHint": "AI xodim bilan birinchi suhbatni playgroundda boshlang.",
     "noMessages": "Xabarlar yo'q",
     "system": "Tizim",
-    "continueInPlayground": "Playgroundda davom ettirish →"
+    "continueInPlayground": "Playgroundda davom ettirish →",
+    "searchPlaceholder": "Agent yoki xabar bo'yicha qidirish..."
   },
   "knowledgeBases": {
     "title": "Bilim bazasi",
     "subtitle": "AI Xodimlaringizga yuklangan hujjatlar.",
     "empty": "Hali hujjat yuklanmagan.",
     "emptyHint": "AI xodim sahifasida bilim bazasiga birinchi hujjatingizni yuklang.",
-    "manage": "Boshqarish →"
+    "manage": "Boshqarish →",
+    "searchPlaceholder": "Fayl nomi bo'yicha qidirish..."
   },
   "affiliateProgram": {
     "title": "Hamkorlik dasturi",

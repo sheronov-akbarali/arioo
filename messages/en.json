@@ -425,7 +425,14 @@
       "placeholder": "Type a message...",
       "send": "Send",
       "error": "Failed to get a response, please try again."
-    }
+    },
+    "searchPlaceholder": "Search by name...",
+    "statusLabels": {
+      "draft": "Draft",
+      "active": "Active"
+    },
+    "copyId": "Copy ID",
+    "idCopied": "Copied"
   },
   "approvals": {
     "title": "Approvals queue",
@@ -536,14 +543,16 @@
     "emptyHint": "Start your first conversation with an AI employee in the playground.",
     "noMessages": "No messages",
     "system": "System",
-    "continueInPlayground": "Continue in playground →"
+    "continueInPlayground": "Continue in playground →",
+    "searchPlaceholder": "Search by agent or message..."
   },
   "knowledgeBases": {
     "title": "Knowledge base",
     "subtitle": "Documents uploaded to your AI employees.",
     "empty": "No documents uploaded yet.",
     "emptyHint": "Upload your first document to a knowledge base from an AI employee's page.",
-    "manage": "Manage →"
+    "manage": "Manage →",
+    "searchPlaceholder": "Search by filename..."
   },
   "affiliateProgram": {
     "title": "Partner program",
