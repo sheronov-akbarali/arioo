@@ -11,13 +11,7 @@ import { getSiteAnalytics } from "@/lib/analytics/web-analytics";
 import { db } from "@/db/client";
 import { telegramChannelConnections } from "@/db/schema/telegram-channel-connection";
 import { getTelegramChannelStats } from "@/lib/telegram/channel-stats";
-import { TelegramConnectForm } from "@/components/dashboard/statistics/telegram-connect-form";
-import {
-  startTelegramConnection,
-  submitTelegramCode,
-  submitTelegramPassword,
-  disconnectTelegramChannel,
-} from "@/lib/telegram/mtproto-actions";
+import { disconnectTelegramChannel } from "@/lib/telegram/mtproto-actions";
 import { MockConnectButton } from "@/components/dashboard/statistics/mock-connect-button";
 
 export default async function MarketingStatisticsPage({
@@ -197,11 +191,12 @@ export default async function MarketingStatisticsPage({
               </div>
             )
           ) : (
-            <TelegramConnectForm
-              startAction={startTelegramConnection.bind(null, locale)}
-              submitCodeAction={submitTelegramCode.bind(null, locale)}
-              submitPasswordAction={submitTelegramPassword.bind(null, locale)}
-            />
+            <div className="flex flex-col gap-2">
+              <p className="text-sm text-muted-foreground">{t("marketing.telegram.connectElsewhere")}</p>
+              <Button size="sm" variant="outline" className="w-fit" render={<Link href="/integrations" />}>
+                {t("marketing.telegram.goToIntegrations")}
+              </Button>
+            </div>
           )}
         </CardContent>
       </Card>

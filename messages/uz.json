@@ -670,7 +670,9 @@
         "views": "ko'rish",
         "notEnoughSubscribers": "Kanalingiz hali Telegram statistikasiga ega emas (odatda 500+ obunachi kerak).",
         "genericError": "Statistikani yuklab bo'lmadi.",
-        "disconnect": "Uzish"
+        "disconnect": "Uzish",
+        "connectElsewhere": "Telegram statistikasini ko'rish uchun avval Integratsiyalar sahifasida ulang.",
+        "goToIntegrations": "Integratsiyalarga o'tish"
       },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",

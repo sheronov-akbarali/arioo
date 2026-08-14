@@ -667,7 +667,9 @@
         "views": "просмотров",
         "notEnoughSubscribers": "У вашего канала пока нет статистики Telegram (обычно нужно 500+ подписчиков).",
         "genericError": "Не удалось загрузить статистику.",
-        "disconnect": "Отключить"
+        "disconnect": "Отключить",
+        "connectElsewhere": "Чтобы увидеть статистику Telegram, сначала подключите канал на странице Интеграции.",
+        "goToIntegrations": "Перейти к интеграциям"
       },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",

@@ -669,7 +669,9 @@
         "views": "views",
         "notEnoughSubscribers": "Your channel doesn't have Telegram statistics yet (usually needs 500+ subscribers).",
         "genericError": "Couldn't load statistics.",
-        "disconnect": "Disconnect"
+        "disconnect": "Disconnect",
+        "connectElsewhere": "Connect your channel on the Integrations page first to see Telegram statistics.",
+        "goToIntegrations": "Go to Integrations"
       },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
