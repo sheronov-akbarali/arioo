@@ -39,6 +39,7 @@ export async function finalizeConnection(params: {
         lastError: "not_channel_admin",
         sessionSecretEncrypted: null,
         phoneCodeHash: null,
+        phone: null,
         updatedAt: new Date(),
       })
       .where(eq(telegramChannelConnections.organizationId, organizationId));
@@ -53,6 +54,7 @@ export async function finalizeConnection(params: {
       channelTitle: chat?.title ?? channelUsername,
       sessionSecretEncrypted: encryptSessionSecret(sessionString),
       phoneCodeHash: null,
+      phone: null,
       lastError: null,
       lastSyncedAt: new Date(),
       updatedAt: new Date(),

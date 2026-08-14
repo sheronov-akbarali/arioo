@@ -41,7 +41,7 @@ describe("finalizeConnection", () => {
 
     expect(result).toEqual({ status: "connected" });
     expect(dbUpdateSet).toHaveBeenCalledWith(
-      expect.objectContaining({ status: "connected", channelTitle: "Arioo kanali" }),
+      expect.objectContaining({ status: "connected", channelTitle: "Arioo kanali", phone: null }),
     );
     expect(invoke).toHaveBeenCalledTimes(2);
   });
@@ -61,6 +61,6 @@ describe("finalizeConnection", () => {
     expect(result.status).toBe("error");
     expect(invoke).toHaveBeenCalledTimes(3);
     expect(invoke.mock.calls[2][0].className).toBe("auth.LogOut");
-    expect(dbUpdateSet).toHaveBeenCalledWith(expect.objectContaining({ status: "error" }));
+    expect(dbUpdateSet).toHaveBeenCalledWith(expect.objectContaining({ status: "error", phone: null }));
   });
 });

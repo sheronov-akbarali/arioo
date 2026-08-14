@@ -42,6 +42,7 @@ export async function startTelegramConnection(
         organizationId: organization.id,
         channelUsername,
         phoneMasked: maskPhone(phone),
+        phone,
         sessionSecretEncrypted: encryptSessionSecret(sessionString),
         phoneCodeHash,
         status: "pending_code",
@@ -51,6 +52,7 @@ export async function startTelegramConnection(
         set: {
           channelUsername,
           phoneMasked: maskPhone(phone),
+          phone,
           sessionSecretEncrypted: encryptSessionSecret(sessionString),
           phoneCodeHash,
           status: "pending_code",
@@ -89,7 +91,7 @@ export async function submitTelegramCode(
   try {
     await client.invoke(
       new Api.auth.SignIn({
-        phoneNumber: connection.phoneMasked ?? undefined,
+        phoneNumber: connection.phone ?? undefined,
         phoneCodeHash: connection.phoneCodeHash ?? "",
         phoneCode: code,
       }),

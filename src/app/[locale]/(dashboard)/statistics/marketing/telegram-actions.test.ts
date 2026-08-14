@@ -67,6 +67,10 @@ dbSelectWhere.mockResolvedValue([
     sessionSecretEncrypted: encryptSessionSecret("mid-session-string"),
     channelUsername: "arioo_uz",
     phoneMasked: "+998***67",
+    // Real, unmasked phone — required for Api.auth.SignIn's phoneNumber to
+    // match what sendCode() was originally called with. phoneMasked is
+    // display-only and must never be sent back to Telegram's API.
+    phone: "+998901234567",
   },
 ]);
 
@@ -98,6 +102,12 @@ describe("submitTelegramCode", () => {
     const result = await submitTelegramCode("uz", { status: "pending_code" }, formData);
 
     expect(result).toEqual({ status: "connected" });
+    // Api.auth.SignIn must receive the real phone number, not the
+    // display-formatted phoneMasked string — Telegram matches it against
+    // the number sendCode() was originally called with.
+    expect(invoke).toHaveBeenCalledWith(
+      expect.objectContaining({ phoneNumber: "+998901234567", phoneCode: "12345" }),
+    );
   });
 
   it("returns pending_password when Telegram requires 2FA", async () => {

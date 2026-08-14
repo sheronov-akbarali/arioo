@@ -17,6 +17,7 @@ export const telegramChannelConnections = pgTable("telegram_channel_connection",
   channelUsername: text("channelUsername").notNull(),
   channelTitle: text("channelTitle"),
   phoneMasked: text("phoneMasked"),
+  phone: text("phone"),
   // Encrypted MTProto session string (AES-256-GCM, see session-crypto.ts).
   // Populated as soon as step 1 connects, then overwritten at each step.
   sessionSecretEncrypted: text("sessionSecretEncrypted"),
