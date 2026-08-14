@@ -15,4 +15,5 @@ export * from "./products";
 export * from "./referrals";
 export * from "./telegram-channel-connection";
 export * from "./channels";
+export * from "./integrations";
 export { crmContacts, crmDeals, crmDealStatusEnum } from "./crm";
