@@ -10,3 +10,4 @@ export * from "./billing";
 export * from "./routines";
 export * from "./products";
 export * from "./referrals";
+export * from "./telegram-channel-connection";
