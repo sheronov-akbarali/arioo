@@ -782,8 +782,11 @@ export async function disconnectTelegramChannel(locale: string): Promise<void> {
   await db
     .delete(telegramChannelConnections)
     .where(eq(telegramChannelConnections.organizationId, organization.id));
+  revalidatePath(`/${locale}/statistics/marketing`);
 }
 ```
+
+Add `import { revalidatePath } from "next/cache";` to this file's import block (alongside the existing `eq`/`Api`/`db` imports), matching the pattern already used in `src/app/[locale]/(dashboard)/assistants/[agentId]/knowledge/actions.ts`.
 
 - [ ] **Step 4: Run test to verify it passes**
 
@@ -1100,8 +1103,16 @@ import { db } from "@/db/client";
 import { telegramChannelConnections } from "@/db/schema/telegram-channel-connection";
 import { getTelegramChannelStats } from "@/lib/telegram/channel-stats";
 import { TelegramConnectForm } from "@/components/dashboard/statistics/telegram-connect-form";
-import { startTelegramConnection, submitTelegramCode, submitTelegramPassword } from "./telegram-actions";
+import { Button } from "@/components/ui/button";
+import {
+  startTelegramConnection,
+  submitTelegramCode,
+  submitTelegramPassword,
+  disconnectTelegramChannel,
+} from "./telegram-actions";
 ```
+
+`Button` may already be imported in this file (it's used by the existing range-picker buttons) — if so, don't duplicate the import, just add it to the existing `@/components/ui/button` import line.
 
 Change the existing `await requireOrganization(locale);` line (currently discarding the result) to capture the organization, since the Telegram lookup needs its id:
 ```ts
@@ -1145,9 +1156,21 @@ Add a new `<Card>` after the "Sayt" card, before the "channels" placeholder card
               </li>
             ))}
           </ul>
+          <form action={disconnectTelegramChannel.bind(null, locale)}>
+            <Button type="submit" size="sm" variant="outline" className="w-fit">
+              {t("marketing.telegram.disconnect")}
+            </Button>
+          </form>
         </div>
       ) : (
-        <p className="text-sm text-muted-foreground">{t("marketing.telegram.notEnoughSubscribers")}</p>
+        <div className="flex flex-col gap-3">
+          <p className="text-sm text-muted-foreground">{t("marketing.telegram.notEnoughSubscribers")}</p>
+          <form action={disconnectTelegramChannel.bind(null, locale)}>
+            <Button type="submit" size="sm" variant="outline" className="w-fit">
+              {t("marketing.telegram.disconnect")}
+            </Button>
+          </form>
+        </div>
       )
     ) : (
       <TelegramConnectForm
@@ -1170,6 +1193,7 @@ Add to `messages/uz.json` under `statistics.marketing` (alongside the existing `
   "members": "A'zolar",
   "views": "ko'rish",
   "notEnoughSubscribers": "Kanalingiz hali Telegram statistikasiga ega emas (odatda 500+ obunachi kerak).",
+  "disconnect": "Uzish",
   "connect": {
     "riskWarning": "Diqqat: bu shaxsiy Telegram akkountingizni ulaydi. Telegram bunday avtomatlashtirishni cheklashi mumkin — xavf faqat ulangan akkauntga tegishli.",
     "phoneLabel": "Telefon raqami",
@@ -1198,6 +1222,7 @@ Add the equivalent `ru` translation to `messages/ru.json`:
   "members": "Участники",
   "views": "просмотров",
   "notEnoughSubscribers": "У вашего канала пока нет статистики Telegram (обычно нужно 500+ подписчиков).",
+  "disconnect": "Отключить",
   "connect": {
     "riskWarning": "Внимание: это подключит ваш личный аккаунт Telegram. Telegram может ограничить такую автоматизацию — риск касается только подключённого аккаунта.",
     "phoneLabel": "Номер телефона",
@@ -1226,6 +1251,7 @@ Add the equivalent `en` translation to `messages/en.json`:
   "members": "Members",
   "views": "views",
   "notEnoughSubscribers": "Your channel doesn't have Telegram statistics yet (usually needs 500+ subscribers).",
+  "disconnect": "Disconnect",
   "connect": {
     "riskWarning": "Note: this connects your personal Telegram account. Telegram may restrict this kind of automation — the risk applies only to the connected account.",
     "phoneLabel": "Phone number",
