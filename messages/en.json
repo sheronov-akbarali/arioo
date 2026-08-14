@@ -660,6 +660,31 @@
         "topPages": "Top pages",
         "topReferrers": "Top referrers"
       },
+      "telegram": {
+        "title": "Telegram",
+        "subtitle": "Member and post statistics for your channel.",
+        "members": "Members",
+        "views": "views",
+        "notEnoughSubscribers": "Your channel doesn't have Telegram statistics yet (usually needs 500+ subscribers).",
+        "disconnect": "Disconnect",
+        "connect": {
+          "riskWarning": "Note: this connects your personal Telegram account. Telegram may restrict this kind of automation — the risk applies only to the connected account.",
+          "phoneLabel": "Phone number",
+          "channelLabel": "Channel username (without @)",
+          "codeLabel": "Code from Telegram",
+          "passwordLabel": "Two-factor password",
+          "start": "Connect",
+          "confirm": "Confirm",
+          "submitting": "Submitting...",
+          "connected": "Telegram channel connected.",
+          "errors": {
+            "missing_fields": "Phone and channel username are required.",
+            "invalid_code": "Incorrect code. Try again.",
+            "invalid_password": "Incorrect password. Try again.",
+            "not_channel_admin": "This account is not an admin of the given channel."
+          }
+        }
+      },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
         "subtitle": "Analytics for your other marketing channels.",

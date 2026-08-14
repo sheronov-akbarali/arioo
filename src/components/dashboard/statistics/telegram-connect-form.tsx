@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,29 +28,27 @@ export function TelegramConnectForm({
   const [codeState, codeFormAction, codePending] = useActionState(submitCodeAction, IDLE);
   const [passwordState, passwordFormAction, passwordPending] = useActionState(submitPasswordAction, IDLE);
 
-  const [step, setStep] = useState<"start" | "code" | "password" | "connected" | "error">("start");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // Derived from the three action states rather than tracked in its own state — later
+  // actions (password, then code, then start) take priority, mirroring the order in
+  // which a user progresses through the flow.
+  let step: "start" | "code" | "password" | "connected" | "error" = "start";
+  let errorMessage: string | null = null;
 
-  useEffect(() => {
-    if (startState.status === "pending_code") setStep("code");
-  }, [startState]);
-
-  useEffect(() => {
-    if (codeState.status === "pending_password") setStep("password");
-    else if (codeState.status === "connected") setStep("connected");
-    else if (codeState.status === "error") {
-      setStep("error");
-      setErrorMessage(codeState.error);
-    }
-  }, [codeState]);
-
-  useEffect(() => {
-    if (passwordState.status === "connected") setStep("connected");
-    else if (passwordState.status === "error") {
-      setStep("error");
-      setErrorMessage(passwordState.error);
-    }
-  }, [passwordState]);
+  if (startState.status === "pending_code") step = "code";
+  if (codeState.status === "pending_password") {
+    step = "password";
+  } else if (codeState.status === "connected") {
+    step = "connected";
+  } else if (codeState.status === "error") {
+    step = "error";
+    errorMessage = codeState.error;
+  }
+  if (passwordState.status === "connected") {
+    step = "connected";
+  } else if (passwordState.status === "error") {
+    step = "error";
+    errorMessage = passwordState.error;
+  }
 
   if (step === "connected") {
     return <p className="text-sm text-brand">{t("connected")}</p>;

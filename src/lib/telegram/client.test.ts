@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 
 const { connectMock, TelegramClientMock } = vi.hoisted(() => {
   const connectMock = vi.fn().mockResolvedValue(undefined);
-  const TelegramClientMock = vi.fn(function (this: any) {
+  const TelegramClientMock = vi.fn(function (this: Record<string, unknown>) {
     this.connect = connectMock;
   });
   return { connectMock, TelegramClientMock };
@@ -10,7 +10,7 @@ const { connectMock, TelegramClientMock } = vi.hoisted(() => {
 
 vi.mock("telegram", () => ({ TelegramClient: TelegramClientMock }));
 vi.mock("telegram/sessions", () => {
-  const StringSessionMock = vi.fn(function (this: any, s: string) {
+  const StringSessionMock = vi.fn(function (this: Record<string, unknown>, s: string) {
     this.__session = s;
   });
   return { StringSession: StringSessionMock };

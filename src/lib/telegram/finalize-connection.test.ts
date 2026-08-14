@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import type { TelegramClient } from "telegram";
 
 process.env.TELEGRAM_SESSION_ENCRYPTION_KEY = Buffer.alloc(32, 9).toString("base64");
 
@@ -14,7 +15,7 @@ const invoke = vi.fn();
 const sessionSave = vi.fn().mockReturnValue("final-session-string");
 
 function makeClient() {
-  return { invoke, session: { save: sessionSave } } as any;
+  return { invoke, session: { save: sessionSave } } as unknown as TelegramClient;
 }
 
 import { finalizeConnection } from "./finalize-connection";

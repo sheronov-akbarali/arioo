@@ -1,5 +1,6 @@
 import { Megaphone } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { eq } from "drizzle-orm";
 import { requireOrganization } from "@/lib/auth/dal";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatisticsTabs } from "@/components/dashboard/statistics/statistics-tabs";
 import { STATISTICS_RANGES as RANGES, parseStatisticsRange, statisticsWindow } from "@/lib/statistics/date-range";
 import { getSiteAnalytics } from "@/lib/analytics/web-analytics";
+import { db } from "@/db/client";
+import { telegramChannelConnections } from "@/db/schema/telegram-channel-connection";
+import { getTelegramChannelStats } from "@/lib/telegram/channel-stats";
+import { TelegramConnectForm } from "@/components/dashboard/statistics/telegram-connect-form";
+import {
+  startTelegramConnection,
+  submitTelegramCode,
+  submitTelegramPassword,
+  disconnectTelegramChannel,
+} from "./telegram-actions";
 
 export default async function MarketingStatisticsPage({
   params,
@@ -17,12 +28,25 @@ export default async function MarketingStatisticsPage({
 }) {
   const { locale } = await params;
   const { range: rawRange } = await searchParams;
-  await requireOrganization(locale);
+  const { organization } = await requireOrganization(locale);
   const t = await getTranslations("statistics");
 
   const range = parseStatisticsRange(rawRange);
   const { currentStart, currentEnd, previousStart } = statisticsWindow(range, new Date());
   const site = await getSiteAnalytics(currentStart, currentEnd, previousStart);
+
+  const [telegramConnection] = await db
+    .select()
+    .from(telegramChannelConnections)
+    .where(eq(telegramChannelConnections.organizationId, organization.id));
+
+  const telegramStats =
+    telegramConnection?.status === "connected" && telegramConnection.sessionSecretEncrypted
+      ? await getTelegramChannelStats({
+          channelUsername: telegramConnection.channelUsername,
+          sessionSecretEncrypted: telegramConnection.sessionSecretEncrypted,
+        })
+      : null;
 
   const formatNumber = (value: number) => new Intl.NumberFormat(locale).format(value);
   const changePct = (current: number, previous: number) =>
@@ -124,6 +148,55 @@ export default async function MarketingStatisticsPage({
                 </div>
               </div>
             </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("marketing.telegram.title")}</CardTitle>
+          <p className="text-sm text-muted-foreground">{t("marketing.telegram.subtitle")}</p>
+        </CardHeader>
+        <CardContent>
+          {telegramConnection?.status === "connected" ? (
+            telegramStats?.available ? (
+              <div className="flex flex-col gap-3">
+                <p className="text-sm">
+                  {t("marketing.telegram.members")}:{" "}
+                  <span className="font-medium">{formatNumber(telegramStats.memberCount)}</span>
+                </p>
+                <ul className="divide-y divide-border rounded-lg border border-border">
+                  {telegramStats.recentPosts.map((post) => (
+                    <li key={post.id} className="flex items-center justify-between px-3 py-2 text-sm">
+                      <span className="text-muted-foreground">#{post.id}</span>
+                      <span className="font-medium">
+                        {formatNumber(post.views)} {t("marketing.telegram.views")}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <form action={disconnectTelegramChannel.bind(null, locale)}>
+                  <Button type="submit" size="sm" variant="outline" className="w-fit">
+                    {t("marketing.telegram.disconnect")}
+                  </Button>
+                </form>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <p className="text-sm text-muted-foreground">{t("marketing.telegram.notEnoughSubscribers")}</p>
+                <form action={disconnectTelegramChannel.bind(null, locale)}>
+                  <Button type="submit" size="sm" variant="outline" className="w-fit">
+                    {t("marketing.telegram.disconnect")}
+                  </Button>
+                </form>
+              </div>
+            )
+          ) : (
+            <TelegramConnectForm
+              startAction={startTelegramConnection.bind(null, locale)}
+              submitCodeAction={submitTelegramCode.bind(null, locale)}
+              submitPasswordAction={submitTelegramPassword.bind(null, locale)}
+            />
           )}
         </CardContent>
       </Card>

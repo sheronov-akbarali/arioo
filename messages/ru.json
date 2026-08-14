@@ -660,6 +660,31 @@
         "topPages": "Популярные страницы",
         "topReferrers": "Источники переходов"
       },
+      "telegram": {
+        "title": "Telegram",
+        "subtitle": "Статистика участников и постов вашего канала.",
+        "members": "Участники",
+        "views": "просмотров",
+        "notEnoughSubscribers": "У вашего канала пока нет статистики Telegram (обычно нужно 500+ подписчиков).",
+        "disconnect": "Отключить",
+        "connect": {
+          "riskWarning": "Внимание: это подключит ваш личный аккаунт Telegram. Telegram может ограничить такую автоматизацию — риск касается только подключённого аккаунта.",
+          "phoneLabel": "Номер телефона",
+          "channelLabel": "Username канала (без @)",
+          "codeLabel": "Код из Telegram",
+          "passwordLabel": "Пароль двухфакторной аутентификации",
+          "start": "Подключить",
+          "confirm": "Подтвердить",
+          "submitting": "Отправка...",
+          "connected": "Telegram-канал подключён.",
+          "errors": {
+            "missing_fields": "Укажите телефон и username канала.",
+            "invalid_code": "Неверный код. Попробуйте ещё раз.",
+            "invalid_password": "Неверный пароль. Попробуйте ещё раз.",
+            "not_channel_admin": "Этот аккаунт не является администратором указанного канала."
+          }
+        }
+      },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
         "subtitle": "Аналитика по другим маркетинговым каналам.",

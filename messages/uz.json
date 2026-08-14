@@ -660,6 +660,31 @@
         "topPages": "Eng ko'p ko'rilgan sahifalar",
         "topReferrers": "Trafik manbalari"
       },
+      "telegram": {
+        "title": "Telegram",
+        "subtitle": "Kanalingiz a'zolari va postlar statistikasi.",
+        "members": "A'zolar",
+        "views": "ko'rish",
+        "notEnoughSubscribers": "Kanalingiz hali Telegram statistikasiga ega emas (odatda 500+ obunachi kerak).",
+        "disconnect": "Uzish",
+        "connect": {
+          "riskWarning": "Diqqat: bu shaxsiy Telegram akkountingizni ulaydi. Telegram bunday avtomatlashtirishni cheklashi mumkin — xavf faqat ulangan akkauntga tegishli.",
+          "phoneLabel": "Telefon raqami",
+          "channelLabel": "Kanal username (@ belgisisiz)",
+          "codeLabel": "Telegram'dan kelgan kod",
+          "passwordLabel": "Ikki bosqichli parol",
+          "start": "Ulash",
+          "confirm": "Tasdiqlash",
+          "submitting": "Yuborilmoqda...",
+          "connected": "Telegram kanali ulandi.",
+          "errors": {
+            "missing_fields": "Telefon va kanal username kiritilishi shart.",
+            "invalid_code": "Kod noto'g'ri. Qayta urinib ko'ring.",
+            "invalid_password": "Parol noto'g'ri. Qayta urinib ko'ring.",
+            "not_channel_admin": "Bu akkaunt ko'rsatilgan kanalga admin emas."
+          }
+        }
+      },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
         "subtitle": "Boshqa marketing kanallaringiz bo'yicha analitika.",

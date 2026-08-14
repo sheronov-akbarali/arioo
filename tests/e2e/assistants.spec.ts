@@ -20,4 +20,9 @@ test.describe("assistants (unauthenticated)", () => {
     await page.goto("/uz/assistants/some-agent-id/calls");
     await expect(page).toHaveURL(/\/uz\/sign-in/);
   });
+
+  test("redirects to sign-in from /statistics/marketing", async ({ page }) => {
+    await page.goto("/uz/statistics/marketing");
+    await expect(page).toHaveURL(/\/uz\/sign-in/);
+  });
 });
