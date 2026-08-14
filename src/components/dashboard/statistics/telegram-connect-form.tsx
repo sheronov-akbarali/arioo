@@ -23,7 +23,7 @@ export function TelegramConnectForm({
   submitCodeAction: BoundAction;
   submitPasswordAction: BoundAction;
 }) {
-  const t = useTranslations("statistics.marketing.telegram.connect");
+  const t = useTranslations("integrations.telegramChoice.mtproto.connect");
   const [startState, startFormAction, startPending] = useActionState(startAction, IDLE);
   const [codeState, codeFormAction, codePending] = useActionState(submitCodeAction, IDLE);
   const [passwordState, passwordFormAction, passwordPending] = useActionState(submitPasswordAction, IDLE);

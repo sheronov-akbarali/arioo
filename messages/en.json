@@ -669,25 +669,7 @@
         "views": "views",
         "notEnoughSubscribers": "Your channel doesn't have Telegram statistics yet (usually needs 500+ subscribers).",
         "genericError": "Couldn't load statistics.",
-        "disconnect": "Disconnect",
-        "connect": {
-          "riskWarning": "Note: this connects your personal Telegram account. Telegram may restrict this kind of automation — the risk applies only to the connected account.",
-          "phoneLabel": "Phone number",
-          "channelLabel": "Channel username (without @)",
-          "codeLabel": "Code from Telegram",
-          "passwordLabel": "Two-factor password",
-          "start": "Connect",
-          "confirm": "Confirm",
-          "submitting": "Submitting...",
-          "connected": "Telegram channel connected.",
-          "errors": {
-            "missing_fields": "Phone and channel username are required.",
-            "invalid_code": "Incorrect code. Try again.",
-            "invalid_password": "Incorrect password. Try again.",
-            "not_channel_admin": "This account is not an admin of the given channel.",
-            "channel_not_found": "Channel not found."
-          }
-        }
+        "disconnect": "Disconnect"
       },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
@@ -960,6 +942,41 @@
       "calendar": "Calendar",
       "git": "Git",
       "other": "Other"
+    },
+    "telegramChoice": {
+      "title": "How should Telegram connect?",
+      "subtitle": "This provider offers several connection modes. Pick the one you need.",
+      "connect": "Connect",
+      "connected": "connected",
+      "bot": {
+        "title": "Bot (@BotFather)",
+        "description": "Via a token from BotFather. Simple messenger integration: the bot replies in direct messages, groups, and channels."
+      },
+      "mtproto": {
+        "title": "Personal account (MTProto)",
+        "description": "For channel analytics, sign in with a phone number — this is NOT a bot.",
+        "dialogTitle": "Connect Telegram (MTProto)",
+        "connectButton": "Connect",
+        "manage": "Manage",
+        "connect": {
+          "riskWarning": "Note: this connects your personal Telegram account. Telegram may restrict this kind of automation — the risk applies only to the connected account.",
+          "phoneLabel": "Phone number",
+          "channelLabel": "Channel username (without @)",
+          "codeLabel": "Code from Telegram",
+          "passwordLabel": "Two-factor password",
+          "start": "Connect",
+          "confirm": "Confirm",
+          "submitting": "Submitting...",
+          "connected": "Telegram channel connected.",
+          "errors": {
+            "missing_fields": "Phone and channel username are required.",
+            "invalid_code": "Incorrect code. Try again.",
+            "invalid_password": "Incorrect password. Try again.",
+            "not_channel_admin": "This account is not an admin of the given channel.",
+            "channel_not_found": "Channel not found."
+          }
+        }
+      }
     },
     "providers": {
       "telegram": { "name": "Telegram", "description": "Talk to customers via a Telegram bot" },

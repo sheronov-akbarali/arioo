@@ -667,25 +667,7 @@
         "views": "просмотров",
         "notEnoughSubscribers": "У вашего канала пока нет статистики Telegram (обычно нужно 500+ подписчиков).",
         "genericError": "Не удалось загрузить статистику.",
-        "disconnect": "Отключить",
-        "connect": {
-          "riskWarning": "Внимание: это подключит ваш личный аккаунт Telegram. Telegram может ограничить такую автоматизацию — риск касается только подключённого аккаунта.",
-          "phoneLabel": "Номер телефона",
-          "channelLabel": "Username канала (без @)",
-          "codeLabel": "Код из Telegram",
-          "passwordLabel": "Пароль двухфакторной аутентификации",
-          "start": "Подключить",
-          "confirm": "Подтвердить",
-          "submitting": "Отправка...",
-          "connected": "Telegram-канал подключён.",
-          "errors": {
-            "missing_fields": "Укажите телефон и username канала.",
-            "invalid_code": "Неверный код. Попробуйте ещё раз.",
-            "invalid_password": "Неверный пароль. Попробуйте ещё раз.",
-            "not_channel_admin": "Этот аккаунт не является администратором указанного канала.",
-            "channel_not_found": "Канал не найден."
-          }
-        }
+        "disconnect": "Отключить"
       },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
@@ -958,6 +940,41 @@
       "calendar": "Календарь",
       "git": "Git",
       "other": "Другое"
+    },
+    "telegramChoice": {
+      "title": "Как подключить Telegram?",
+      "subtitle": "У этого провайдера несколько режимов подключения. Выберите нужный.",
+      "connect": "Подключить",
+      "connected": "подключено",
+      "bot": {
+        "title": "Бот (@BotFather)",
+        "description": "Через токен от BotFather. Простая мессенджер-интеграция: бот отвечает в личных чатах, группах и каналах."
+      },
+      "mtproto": {
+        "title": "Личный аккаунт (MTProto)",
+        "description": "Для статистики канала, вход по номеру телефона — это НЕ бот.",
+        "dialogTitle": "Подключить Telegram (MTProto)",
+        "connectButton": "Подключить",
+        "manage": "Управлять",
+        "connect": {
+          "riskWarning": "Внимание: это подключит ваш личный аккаунт Telegram. Telegram может ограничить такую автоматизацию — риск касается только подключённого аккаунта.",
+          "phoneLabel": "Номер телефона",
+          "channelLabel": "Username канала (без @)",
+          "codeLabel": "Код из Telegram",
+          "passwordLabel": "Пароль двухфакторной аутентификации",
+          "start": "Подключить",
+          "confirm": "Подтвердить",
+          "submitting": "Отправка...",
+          "connected": "Telegram-канал подключён.",
+          "errors": {
+            "missing_fields": "Укажите телефон и username канала.",
+            "invalid_code": "Неверный код. Попробуйте ещё раз.",
+            "invalid_password": "Неверный пароль. Попробуйте ещё раз.",
+            "not_channel_admin": "Этот аккаунт не является администратором указанного канала.",
+            "channel_not_found": "Канал не найден."
+          }
+        }
+      }
     },
     "providers": {
       "telegram": { "name": "Telegram", "description": "Общение с клиентами через Telegram-бота" },

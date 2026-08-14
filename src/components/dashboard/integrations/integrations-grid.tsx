@@ -23,7 +23,7 @@ import { ListSearchInput } from "@/components/dashboard/list-search-input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TelegramConnectDialog } from "./telegram-connect-dialog";
+import { TelegramChoiceDialog } from "./telegram-choice-dialog";
 import { WidgetConnectDialog } from "./widget-connect-dialog";
 import { WhatsappConnectDialog } from "./whatsapp-connect-dialog";
 import { OlxConnectDialog } from "./olx-connect-dialog";
@@ -55,6 +55,8 @@ export function IntegrationsGrid({
   agents = [],
   channels = [],
   integrationRows = [],
+  locale,
+  mtprotoConnected = false,
 }: {
   agents?: { id: string; name: string }[];
   channels?: { id: string; type: string; isActive: boolean; botUsername: string | null }[];
@@ -65,6 +67,8 @@ export function IntegrationsGrid({
     connectionMode?: ConnectionMode;
     lastError: string | null;
   }[];
+  locale: string;
+  mtprotoConnected?: boolean;
 }) {
   const t = useTranslations("integrations");
   const [query, setQuery] = useState("");
@@ -133,13 +137,12 @@ export function IntegrationsGrid({
               ))}
             </div>
             {provider.id === "telegram" ? (
-              channels.find((c) => c.type === "telegram" && c.isActive) ? (
-                <Badge variant="default" className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400">
-                  {t("connected")}
-                </Badge>
-              ) : (
-                <TelegramConnectDialog agents={agents} />
-              )
+              <TelegramChoiceDialog
+                agents={agents}
+                locale={locale}
+                botConnected={channels.some((c) => c.type === "telegram" && c.isActive)}
+                mtprotoConnected={mtprotoConnected}
+              />
             ) : provider.id === "websiteWidget" ? (
               channels.find((c) => c.type === "widget" && c.isActive) ? (
                 <Badge variant="default" className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400">

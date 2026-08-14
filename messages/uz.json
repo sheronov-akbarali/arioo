@@ -670,25 +670,7 @@
         "views": "ko'rish",
         "notEnoughSubscribers": "Kanalingiz hali Telegram statistikasiga ega emas (odatda 500+ obunachi kerak).",
         "genericError": "Statistikani yuklab bo'lmadi.",
-        "disconnect": "Uzish",
-        "connect": {
-          "riskWarning": "Diqqat: bu shaxsiy Telegram akkountingizni ulaydi. Telegram bunday avtomatlashtirishni cheklashi mumkin — xavf faqat ulangan akkauntga tegishli.",
-          "phoneLabel": "Telefon raqami",
-          "channelLabel": "Kanal username (@ belgisisiz)",
-          "codeLabel": "Telegram'dan kelgan kod",
-          "passwordLabel": "Ikki bosqichli parol",
-          "start": "Ulash",
-          "confirm": "Tasdiqlash",
-          "submitting": "Yuborilmoqda...",
-          "connected": "Telegram kanali ulandi.",
-          "errors": {
-            "missing_fields": "Telefon va kanal username kiritilishi shart.",
-            "invalid_code": "Kod noto'g'ri. Qayta urinib ko'ring.",
-            "invalid_password": "Parol noto'g'ri. Qayta urinib ko'ring.",
-            "not_channel_admin": "Bu akkaunt ko'rsatilgan kanalga admin emas.",
-            "channel_not_found": "Kanal topilmadi."
-          }
-        }
+        "disconnect": "Uzish"
       },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
@@ -961,6 +943,41 @@
       "calendar": "Kalendar",
       "git": "Git",
       "other": "Boshqa"
+    },
+    "telegramChoice": {
+      "title": "Telegram qanday ulanadi?",
+      "subtitle": "Bu provayder bir nechta ulanish rejimini taklif qiladi. Kerakligini tanlang.",
+      "connect": "Ulash",
+      "connected": "ulangan",
+      "bot": {
+        "title": "Bot (@BotFather)",
+        "description": "BotFather'dan token orqali. Oddiy messenjer-integratsiya: bot yozishmalarga, guruh va kanallarga javob beradi."
+      },
+      "mtproto": {
+        "title": "Shaxsiy akkaunt (MTProto)",
+        "description": "Kanal statistikasi uchun, telefon raqami orqali kirish — bu bot EMAS.",
+        "dialogTitle": "Telegram (MTProto) ulash",
+        "connectButton": "Ulash",
+        "manage": "Boshqarish",
+        "connect": {
+          "riskWarning": "Diqqat: bu shaxsiy Telegram akkountingizni ulaydi. Telegram bunday avtomatlashtirishni cheklashi mumkin — xavf faqat ulangan akkauntga tegishli.",
+          "phoneLabel": "Telefon raqami",
+          "channelLabel": "Kanal username (@ belgisisiz)",
+          "codeLabel": "Telegram'dan kelgan kod",
+          "passwordLabel": "Ikki bosqichli parol",
+          "start": "Ulash",
+          "confirm": "Tasdiqlash",
+          "submitting": "Yuborilmoqda...",
+          "connected": "Telegram kanali ulandi.",
+          "errors": {
+            "missing_fields": "Telefon va kanal username kiritilishi shart.",
+            "invalid_code": "Kod noto'g'ri. Qayta urinib ko'ring.",
+            "invalid_password": "Parol noto'g'ri. Qayta urinib ko'ring.",
+            "not_channel_admin": "Bu akkaunt ko'rsatilgan kanalga admin emas.",
+            "channel_not_found": "Kanal topilmadi."
+          }
+        }
+      }
     },
     "providers": {
       "telegram": { "name": "Telegram", "description": "Telegram bot orqali mijozlar bilan muloqot" },

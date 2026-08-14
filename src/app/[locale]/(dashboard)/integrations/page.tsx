@@ -5,6 +5,7 @@ import { db } from "@/db/client";
 import { aiAgents } from "@/db/schema/agents";
 import { channels } from "@/db/schema/channels";
 import { integrations } from "@/db/schema/integrations";
+import { telegramChannelConnections } from "@/db/schema/telegram-channel-connection";
 import { eq } from "drizzle-orm";
 import { requireOrganization } from "@/lib/auth/dal";
 
@@ -38,6 +39,11 @@ export default async function IntegrationsPage({
     .from(integrations)
     .where(eq(integrations.organizationId, organization.id));
 
+  const [telegramConnection] = await db
+    .select({ status: telegramChannelConnections.status })
+    .from(telegramChannelConnections)
+    .where(eq(telegramChannelConnections.organizationId, organization.id));
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-start gap-3">
@@ -49,7 +55,13 @@ export default async function IntegrationsPage({
           <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
       </div>
-      <IntegrationsGrid agents={agents} channels={orgChannels} integrationRows={integrationRows} />
+      <IntegrationsGrid
+        agents={agents}
+        channels={orgChannels}
+        integrationRows={integrationRows}
+        locale={locale}
+        mtprotoConnected={telegramConnection?.status === "connected"}
+      />
     </div>
   );
 }
