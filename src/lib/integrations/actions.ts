@@ -34,42 +34,47 @@ export async function connectTelegramBotAction(
     // const WEBHOOK_URL = `https://<sizning-domen.uz>/api/webhooks/telegram`;
     // await fetch(`https://api.telegram.org/bot${botToken}/setWebhook?url=${WEBHOOK_URL}`);
 
-    // Bazaga yozamiz
-    await db.insert(channels).values({
-      organizationId: organization.id,
-      agentId,
-      type: "telegram",
-      botToken,
-      botUsername,
-      isActive: true,
-    });
+    // Bazaga yozamiz — bitta tashkilot uchun faol Telegram kanali mavjud bo'lsa,
+    // yangi qator qo'shish o'rniga uni yangilaymiz (ikki nusxa yaratmaslik uchun).
+    const [existingChannel] = await db
+      .select({ id: channels.id })
+      .from(channels)
+      .where(and(eq(channels.organizationId, organization.id), eq(channels.type, "telegram"), eq(channels.isActive, true)));
 
-    const [existingIntegration] = await db
-      .select({ id: integrations.id })
-      .from(integrations)
-      .where(and(eq(integrations.organizationId, organization.id), eq(integrations.providerId, "telegram_bot")));
-
-    if (existingIntegration) {
+    if (existingChannel) {
       await db
-        .update(integrations)
-        .set({ status: "active", agentId, lastVerifiedAt: new Date(), lastError: null, updatedAt: new Date() })
-        .where(eq(integrations.id, existingIntegration.id));
+        .update(channels)
+        .set({ agentId, botToken, botUsername, updatedAt: new Date() })
+        .where(eq(channels.id, existingChannel.id));
     } else {
-      const [created] = await db
-        .insert(integrations)
-        .values({
-          organizationId: organization.id,
-          providerId: "telegram_bot",
-          connectionMode: "special",
-          status: "active",
-          agentId,
-          lastVerifiedAt: new Date(),
-        })
-        .returning({ id: integrations.id });
-      await db.insert(integrationEvents).values({ integrationId: created.id, type: "created" });
+      await db.insert(channels).values({
+        organizationId: organization.id,
+        agentId,
+        type: "telegram",
+        botToken,
+        botUsername,
+        isActive: true,
+      });
     }
 
-    revalidatePath("/integrations");
+    const [integrationRow] = await db
+      .insert(integrations)
+      .values({
+        organizationId: organization.id,
+        providerId: "telegram_bot",
+        connectionMode: "special",
+        status: "active",
+        agentId,
+        lastVerifiedAt: new Date(),
+      })
+      .onConflictDoUpdate({
+        target: [integrations.organizationId, integrations.providerId],
+        set: { status: "active", agentId, lastVerifiedAt: new Date(), lastError: null, updatedAt: new Date() },
+      })
+      .returning({ id: integrations.id });
+    await db.insert(integrationEvents).values({ integrationId: integrationRow.id, type: "verified" });
+
+    revalidatePath("/uz/integrations");
     return { success: true };
   } catch (error) {
     console.error("Telegram bot ulashda xato:", error);

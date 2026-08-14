@@ -20,13 +20,23 @@ import { connectTelegramBotAction } from "@/lib/integrations/actions";
 
 export function TelegramConnectDialog({
   agents,
+  connected,
 }: {
   agents: { id: string; name: string }[];
+  connected: boolean;
 }) {
   const t = useTranslations("integrations");
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+
+  if (connected) {
+    return (
+      <Button size="sm" variant="outline" className="gap-2" disabled>
+        {t("telegramChoice.connected")} <Send className="size-3" />
+      </Button>
+    );
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

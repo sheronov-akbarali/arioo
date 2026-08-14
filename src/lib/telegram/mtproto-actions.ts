@@ -101,6 +101,7 @@ export async function submitTelegramCode(
       organizationId: organization.id,
       channelUsername: connection.channelUsername,
       client,
+      locale,
     });
   } catch (err) {
     const message = (err as { errorMessage?: string }).errorMessage;
@@ -141,6 +142,7 @@ export async function submitTelegramPassword(
       organizationId: organization.id,
       channelUsername: connection.channelUsername,
       client,
+      locale,
     });
   } catch {
     return { status: "pending_password", error: "invalid_password" };
@@ -181,4 +183,5 @@ export async function disconnectTelegramChannel(locale: string): Promise<void> {
     .where(and(eq(integrations.organizationId, organization.id), eq(integrations.providerId, "telegram_mtproto")));
 
   revalidatePath(`/${locale}/statistics/marketing`);
+  revalidatePath(`/${locale}/integrations`);
 }

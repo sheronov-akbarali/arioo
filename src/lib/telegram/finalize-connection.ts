@@ -1,5 +1,6 @@
 import "server-only";
-import { eq, and } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { eq } from "drizzle-orm";
 import type { TelegramClient } from "telegram";
 import { Api } from "telegram";
 import { db } from "@/db/client";
@@ -14,8 +15,9 @@ export async function finalizeConnection(params: {
   organizationId: string;
   channelUsername: string;
   client: TelegramClient;
+  locale: string;
 }): Promise<TelegramConnectState> {
-  const { organizationId, channelUsername, client } = params;
+  const { organizationId, channelUsername, client, locale } = params;
 
   let chat: { id: string; title: string; accessHash: string } | undefined;
   let participantResult: { participant: { className: string } };
@@ -84,25 +86,11 @@ export async function finalizeConnection(params: {
     })
     .where(eq(telegramChannelConnections.organizationId, organizationId));
 
-  const [existingIntegration] = await db
-    .select({ id: integrations.id })
-    .from(integrations)
-    .where(
-      and(eq(integrations.organizationId, organizationId), eq(integrations.providerId, "telegram_mtproto")),
-    );
-
-  if (existingIntegration) {
-    await db
-      .update(integrations)
-      .set({ status: "active", lastVerifiedAt: new Date(), lastError: null, updatedAt: new Date() })
-      .where(eq(integrations.id, existingIntegration.id));
-    await db.insert(integrationEvents).values({
-      integrationId: existingIntegration.id,
-      type: "verified",
-      message: "MTProto session verified",
-    });
-  } else {
-    const [created] = await db
+  // A failure here is a bookkeeping/analytics-integration issue, not a Telegram
+  // connection issue — it must never bubble up and be misreported to the user as
+  // an "invalid code"/"invalid password" error by the callers' try/catch blocks.
+  try {
+    const [row] = await db
       .insert(integrations)
       .values({
         organizationId,
@@ -111,13 +99,21 @@ export async function finalizeConnection(params: {
         status: "active",
         lastVerifiedAt: new Date(),
       })
+      .onConflictDoUpdate({
+        target: [integrations.organizationId, integrations.providerId],
+        set: { status: "active", lastVerifiedAt: new Date(), lastError: null, updatedAt: new Date() },
+      })
       .returning({ id: integrations.id });
+
     await db.insert(integrationEvents).values({
-      integrationId: created.id,
-      type: "created",
-      message: "MTProto connection established",
+      integrationId: row.id,
+      type: "verified",
+      message: "MTProto session verified",
     });
+  } catch (error) {
+    console.error("Failed to sync Telegram MTProto connection to integrations table:", error);
   }
 
+  revalidatePath(`/${locale}/integrations`);
   return { status: "connected" };
 }

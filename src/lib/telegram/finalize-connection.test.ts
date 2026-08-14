@@ -5,18 +5,23 @@ process.env.TELEGRAM_SESSION_ENCRYPTION_KEY = Buffer.alloc(32, 9).toString("base
 
 const dbUpdateSet = vi.fn().mockReturnThis();
 const dbUpdateWhere = vi.fn().mockResolvedValue(undefined);
-// No existing `integrations` row by default — success-path tests exercise the
-// insert branch of the integrations sync logic in finalizeConnection().
-const dbSelectWhere = vi.fn().mockResolvedValue([]);
+// `integrations` sync now goes through a single atomic upsert
+// (insert().values().onConflictDoUpdate().returning()) instead of a
+// select-then-insert-or-update pattern.
 const dbInsertReturning = vi.fn().mockResolvedValue([{ id: "integration_1" }]);
-const dbInsertValues = vi.fn(() => ({ returning: dbInsertReturning }));
+const dbOnConflictDoUpdate = vi.fn(() => ({ returning: dbInsertReturning }));
+const dbInsertValues = vi.fn(() => ({
+  returning: dbInsertReturning,
+  onConflictDoUpdate: dbOnConflictDoUpdate,
+}));
 vi.mock("@/db/client", () => ({
   db: {
     update: vi.fn(() => ({ set: dbUpdateSet, where: dbUpdateWhere })),
-    select: vi.fn(() => ({ from: vi.fn(() => ({ where: dbSelectWhere })) })),
     insert: vi.fn(() => ({ values: dbInsertValues })),
   },
 }));
+
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 
 const invoke = vi.fn();
 const sessionSave = vi.fn().mockReturnValue("final-session-string");
@@ -31,9 +36,8 @@ beforeEach(() => {
   invoke.mockReset();
   dbUpdateSet.mockClear();
   dbUpdateWhere.mockClear();
-  dbSelectWhere.mockClear();
-  dbSelectWhere.mockResolvedValue([]);
   dbInsertValues.mockClear();
+  dbOnConflictDoUpdate.mockClear();
   dbInsertReturning.mockClear();
   dbInsertReturning.mockResolvedValue([{ id: "integration_1" }]);
 });
@@ -50,6 +54,7 @@ describe("finalizeConnection", () => {
       organizationId: "org_1",
       channelUsername: "arioo_uz",
       client: makeClient(),
+      locale: "uz",
     });
 
     expect(result).toEqual({ status: "connected" });
@@ -69,6 +74,7 @@ describe("finalizeConnection", () => {
       organizationId: "org_1",
       channelUsername: "arioo_uz",
       client: makeClient(),
+      locale: "uz",
     });
 
     expect(result.status).toBe("error");
@@ -84,6 +90,7 @@ describe("finalizeConnection", () => {
       organizationId: "org_1",
       channelUsername: "no_such_channel",
       client: makeClient(),
+      locale: "uz",
     });
 
     expect(result).toEqual({ status: "error", error: "channel_not_found" });
@@ -105,6 +112,7 @@ describe("finalizeConnection", () => {
       organizationId: "org_1",
       channelUsername: "arioo_uz",
       client: makeClient(),
+      locale: "uz",
     });
 
     expect(result).toEqual({ status: "error", error: "channel_not_found" });
@@ -119,6 +127,7 @@ describe("finalizeConnection", () => {
       organizationId: "org_1",
       channelUsername: "arioo_uz",
       client: makeClient(),
+      locale: "uz",
     });
 
     expect(result).toEqual({ status: "error", error: "channel_not_found" });

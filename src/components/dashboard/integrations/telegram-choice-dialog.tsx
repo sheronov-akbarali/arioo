@@ -45,7 +45,7 @@ export function TelegramChoiceDialog({
               <Send className="size-4" /> {t("bot.title")}
             </div>
             <p className="mb-3 text-sm text-muted-foreground">{t("bot.description")}</p>
-            <TelegramConnectDialog agents={agents} />
+            <TelegramConnectDialog agents={agents} connected={botConnected} />
           </div>
           <div className="rounded-lg border border-border p-4">
             <div className="mb-1 flex items-center gap-2 font-medium">
