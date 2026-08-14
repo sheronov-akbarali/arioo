@@ -420,7 +420,7 @@ describe("finalizeConnection", () => {
 });
 ```
 
-Note: gramjs's `TelegramClient` has no `logOut()` convenience method — logging out is done via `client.invoke(new Api.auth.LogOut({}))`, same as every other MTProto call. The test above asserts on the 3rd `invoke` call's constructed request having `className === "auth.LogOut"` (every gramjs `Api.*` request class exposes `className` as its TL type name — this is how gramjs request objects self-identify, and is a safe, implementation-shape-agnostic way to assert which request was sent without depending on exact constructor argument shapes).
+Note: gramjs's `TelegramClient` has no `logOut()` convenience method — logging out is done via `client.invoke(new Api.auth.LogOut())`, same as every other MTProto call. The test above asserts on the 3rd `invoke` call's constructed request having `className === "auth.LogOut"` (every gramjs `Api.*` request class exposes `className` as its TL type name — this is how gramjs request objects self-identify, and is a safe, implementation-shape-agnostic way to assert which request was sent without depending on exact constructor argument shapes).
 
 - [ ] **Step 2: Run test to verify it fails**
 
@@ -464,7 +464,7 @@ export async function finalizeConnection(params: {
   const isAdmin = ADMIN_PARTICIPANT_TYPES.has(participantResult.participant.className);
 
   if (!isAdmin) {
-    await client.invoke(new Api.auth.LogOut({}));
+    await client.invoke(new Api.auth.LogOut());
     await db
       .update(telegramChannelConnections)
       .set({
@@ -777,7 +777,7 @@ export async function disconnectTelegramChannel(locale: string): Promise<void> {
     const client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted));
     try {
       // gramjs has no logOut() convenience method — Api.auth.LogOut is invoked like any other MTProto call.
-      await client.invoke(new Api.auth.LogOut({}));
+      await client.invoke(new Api.auth.LogOut());
     } finally {
       await client.disconnect();
     }
