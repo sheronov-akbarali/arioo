@@ -178,6 +178,13 @@ hozir ham xuddi shunday ko'rinadi (eski holatda), toki worktree'dagi ish tugab
 mainga merge qilinmaguncha. To'liq bosqichma-bosqich holat va davom etish qadami
 worktree ichidagi ledger'da: `.superpowers/sdd/2026-08-14-integrations-group-4-oauth-infra/progress.md`.
 
+Guruh 1-3 (ma'lumotlar modeli, status dashboard, Telegram tanlov oynasi) to'liq
+tugallangan va review qilingan — shu guruhlarning reja fayllari endi keraksiz
+bo'lgani uchun o'chirilgan. Guruh 4 (OAuth infratuzilmasi, qisman tugallangan),
+Guruh 5 (yangi formalar) va Guruh 6 (detail sahifa) hali tugallanmagan — shu
+sabab ularning reja fayllari `docs/superpowers/plans/2026-08-14-integrations-group-{4,5,6}-*.md`
+da saqlanmoqda, ertaga davom ettirish uchun kerak.
+
 ## Takomillashtirish yo'l xaritasi — 2026-08-14'dan boshlab
 
 ### 7 — UX/Foydalanuvchi Tajribasini Keskin Oshirish
