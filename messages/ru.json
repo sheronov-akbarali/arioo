@@ -925,6 +925,27 @@
     "connected": "Подключено",
     "comingSoon": "Скоро",
     "searchPlaceholder": "Поиск по названию...",
+    "yourIntegrations": "Ваши интеграции",
+    "discoverMore": "Найти ещё",
+    "statusDashboard": {
+      "labels": {
+        "active": "Активна",
+        "need_attention": "Требует внимания",
+        "verifying": "Проверяется",
+        "setup_needed": "Настраивается",
+        "archived": "Архивирована"
+      },
+      "hints": {
+        "active": "подтверждена",
+        "need_attention": "переподключение / ошибка",
+        "verifying": "проверка провайдера",
+        "setup_needed": "завершите настройку",
+        "archived": "можно восстановить"
+      }
+    },
+    "filters": {
+      "all": "Все"
+    },
     "categoryFilters": {
       "all": "Все"
     },

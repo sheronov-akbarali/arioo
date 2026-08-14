@@ -4,6 +4,7 @@ import { IntegrationsGrid } from "@/components/dashboard/integrations/integratio
 import { db } from "@/db/client";
 import { aiAgents } from "@/db/schema/agents";
 import { channels } from "@/db/schema/channels";
+import { integrations } from "@/db/schema/integrations";
 import { eq } from "drizzle-orm";
 import { requireOrganization } from "@/lib/auth/dal";
 
@@ -26,6 +27,17 @@ export default async function IntegrationsPage({
     .from(channels)
     .where(eq(channels.organizationId, organization.id));
 
+  const integrationRows = await db
+    .select({
+      id: integrations.id,
+      providerId: integrations.providerId,
+      status: integrations.status,
+      connectionMode: integrations.connectionMode,
+      lastError: integrations.lastError,
+    })
+    .from(integrations)
+    .where(eq(integrations.organizationId, organization.id));
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-start gap-3">
@@ -37,7 +49,7 @@ export default async function IntegrationsPage({
           <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
       </div>
-      <IntegrationsGrid agents={agents} channels={orgChannels} />
+      <IntegrationsGrid agents={agents} channels={orgChannels} integrationRows={integrationRows} />
     </div>
   );
 }

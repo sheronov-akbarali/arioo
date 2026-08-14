@@ -928,6 +928,27 @@
     "connected": "Ulangan",
     "comingSoon": "Tez orada",
     "searchPlaceholder": "Nomi bo'yicha qidirish...",
+    "yourIntegrations": "Sizning integratsiyalaringiz",
+    "discoverMore": "Yana toping",
+    "statusDashboard": {
+      "labels": {
+        "active": "Faol",
+        "need_attention": "E'tibor talab qiladi",
+        "verifying": "Tekshirilmoqda",
+        "setup_needed": "Sozlanmoqda",
+        "archived": "Arxivlangan"
+      },
+      "hints": {
+        "active": "tasdiqlangan",
+        "need_attention": "qayta ulanish / xato",
+        "verifying": "provayder tekshiruvi",
+        "setup_needed": "sozlashni yakunlang",
+        "archived": "tiklash mumkin"
+      }
+    },
+    "filters": {
+      "all": "Hammasi"
+    },
     "categoryFilters": {
       "all": "Hammasi"
     },

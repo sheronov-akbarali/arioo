@@ -927,6 +927,27 @@
     "connected": "Connected",
     "comingSoon": "Coming soon",
     "searchPlaceholder": "Search by name...",
+    "yourIntegrations": "Your integrations",
+    "discoverMore": "Discover more",
+    "statusDashboard": {
+      "labels": {
+        "active": "Active",
+        "need_attention": "Needs attention",
+        "verifying": "Verifying",
+        "setup_needed": "Setup needed",
+        "archived": "Archived"
+      },
+      "hints": {
+        "active": "verified",
+        "need_attention": "reauth / error",
+        "verifying": "vendor check",
+        "setup_needed": "finish wizard",
+        "archived": "restorable"
+      }
+    },
+    "filters": {
+      "all": "All"
+    },
     "categoryFilters": {
       "all": "All"
     },
