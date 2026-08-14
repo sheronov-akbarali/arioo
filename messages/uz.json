@@ -638,10 +638,33 @@
     "title": "Statistika",
     "subtitle": "AI Xodimlar foydalanishi va xarajatlar tahlili.",
     "export": "CSV eksport",
+    "tabs": {
+      "overview": "Umumiy",
+      "marketing": "Marketing kanallari"
+    },
     "range": {
       "7d": "7 kun",
       "30d": "30 kun",
       "month": "Bu oy"
+    },
+    "marketing": {
+      "subtitle": "Marketing kanallaringiz bo'yicha trafik va faollik.",
+      "empty": "Bu davrda ma'lumot yo'q.",
+      "site": {
+        "title": "Sayt",
+        "subtitle": "Arioo saytingizga trafik, Vercel Web Analytics asosida.",
+        "notConnected": "Sayt analitikasi hali ulanmagan. Buni yoqish uchun VERCEL_API_TOKEN va VERCEL_ANALYTICS_PROJECT_ID o'rnating.",
+        "visitors": "Tashrif buyuruvchilar",
+        "pageviews": "Sahifa ko'rishlar",
+        "vsPreviousPeriod": "oldingi davrga nisbatan",
+        "topPages": "Eng ko'p ko'rilgan sahifalar",
+        "topReferrers": "Trafik manbalari"
+      },
+      "channels": {
+        "title": "Telegram, YouTube, Instagram, OLX.uz",
+        "subtitle": "Boshqa marketing kanallaringiz bo'yicha analitika.",
+        "comingSoon": "Tez orada."
+      }
     },
     "cards": {
       "totalSpend": "Jami xarajat",

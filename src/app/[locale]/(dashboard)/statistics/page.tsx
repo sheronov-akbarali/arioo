@@ -12,19 +12,8 @@ import { SpendChart } from "@/components/dashboard/statistics/spend-chart";
 import { ThreadsChart } from "@/components/dashboard/statistics/threads-chart";
 import { ExportCsvButton } from "@/components/dashboard/statistics/export-csv-button";
 import { ModelSpendBreakdown } from "@/components/dashboard/statistics/model-spend-breakdown";
-
-const RANGES = ["7d", "30d", "month"] as const;
-type Range = (typeof RANGES)[number];
-
-function rangeDays(range: Range, now: Date): number {
-  if (range === "7d") return 7;
-  if (range === "30d") return 30;
-  return now.getDate(); // "month" — from the 1st through today
-}
-
-function startOfDayUtc(date: Date): Date {
-  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-}
+import { StatisticsTabs } from "@/components/dashboard/statistics/statistics-tabs";
+import { STATISTICS_RANGES as RANGES, parseStatisticsRange, statisticsWindow } from "@/lib/statistics/date-range";
 
 function dayKey(date: Date): string {
   return date.toISOString().slice(0, 10);
@@ -42,13 +31,10 @@ export default async function StatisticsPage({
   const { organization } = await requireOrganization(locale);
   const t = await getTranslations("statistics");
 
-  const range = RANGES.find((r) => r === rawRange) ?? "7d";
+  const range = parseStatisticsRange(rawRange);
   const now = new Date();
-  const today = startOfDayUtc(now);
-  const periodDays = rangeDays(range, now);
-  const currentStart = new Date(today.getTime() - (periodDays - 1) * 86_400_000);
-  const currentEnd = new Date(today.getTime() + 86_400_000); // exclusive, end of today
-  const previousStart = new Date(currentStart.getTime() - periodDays * 86_400_000);
+  const { currentStart, currentEnd, previousStart } = statisticsWindow(range, now);
+  const periodDays = Math.round((currentEnd.getTime() - currentStart.getTime()) / 86_400_000);
 
   const costRows = await db
     .select({
@@ -157,6 +143,8 @@ export default async function StatisticsPage({
         </div>
         <ExportCsvButton rows={csvRows} label={t("export")} />
       </div>
+
+      <StatisticsTabs />
 
       <div className="flex flex-wrap gap-2">
         {RANGES.map((r) => (

@@ -638,10 +638,33 @@
     "title": "Статистика",
     "subtitle": "Анализ использования и расходов AI-сотрудников.",
     "export": "Экспорт CSV",
+    "tabs": {
+      "overview": "Обзор",
+      "marketing": "Маркетинговые каналы"
+    },
     "range": {
       "7d": "7 дней",
       "30d": "30 дней",
       "month": "Этот месяц"
+    },
+    "marketing": {
+      "subtitle": "Трафик и вовлечённость по вашим маркетинговым каналам.",
+      "empty": "За этот период нет данных.",
+      "site": {
+        "title": "Сайт",
+        "subtitle": "Трафик на сайт Arioo, на основе Vercel Web Analytics.",
+        "notConnected": "Аналитика сайта пока не подключена. Задайте VERCEL_API_TOKEN и VERCEL_ANALYTICS_PROJECT_ID, чтобы включить её.",
+        "visitors": "Посетители",
+        "pageviews": "Просмотры страниц",
+        "vsPreviousPeriod": "по сравнению с предыдущим периодом",
+        "topPages": "Популярные страницы",
+        "topReferrers": "Источники переходов"
+      },
+      "channels": {
+        "title": "Telegram, YouTube, Instagram, OLX.uz",
+        "subtitle": "Аналитика по другим маркетинговым каналам.",
+        "comingSoon": "Скоро."
+      }
     },
     "cards": {
       "totalSpend": "Общий расход",

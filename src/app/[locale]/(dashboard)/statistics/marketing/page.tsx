@@ -1,0 +1,142 @@
+import { Megaphone } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import { requireOrganization } from "@/lib/auth/dal";
+import { Link } from "@/i18n/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { StatisticsTabs } from "@/components/dashboard/statistics/statistics-tabs";
+import { STATISTICS_RANGES as RANGES, parseStatisticsRange, statisticsWindow } from "@/lib/statistics/date-range";
+import { getSiteAnalytics } from "@/lib/analytics/web-analytics";
+
+export default async function MarketingStatisticsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ range?: string }>;
+}) {
+  const { locale } = await params;
+  const { range: rawRange } = await searchParams;
+  await requireOrganization(locale);
+  const t = await getTranslations("statistics");
+
+  const range = parseStatisticsRange(rawRange);
+  const { currentStart, currentEnd, previousStart } = statisticsWindow(range, new Date());
+  const site = await getSiteAnalytics(currentStart, currentEnd, previousStart);
+
+  const formatNumber = (value: number) => new Intl.NumberFormat(locale).format(value);
+  const changePct = (current: number, previous: number) =>
+    previous > 0 ? ((current - previous) / previous) * 100 : current > 0 ? 100 : 0;
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+            <Megaphone className="size-5" />
+          </span>
+          <div>
+            <h1 className="text-xl font-semibold">{t("title")}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">{t("marketing.subtitle")}</p>
+          </div>
+        </div>
+      </div>
+
+      <StatisticsTabs />
+
+      <div className="flex flex-wrap gap-2">
+        {RANGES.map((r) => (
+          <Button
+            key={r}
+            size="sm"
+            variant={range === r ? "default" : "outline"}
+            nativeButton={false}
+            render={<Link href={`/statistics/marketing?range=${r}`}>{t(`range.${r}`)}</Link>}
+          />
+        ))}
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("marketing.site.title")}</CardTitle>
+          <p className="text-sm text-muted-foreground">{t("marketing.site.subtitle")}</p>
+        </CardHeader>
+        <CardContent>
+          {site === null ? (
+            <p className="text-sm text-muted-foreground">{t("marketing.site.notConnected")}</p>
+          ) : (
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Card>
+                  <CardContent className="pt-6">
+                    <p className="text-sm text-muted-foreground">{t("marketing.site.visitors")}</p>
+                    <p className="mt-1 text-2xl font-bold">{formatNumber(site.totals.visitors)}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {changePct(site.totals.visitors, site.previousTotals.visitors) >= 0 ? "+" : ""}
+                      {changePct(site.totals.visitors, site.previousTotals.visitors).toFixed(1)}%{" "}
+                      {t("marketing.site.vsPreviousPeriod")}
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6">
+                    <p className="text-sm text-muted-foreground">{t("marketing.site.pageviews")}</p>
+                    <p className="mt-1 text-2xl font-bold">{formatNumber(site.totals.pageviews)}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {changePct(site.totals.pageviews, site.previousTotals.pageviews) >= 0 ? "+" : ""}
+                      {changePct(site.totals.pageviews, site.previousTotals.pageviews).toFixed(1)}%{" "}
+                      {t("marketing.site.vsPreviousPeriod")}
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="grid gap-4 lg:grid-cols-2">
+                <div>
+                  <h3 className="mb-2 text-sm font-medium">{t("marketing.site.topPages")}</h3>
+                  {site.topPages.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">{t("marketing.empty")}</p>
+                  ) : (
+                    <ul className="divide-y divide-border rounded-lg border border-border">
+                      {site.topPages.map((row) => (
+                        <li key={row.key} className="flex items-center justify-between px-3 py-2 text-sm">
+                          <span className="truncate text-muted-foreground">{row.key}</span>
+                          <span className="font-medium">{formatNumber(row.visitors)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div>
+                  <h3 className="mb-2 text-sm font-medium">{t("marketing.site.topReferrers")}</h3>
+                  {site.topReferrers.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">{t("marketing.empty")}</p>
+                  ) : (
+                    <ul className="divide-y divide-border rounded-lg border border-border">
+                      {site.topReferrers.map((row) => (
+                        <li key={row.key} className="flex items-center justify-between px-3 py-2 text-sm">
+                          <span className="truncate text-muted-foreground">{row.key}</span>
+                          <span className="font-medium">{formatNumber(row.visitors)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("marketing.channels.title")}</CardTitle>
+          <p className="text-sm text-muted-foreground">{t("marketing.channels.subtitle")}</p>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">{t("marketing.channels.comingSoon")}</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

@@ -638,10 +638,33 @@
     "title": "Statistics",
     "subtitle": "Usage and spend analytics for your AI employees.",
     "export": "Export CSV",
+    "tabs": {
+      "overview": "Overview",
+      "marketing": "Marketing channels"
+    },
     "range": {
       "7d": "7 days",
       "30d": "30 days",
       "month": "This month"
+    },
+    "marketing": {
+      "subtitle": "Traffic and engagement across your marketing channels.",
+      "empty": "No data for this period.",
+      "site": {
+        "title": "Site",
+        "subtitle": "Traffic to your Arioo site, powered by Vercel Web Analytics.",
+        "notConnected": "Site analytics isn't connected yet. Set VERCEL_API_TOKEN and VERCEL_ANALYTICS_PROJECT_ID to enable this.",
+        "visitors": "Visitors",
+        "pageviews": "Page views",
+        "vsPreviousPeriod": "vs previous period",
+        "topPages": "Top pages",
+        "topReferrers": "Top referrers"
+      },
+      "channels": {
+        "title": "Telegram, YouTube, Instagram, OLX.uz",
+        "subtitle": "Analytics for your other marketing channels.",
+        "comingSoon": "Coming soon."
+      }
     },
     "cards": {
       "totalSpend": "Total spend",
