@@ -945,9 +945,11 @@
       "sip": { "name": "SIP", "description": "Телефония для голосовых звонков" },
       "amocrm": { "name": "amoCRM", "description": "Синхронизация лидов и сделок с amoCRM" },
       "bitrix24": { "name": "Bitrix24", "description": "Синхронизация лидов и сделок с Bitrix24" },
-      "googleWorkspace": { "name": "Google Sheets/Drive", "description": "Работа с таблицами и файлами" },
+      "google": { "name": "Google", "description": "Синхронизация с Drive, Sheets и Calendar" },
       "github": { "name": "GitHub", "description": "Работа с репозиториями и Issues" },
       "oneC": { "name": "1С", "description": "Интеграция товаров и цен с 1С" },
+      "vk": { "name": "VK · ВКонтакте", "description": "Интеграция сообщений и группы" },
+      "headhunter": { "name": "HeadHunter", "description": "Канал общения с соискателями" },
       "customMcp": { "name": "Custom MCP Server", "description": "Подключите свои инструменты через MCP" }
     }
   },

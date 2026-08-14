@@ -947,9 +947,11 @@
       "sip": { "name": "SIP", "description": "Telephony connection for voice calls" },
       "amocrm": { "name": "amoCRM", "description": "Sync leads and deals with amoCRM" },
       "bitrix24": { "name": "Bitrix24", "description": "Sync leads and deals with Bitrix24" },
-      "googleWorkspace": { "name": "Google Sheets/Drive", "description": "Work with spreadsheets and files" },
+      "google": { "name": "Google", "description": "Sync with Drive, Sheets, and Calendar" },
       "github": { "name": "GitHub", "description": "Work with repositories and Issues" },
       "oneC": { "name": "1C", "description": "Product and pricing integration with 1C" },
+      "vk": { "name": "VK · VKontakte", "description": "Messaging and group integration" },
+      "headhunter": { "name": "HeadHunter", "description": "Candidate communication channel" },
       "customMcp": { "name": "Custom MCP Server", "description": "Connect your own tools via MCP" }
     }
   },

@@ -948,9 +948,11 @@
       "sip": { "name": "SIP", "description": "Ovozli qo'ng'iroqlar uchun telefoniya ulanishi" },
       "amocrm": { "name": "amoCRM", "description": "Lidlar va bitimlarni amoCRM bilan sinxronlash" },
       "bitrix24": { "name": "Bitrix24", "description": "Lidlar va bitimlarni Bitrix24 bilan sinxronlash" },
-      "googleWorkspace": { "name": "Google Sheets/Drive", "description": "Jadval va fayllar bilan ishlash" },
+      "google": { "name": "Google", "description": "Drive, Sheets va Calendar bilan sinxronlash" },
       "github": { "name": "GitHub", "description": "Repozitoriy va Issues bilan ishlash" },
       "oneC": { "name": "1C", "description": "1C bilan mahsulot va narxlar integratsiyasi" },
+      "vk": { "name": "VK · ВКонтакте", "description": "Xabarlar va guruh integratsiyasi" },
+      "headhunter": { "name": "HeadHunter", "description": "Nomzodlar bilan muloqot kanali" },
       "customMcp": { "name": "Custom MCP Server", "description": "O'z vositalaringizni MCP orqali ulang" }
     }
   },
