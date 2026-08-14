@@ -13,7 +13,12 @@ import {
   GitBranch,
   Webhook,
 } from "lucide-react";
-import { INTEGRATION_PROVIDERS, type IntegrationCategory, type ProviderConfig } from "@/lib/integrations/providers";
+import {
+  INTEGRATION_PROVIDERS,
+  type ConnectionMode,
+  type IntegrationCategory,
+  type ProviderConfig,
+} from "@/lib/integrations/providers";
 import { ListSearchInput } from "@/components/dashboard/list-search-input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -57,7 +62,7 @@ export function IntegrationsGrid({
     id: string;
     providerId: string;
     status: IntegrationStatus;
-    connectionMode?: string;
+    connectionMode?: ConnectionMode;
     lastError: string | null;
   }[];
 }) {
@@ -92,6 +97,8 @@ export function IntegrationsGrid({
     if (integrationByProvider.has(providerId)) return integrationByProvider.get(providerId)!.status;
     return hasActiveChannel(providerId) ? "active" : "setup_needed";
   }
+
+  const providerStatuses = INTEGRATION_PROVIDERS.map((provider) => ({ status: statusFor(provider.id) }));
 
   const filtered = INTEGRATION_PROVIDERS.filter((provider) => {
     const matchesCategory =
@@ -180,15 +187,15 @@ export function IntegrationsGrid({
   }
 
   const connected = filtered.filter((p) => integrationByProvider.has(p.id) || hasActiveChannel(p.id));
-  const discoverable = filtered.filter((p) => !connected.includes(p));
+  const discoverable = filtered.filter((p) => !integrationByProvider.has(p.id) && !hasActiveChannel(p.id));
 
   return (
     <div className="flex flex-col gap-6">
-      <IntegrationStatusDashboard rows={integrationRows} />
+      <IntegrationStatusDashboard rows={providerStatuses} />
       <ListSearchInput placeholder={t("searchPlaceholder")} value={query} onChange={setQuery} />
       <IntegrationFilters
-        statusCounts={countByStatus(integrationRows)}
-        totalCount={integrationRows.length}
+        statusCounts={countByStatus(providerStatuses)}
+        totalCount={INTEGRATION_PROVIDERS.length}
         selectedStatus={statusFilter}
         onStatusChange={setStatusFilter}
         categories={availableCategories}
