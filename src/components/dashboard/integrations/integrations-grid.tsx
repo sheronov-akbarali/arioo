@@ -13,7 +13,7 @@ import {
   GitBranch,
   Webhook,
 } from "lucide-react";
-import { INTEGRATION_PROVIDERS, type IntegrationCategory } from "@/lib/integrations-data";
+import { INTEGRATION_PROVIDERS, type IntegrationCategory } from "@/lib/integrations/providers";
 import { ListSearchInput } from "@/components/dashboard/list-search-input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,10 +35,12 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   sip: Phone,
   amocrm: Building2,
   bitrix24: Building2,
-  googleWorkspace: FileSpreadsheet,
+  google: FileSpreadsheet,
   github: GitBranch,
   oneC: Building2,
   customMcp: Webhook,
+  vk: MessageCircle,
+  headhunter: Building2,
 };
 
 export function IntegrationsGrid({
@@ -141,7 +143,7 @@ export function IntegrationsGrid({
                     <ExternalCrmConnectDialog type="amocrm" />
                   ) : provider.id === "bitrix24" ? (
                     <ExternalCrmConnectDialog type="bitrix24" />
-                  ) : provider.id === "googleWorkspace" ? (
+                  ) : provider.id === "google" ? (
                     <CalendarConnectDialog />
                   ) : provider.id === "customMcp" ? (
                     <McpConnectDialog />
