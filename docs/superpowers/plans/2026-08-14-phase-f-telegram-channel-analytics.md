@@ -28,7 +28,7 @@
 - Modify: `src/db/schema/index.ts`
 
 **Interfaces:**
-- Produces: `telegramChannelConnections` table, `telegramConnectionStatus` pg enum (`"pending_code" | "pending_password" | "connected" | "error"`), and the row shape `{ id, organizationId, channelUsername, channelTitle, phoneMasked, sessionSecretEncrypted, phoneCodeHash, status, lastSyncedAt, lastError, createdAt, updatedAt }` — every later task reads/writes these exact column names.
+- Produces: `telegramChannelConnections` table, `telegramConnectionStatus` pg enum (`"pending_code" | "pending_password" | "connected" | "error"`), and the row shape `{ id, organizationId, channelUsername, channelTitle, phone, phoneMasked, sessionSecretEncrypted, phoneCodeHash, status, lastSyncedAt, lastError, createdAt, updatedAt }` — every later task reads/writes these exact column names. (`phone` was added after initial implementation — see the ruling in the SDD ledger: `phoneMasked` alone can't authenticate `Api.auth.SignIn`, which needs the real phone number. `phone` has the same lifecycle as `phoneCodeHash` — populated in `startTelegramConnection`, cleared once `finalizeConnection` reaches `connected` or `error`.)
 
 - [ ] **Step 1: Write the schema file**
 
@@ -1084,6 +1084,8 @@ Expected: no errors.
 git add src/components/dashboard/statistics/telegram-connect-form.tsx
 git commit -m "feat(telegram): add multi-step connect form component"
 ```
+
+**Correction (post-review):** the Step 1 code above has a bug — `codeState`/`passwordState`'s `useActionState` initial values collide with their own real "show this step" trigger values, so the form gets stuck on the password step from first paint. The corrected version (all three hooks start from a neutral `{status: "idle"}`, with a separate `step` state advanced via `useEffect`s watching real transitions, plus an explicit `"error"` step for `finalizeConnection`'s not-channel-admin rejection) is recorded in the SDD ledger's Task 8 ruling and is what actually shipped.
 
 ---
 
