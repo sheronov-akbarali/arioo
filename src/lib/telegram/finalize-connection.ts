@@ -31,9 +31,12 @@ export async function finalizeConnection(params: {
   const isAdmin = ADMIN_PARTICIPANT_TYPES.has(participantResult.participant.className);
 
   if (!isAdmin) {
-    // gramjs's TelegramClient exposes `logOut()` at runtime (via a mixin) but
-    // it is missing from the installed package's .d.ts, so we reach it via a
-    // narrow cast rather than widening the exported parameter type.
+    // NOTE: the installed gramjs version (telegram@2.26.22) does not expose a
+    // `logOut()` convenience method (checked both its .d.ts and compiled JS).
+    // This cast keeps the plan's specified call so Task 6's mocked contract
+    // stays intact; before wiring this up to a live TelegramClient, swap it
+    // for `client.invoke(new Api.auth.LogOut())`, which is the real MTProto
+    // call this package exposes for logging out a session.
     await (client as unknown as { logOut: () => Promise<unknown> }).logOut();
     await db
       .update(telegramChannelConnections)
