@@ -17,7 +17,7 @@ import {
   submitTelegramCode,
   submitTelegramPassword,
   disconnectTelegramChannel,
-} from "./telegram-actions";
+} from "@/lib/telegram/mtproto-actions";
 import { MockConnectButton } from "@/components/dashboard/statistics/mock-connect-button";
 
 export default async function MarketingStatisticsPage({

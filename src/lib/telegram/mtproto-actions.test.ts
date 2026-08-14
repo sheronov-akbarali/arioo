@@ -59,7 +59,7 @@ const { finalizeConnection } = vi.hoisted(() => ({
 }));
 vi.mock("@/lib/telegram/finalize-connection", () => ({ finalizeConnection }));
 
-import { startTelegramConnection, submitTelegramCode, disconnectTelegramChannel } from "./telegram-actions";
+import { startTelegramConnection, submitTelegramCode, disconnectTelegramChannel } from "./mtproto-actions";
 
 dbSelectWhere.mockResolvedValue([
   {
