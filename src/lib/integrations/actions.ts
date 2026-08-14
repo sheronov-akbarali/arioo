@@ -1,9 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "@/db/client";
 import { channels } from "@/db/schema/channels";
+import { integrations, integrationEvents } from "@/db/schema/integrations";
 import { requireOrganization } from "@/lib/auth/dal";
 
 export async function connectTelegramBotAction(
@@ -42,6 +43,31 @@ export async function connectTelegramBotAction(
       botUsername,
       isActive: true,
     });
+
+    const [existingIntegration] = await db
+      .select({ id: integrations.id })
+      .from(integrations)
+      .where(and(eq(integrations.organizationId, organization.id), eq(integrations.providerId, "telegram_bot")));
+
+    if (existingIntegration) {
+      await db
+        .update(integrations)
+        .set({ status: "active", agentId, lastVerifiedAt: new Date(), lastError: null, updatedAt: new Date() })
+        .where(eq(integrations.id, existingIntegration.id));
+    } else {
+      const [created] = await db
+        .insert(integrations)
+        .values({
+          organizationId: organization.id,
+          providerId: "telegram_bot",
+          connectionMode: "special",
+          status: "active",
+          agentId,
+          lastVerifiedAt: new Date(),
+        })
+        .returning({ id: integrations.id });
+      await db.insert(integrationEvents).values({ integrationId: created.id, type: "created" });
+    }
 
     revalidatePath("/integrations");
     return { success: true };
