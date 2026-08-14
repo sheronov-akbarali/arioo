@@ -384,33 +384,186 @@
       }
     },
     "detail": {
-      "nameLabel": "Название",
-      "roleLabel": "Роль",
-      "systemPromptLabel": "Системный промпт",
-      "modelLabel": "Модель",
-      "save": "Сохранить",
-      "knowledgeLink": "База знаний",
-      "chatLink": "Проверить",
-      "roles": {
-        "sales": "Продажи",
-        "support": "Поддержка",
-        "hr": "HR",
-        "marketing": "Маркетинг"
+      "tabs": {
+        "ai": "ИИ",
+        "chats": "Чаты",
+        "calls": "Звонки",
+        "knowledge": "Базы знаний"
       },
-      "tools": {
-        "title": "Интеграции (Tools)",
-        "subtitle": "Выберите, какими инструментами может пользоваться агент",
-        "comingSoon": "Скоро",
-        "groups": {
-          "internalSystem": "Внутренняя система",
-          "googleSheets": "Google Sheets/Drive",
-          "github": "GitHub"
+      "connect": "Подключить",
+      "test": "Протестировать",
+      "noChannelsConnected": "Каналы не подключены",
+      "ai": {
+        "nameLabel": "Название",
+        "roleLabel": "Роль",
+        "systemPromptLabel": "Системный промпт",
+        "modelLabel": "Модель",
+        "save": "Сохранить",
+        "roles": {
+          "sales": "Продажи",
+          "support": "Поддержка",
+          "hr": "HR",
+          "marketing": "Маркетинг"
         },
-        "descriptions": {
-          "internalSystem": "Управление данными организации и команды",
-          "googleSheets": "Чтение и запись таблиц и файлов",
-          "github": "Работа с репозиториями и кодом"
-        }
+        "tools": {
+          "title": "Интеграции (Tools)",
+          "subtitle": "Выберите, какие инструменты может использовать ассистент",
+          "comingSoon": "Скоро",
+          "groups": {
+            "internalSystem": "Внутренняя система",
+            "googleSheets": "Google Sheets/Drive",
+            "github": "GitHub"
+          },
+          "descriptions": {
+            "internalSystem": "Управление данными организации и команды",
+            "googleSheets": "Чтение и запись таблиц и файлов",
+            "github": "Работа с репозиториями и кодом"
+          }
+        },
+        "coreSettingsTitle": "Основные настройки",
+        "coreSettingsSubtitle": "Настройки памяти, форматирования и управления диалогом",
+        "topPLabel": "Top P",
+        "temperatureLabel": "Temperature",
+        "maxTokensLabel": "Максимум токенов",
+        "readOnlyModeLabel": "Режим только для чтения",
+        "readOnlyModeHint": "Ассистент читает память, но не сохраняет новые сообщения",
+        "recentMessagesCountLabel": "Число последних сообщений в контексте",
+        "autoTitleGenerationLabel": "Автогенерация названия диалога",
+        "semanticSearchEnabledLabel": "Семантический поиск (RAG)",
+        "memoryIsolationLabel": "Изоляция памяти",
+        "memoryIsolationOptions": {
+          "user": "По пользователю",
+          "thread": "По диалогу"
+        },
+        "memoryTemplateModeLabel": "Тип шаблона памяти",
+        "memoryTemplateModeOptions": {
+          "freeform": "Свободный текст",
+          "schema": "Схема (JSON)"
+        },
+        "memoryTemplateLabel": "Шаблон памяти",
+        "responseFormattingTitle": "Форматирование ответов",
+        "removeEmojisLabel": "Удалять эмодзи",
+        "removeMarkdownLabel": "Удалять Markdown",
+        "interruptionTitle": "Прерывание диалога",
+        "interruptionModeLabel": "Режим",
+        "interruptionModeOptions": {
+          "queue": "Очередь (по умолчанию)",
+          "abort_restart": "Прервать и перезапустить",
+          "drop_restart": "Отменить и перезапустить"
+        },
+        "agentStepsTitle": "Шаги агента",
+        "maxStepsWithoutToolsLabel": "Максимум шагов без инструментов",
+        "maxStepsWithToolsLabel": "Максимум шагов с инструментами"
+      },
+      "chats": {
+        "profileTitle": "Профиль ассистента",
+        "profileSubtitle": "Укажите имя и описание, которые будут видны в списках",
+        "descriptionLabel": "Описание",
+        "basicSettingsTitle": "Основные настройки",
+        "greetingMessageLabel": "Приветственное сообщение",
+        "replyDelaySecondsLabel": "Задержка перед ответом (сек)",
+        "timezoneLabel": "Часовой пояс",
+        "voiceListeningTitle": "Голос и прослушивание",
+        "voiceReactionLabel": "Реакция на голосовые сообщения",
+        "voiceReactionOptions": {
+          "none": "Без реакции",
+          "reply_text": "Ответ текстом",
+          "reply_voice": "Ответ голосом"
+        },
+        "ttsVoiceLabel": "Голос TTS",
+        "ttsModelLabel": "Модель TTS",
+        "voiceReactionTextLabel": "Текст голосовой реакции",
+        "limitsTitle": "Лимиты и ограничения",
+        "limitsEnabledLabel": "Включить лимит",
+        "limitTypeLabel": "Тип лимита",
+        "limitTypeOptions": {
+          "none": "Не выбрано",
+          "messages": "Сообщения",
+          "tokens": "Токены",
+          "workens": "Worken'ы"
+        },
+        "limitValueLabel": "Значение лимита",
+        "limitMessageLabel": "Сообщение при достижении лимита",
+        "stopWordsLabel": "Стоп-слова (по одному на строку)",
+        "triggersTitle": "Триггеры",
+        "operatorTriggerLabel": "Реакция на сообщение оператора",
+        "operatorTriggerOptions": {
+          "keep_going": "Продолжить диалог",
+          "pause": "Приостановить"
+        },
+        "pauseDurationMinutesLabel": "Длительность паузы (мин)",
+        "save": "Сохранить"
+      },
+      "calls": {
+        "policyTitle": "Политика звонков",
+        "policySubtitle": "Направление, окно и правила записи — применяются до выхода виртуального сотрудника на линию",
+        "enabledLabel": "Включить звонки",
+        "directionLabel": "Направление",
+        "directionOptions": {
+          "off": "Выкл",
+          "inbound": "Входящие",
+          "outbound": "Исходящие",
+          "both": "Оба"
+        },
+        "windowTitle": "Окно звонков",
+        "windowTimezoneModeLabel": "Часовой пояс",
+        "windowTimezoneModeOptions": {
+          "same_as_chat": "Как в настройках чата",
+          "custom": "Отдельный"
+        },
+        "windowStartLabel": "Начало (ЧЧ:ММ)",
+        "windowEndLabel": "Конец (ЧЧ:ММ)",
+        "offWindowBehaviorLabel": "Вне окна",
+        "offWindowBehaviorOptions": {
+          "reject": "Отклонять",
+          "voicemail_task": "Голосовое + задача"
+        },
+        "audienceTitle": "Аудитория и частота",
+        "requireExistingThreadLabel": "Исходящие только при наличии диалога",
+        "respectDncLabel": "Учитывать список \"Не звонить\" (DNC)",
+        "maxAttemptsLabel": "Максимум попыток за период",
+        "attemptsPeriodDaysLabel": "Период (дней)",
+        "recordingTitle": "Запись и лимиты",
+        "recordingModeLabel": "Режим записи",
+        "recordingModeOptions": {
+          "off": "Выкл",
+          "record": "Запись",
+          "record_announce": "Запись + уведомление"
+        },
+        "disclosureScriptLabel": "Текст уведомления",
+        "maxDurationMinutesLabel": "Максимальная длительность (мин)",
+        "maxParallelLinesLabel": "Параллельных линий",
+        "channelTitle": "Канал и номера",
+        "channelHint": "Сам коннектор настраивается в разделе Интеграции. Здесь только привязка номера.",
+        "sipIntegrationRefLabel": "SIP-коннектор",
+        "sipIntegrationRefPlaceholder": "Коннектор не выбран",
+        "outboundDidLabel": "Исходящий номер (DID)",
+        "lineScriptTitle": "Сценарий на линии",
+        "lineScriptHint": "Добавляется к основной инструкции AI только на время звонка",
+        "lineInstructionLabel": "Дополнительная инструкция для звонка",
+        "callModelLabel": "Модель для звонков",
+        "callVoiceLabel": "Голос на линии",
+        "defaultModeLabel": "Режим по умолчанию",
+        "defaultModeOptions": {
+          "supervised": "Supervised (оператор может вмешаться)",
+          "autonomous": "Автономный"
+        },
+        "maxActionsPerReplyLabel": "Максимум действий на реплику",
+        "toolsModeTitle": "Инструменты на линии",
+        "toolsModeHint": "Набор инструментов берётся из раздела AI, здесь можно только ужесточить подтверждение",
+        "confirmationModeLabel": "Подтверждение для действий с изменениями",
+        "confirmationModeOptions": {
+          "always": "Всегда с подтверждением",
+          "per_tool": "Как в чатах",
+          "read_only": "Только чтение"
+        },
+        "afterCallTitle": "После звонка",
+        "saveSummaryToThreadLabel": "Сохранять итог и расшифровку в диалог",
+        "syncCrmLabel": "Синхронизация с CRM",
+        "escalationTitle": "Эскалация",
+        "escalationTargetLabel": "Куда переводить",
+        "escalationTriggerWordsLabel": "Слова-триггеры для перевода (по одному на строку)",
+        "save": "Сохранить"
       }
     },
     "knowledge": {
@@ -421,7 +574,20 @@
         "processing": "Обрабатывается",
         "ready": "Готово",
         "error": "Ошибка"
-      }
+      },
+      "settingsTitle": "Основные настройки",
+      "settingsSubtitle": "Модель эмбеддинга и значения по умолчанию для всех баз знаний",
+      "embeddingModelLabel": "Модель эмбеддинга",
+      "relevanceThresholdLabel": "Порог релевантности по умолчанию (0-1)",
+      "maxResultsLabel": "Максимум результатов по умолчанию",
+      "searchContextTitle": "Поиск и контекст",
+      "maxContextTokensLabel": "Максимум токенов для RAG-контекста",
+      "aggregationStrategyLabel": "Стратегия объединения результатов",
+      "aggregationStrategyOptions": {
+        "merge": "Объединение (результаты всех баз суммируются)",
+        "priority": "Приоритет (по порядку баз)"
+      },
+      "saveSettings": "Сохранить настройки"
     },
     "chat": {
       "title": "Тестовый чат с {name}",

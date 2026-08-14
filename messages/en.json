@@ -384,33 +384,186 @@
       }
     },
     "detail": {
-      "nameLabel": "Name",
-      "roleLabel": "Role",
-      "systemPromptLabel": "System prompt",
-      "modelLabel": "Model",
-      "save": "Save",
-      "knowledgeLink": "Knowledge base",
-      "chatLink": "Try it",
-      "roles": {
-        "sales": "Sales",
-        "support": "Support",
-        "hr": "HR",
-        "marketing": "Marketing"
+      "tabs": {
+        "ai": "AI",
+        "chats": "Chats",
+        "calls": "Calls",
+        "knowledge": "Knowledge bases"
       },
-      "tools": {
-        "title": "Integrations (Tools)",
-        "subtitle": "Choose which tools the assistant can use",
-        "comingSoon": "Coming soon",
-        "groups": {
-          "internalSystem": "Internal system",
-          "googleSheets": "Google Sheets/Drive",
-          "github": "GitHub"
+      "connect": "Connect",
+      "test": "Test",
+      "noChannelsConnected": "No channels connected",
+      "ai": {
+        "nameLabel": "Name",
+        "roleLabel": "Role",
+        "systemPromptLabel": "System prompt",
+        "modelLabel": "Model",
+        "save": "Save",
+        "roles": {
+          "sales": "Sales",
+          "support": "Support",
+          "hr": "HR",
+          "marketing": "Marketing"
         },
-        "descriptions": {
-          "internalSystem": "Manage organization and team data",
-          "googleSheets": "Read and write spreadsheets and files",
-          "github": "Work with repositories and code"
-        }
+        "tools": {
+          "title": "Integrations (Tools)",
+          "subtitle": "Choose which tools the assistant can use",
+          "comingSoon": "Coming soon",
+          "groups": {
+            "internalSystem": "Internal system",
+            "googleSheets": "Google Sheets/Drive",
+            "github": "GitHub"
+          },
+          "descriptions": {
+            "internalSystem": "Manage organization and team data",
+            "googleSheets": "Read and write spreadsheets and files",
+            "github": "Work with repositories and code"
+          }
+        },
+        "coreSettingsTitle": "Core settings",
+        "coreSettingsSubtitle": "Memory, formatting, and conversation-control settings",
+        "topPLabel": "Top P",
+        "temperatureLabel": "Temperature",
+        "maxTokensLabel": "Max tokens",
+        "readOnlyModeLabel": "Read-only mode",
+        "readOnlyModeHint": "The agent reads memory but won't save new messages",
+        "recentMessagesCountLabel": "Recent messages included in context",
+        "autoTitleGenerationLabel": "Auto-generate thread title",
+        "semanticSearchEnabledLabel": "Semantic search (RAG)",
+        "memoryIsolationLabel": "Memory isolation",
+        "memoryIsolationOptions": {
+          "user": "Per user",
+          "thread": "Per thread"
+        },
+        "memoryTemplateModeLabel": "Memory template type",
+        "memoryTemplateModeOptions": {
+          "freeform": "Free-form text",
+          "schema": "Schema (JSON)"
+        },
+        "memoryTemplateLabel": "Memory template",
+        "responseFormattingTitle": "Response formatting",
+        "removeEmojisLabel": "Remove emojis",
+        "removeMarkdownLabel": "Remove Markdown",
+        "interruptionTitle": "Agent interruption",
+        "interruptionModeLabel": "Mode",
+        "interruptionModeOptions": {
+          "queue": "Queue (default)",
+          "abort_restart": "Abort and restart",
+          "drop_restart": "Drop and restart"
+        },
+        "agentStepsTitle": "Agent steps",
+        "maxStepsWithoutToolsLabel": "Max steps without tools",
+        "maxStepsWithToolsLabel": "Max steps with tools"
+      },
+      "chats": {
+        "profileTitle": "Assistant profile",
+        "profileSubtitle": "Name and description shown in lists",
+        "descriptionLabel": "Description",
+        "basicSettingsTitle": "Basic settings",
+        "greetingMessageLabel": "Greeting message",
+        "replyDelaySecondsLabel": "Delay before replying (sec)",
+        "timezoneLabel": "Time zone",
+        "voiceListeningTitle": "Voice and listening",
+        "voiceReactionLabel": "Reaction to voice messages",
+        "voiceReactionOptions": {
+          "none": "Do not react",
+          "reply_text": "Reply with text",
+          "reply_voice": "Reply with voice"
+        },
+        "ttsVoiceLabel": "TTS voice",
+        "ttsModelLabel": "TTS model",
+        "voiceReactionTextLabel": "Voice reaction text",
+        "limitsTitle": "Limits and restrictions",
+        "limitsEnabledLabel": "Enable limit",
+        "limitTypeLabel": "Limit type",
+        "limitTypeOptions": {
+          "none": "Not selected",
+          "messages": "Messages",
+          "tokens": "Tokens",
+          "workens": "Workens"
+        },
+        "limitValueLabel": "Limit value",
+        "limitMessageLabel": "Message shown when the limit is reached",
+        "stopWordsLabel": "Stop words (one per line)",
+        "triggersTitle": "Triggers",
+        "operatorTriggerLabel": "Reaction to an operator message",
+        "operatorTriggerOptions": {
+          "keep_going": "Keep the conversation going",
+          "pause": "Pause"
+        },
+        "pauseDurationMinutesLabel": "Pause duration (min)",
+        "save": "Save"
+      },
+      "calls": {
+        "policyTitle": "Call policy",
+        "policySubtitle": "Direction, window, and recording rules — applied before the agent goes live",
+        "enabledLabel": "Enable calls",
+        "directionLabel": "Direction",
+        "directionOptions": {
+          "off": "Off",
+          "inbound": "Inbound",
+          "outbound": "Outbound",
+          "both": "Both"
+        },
+        "windowTitle": "Call window",
+        "windowTimezoneModeLabel": "Time zone",
+        "windowTimezoneModeOptions": {
+          "same_as_chat": "Same as chat settings",
+          "custom": "Custom"
+        },
+        "windowStartLabel": "Start (HH:MM)",
+        "windowEndLabel": "End (HH:MM)",
+        "offWindowBehaviorLabel": "Outside the window",
+        "offWindowBehaviorOptions": {
+          "reject": "Reject",
+          "voicemail_task": "Voicemail + task"
+        },
+        "audienceTitle": "Audience and frequency",
+        "requireExistingThreadLabel": "Outbound only with an existing thread",
+        "respectDncLabel": "Respect the Do-Not-Call (DNC) list",
+        "maxAttemptsLabel": "Max attempts per period",
+        "attemptsPeriodDaysLabel": "Period (days)",
+        "recordingTitle": "Recording and limits",
+        "recordingModeLabel": "Recording mode",
+        "recordingModeOptions": {
+          "off": "Off",
+          "record": "Record",
+          "record_announce": "Record + announce"
+        },
+        "disclosureScriptLabel": "Disclosure script",
+        "maxDurationMinutesLabel": "Max duration (minutes)",
+        "maxParallelLinesLabel": "Parallel lines",
+        "channelTitle": "Channel and numbers",
+        "channelHint": "The connector itself is configured under Integrations. Here you only attach a number.",
+        "sipIntegrationRefLabel": "SIP connector",
+        "sipIntegrationRefPlaceholder": "No connector selected",
+        "outboundDidLabel": "Outbound number (DID)",
+        "lineScriptTitle": "On-call script",
+        "lineScriptHint": "Added to the main AI instruction only for the duration of the call",
+        "lineInstructionLabel": "Additional call instruction",
+        "callModelLabel": "Call model",
+        "callVoiceLabel": "On-call voice",
+        "defaultModeLabel": "Default mode",
+        "defaultModeOptions": {
+          "supervised": "Supervised (operator can step in)",
+          "autonomous": "Autonomous"
+        },
+        "maxActionsPerReplyLabel": "Max actions per reply",
+        "toolsModeTitle": "Tools on call",
+        "toolsModeHint": "The tool set comes from the AI tab — here you can only tighten confirmation",
+        "confirmationModeLabel": "Confirmation for actions with side effects",
+        "confirmationModeOptions": {
+          "always": "Always confirm",
+          "per_tool": "Same as chats",
+          "read_only": "Read-only"
+        },
+        "afterCallTitle": "After the call",
+        "saveSummaryToThreadLabel": "Save summary and transcript to the thread",
+        "syncCrmLabel": "Sync with CRM",
+        "escalationTitle": "Escalation",
+        "escalationTargetLabel": "Escalation target",
+        "escalationTriggerWordsLabel": "Trigger words for escalation (one per line)",
+        "save": "Save"
       }
     },
     "knowledge": {
@@ -421,7 +574,20 @@
         "processing": "Processing",
         "ready": "Ready",
         "error": "Error"
-      }
+      },
+      "settingsTitle": "Basic settings",
+      "settingsSubtitle": "Embedding model and default values for all knowledge bases",
+      "embeddingModelLabel": "Embedding model",
+      "relevanceThresholdLabel": "Default relevance threshold (0-1)",
+      "maxResultsLabel": "Default maximum number of results",
+      "searchContextTitle": "Search and context",
+      "maxContextTokensLabel": "Maximum tokens for RAG context",
+      "aggregationStrategyLabel": "Result aggregation strategy",
+      "aggregationStrategyOptions": {
+        "merge": "Merge (combines results from all stores)",
+        "priority": "Priority (uses stores in order)"
+      },
+      "saveSettings": "Save settings"
     },
     "chat": {
       "title": "Test chat with {name}",

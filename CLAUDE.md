@@ -122,8 +122,12 @@ dashboard'ning ichki ko'rinishi **detalma-detal worken.ru bilan bir xil** bo'lis
 - [x] **C — Dashboard'ning 13 ta sahifasini worken bilan bittalab solishtirib tuzatish**
       (filter-pill'lar, empty-state'lar, jadval ustunlari, statistika kartalari) — 6 ta
       kichik spec+plan+ijro tsikliga bo'lindi, barchasi 2026-08-13'da `main`'ga qo'shildi
-- [ ] **D — `/assistants/:id` (Assistant tahrirlash) to'liq qurilishi**: AI/Chats/
-      Calls/Knowledge-bases — 20+ sozlama bloki + haqiqiy SIP qo'ng'iroq siyosati UI'si
+- [x] **D — `/assistants/:id` (Assistant tahrirlash) to'liq qurilishi**: AI/Chats/
+      Calls/Knowledge-bases tablari, 20+ sozlama bloki DB'ga saqlanadi. SIP/CRM/TTS
+      talab qiladigan harakat tugmalari (masalan SIP konnektor tanlash) tashqi
+      provayder ulanguncha disabled — spec/plan:
+      `docs/superpowers/specs/2026-08-13-worken-parity-phase-d-assistant-editor-design.md`,
+      `docs/superpowers/plans/2026-08-13-worken-parity-phase-d-assistant-editor.md`
 - [ ] **E — Haqiqiy backend funksionallik**: SIP qo'ng'iroq, 13 ta OAuth
       integratsiya, Payme/Click/Stripe to'lov — roadmap'dagi 4-6-bosqichlar bilan
       bir xil, eng oxirida (tashqi provayder tanlovlari kerak)

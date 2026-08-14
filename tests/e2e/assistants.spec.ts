@@ -10,4 +10,14 @@ test.describe("assistants (unauthenticated)", () => {
     await page.goto("/uz/approvals");
     await expect(page).toHaveURL(/\/uz\/sign-in/);
   });
+
+  test("redirects to sign-in from an assistant's ai tab", async ({ page }) => {
+    await page.goto("/uz/assistants/some-agent-id/ai");
+    await expect(page).toHaveURL(/\/uz\/sign-in/);
+  });
+
+  test("redirects to sign-in from an assistant's calls tab", async ({ page }) => {
+    await page.goto("/uz/assistants/some-agent-id/calls");
+    await expect(page).toHaveURL(/\/uz\/sign-in/);
+  });
 });
