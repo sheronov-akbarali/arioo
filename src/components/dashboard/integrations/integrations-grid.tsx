@@ -57,7 +57,8 @@ export function IntegrationsGrid({
   const availableCategories = [...new Set(INTEGRATION_PROVIDERS.flatMap((provider) => provider.categories))];
 
   const filtered = INTEGRATION_PROVIDERS.filter((provider) => {
-    const matchesCategory = !category || provider.categories.includes(category);
+    const matchesCategory =
+      !category || (provider.categories as readonly IntegrationCategory[]).includes(category);
     const matchesQuery = t(`providers.${provider.id}.name`)
       .toLowerCase()
       .includes(query.trim().toLowerCase());

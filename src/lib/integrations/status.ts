@@ -17,7 +17,9 @@ export function countByStatus(rows: { status: IntegrationStatus }[]): Record<Int
     archived: 0,
   };
   for (const row of rows) {
-    counts[row.status] += 1;
+    if (row.status in counts) {
+      counts[row.status] += 1;
+    }
   }
   return counts;
 }

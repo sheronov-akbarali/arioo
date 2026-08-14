@@ -936,6 +936,7 @@
       "crm": "CRM",
       "voice": "Voice",
       "files": "Files",
+      "calendar": "Calendar",
       "git": "Git",
       "other": "Other"
     },

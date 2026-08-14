@@ -934,6 +934,7 @@
       "crm": "CRM",
       "voice": "Голос",
       "files": "Файлы",
+      "calendar": "Календарь",
       "git": "Git",
       "other": "Другое"
     },

@@ -17,7 +17,7 @@ export type ProviderConfig = {
   oauth?: { envPrefix: string; scopes: string[] };
 };
 
-export const INTEGRATION_PROVIDERS: ProviderConfig[] = [
+export const INTEGRATION_PROVIDERS = [
   { id: "telegram", categories: ["chat"], connectionMode: "special" },
   { id: "whatsapp", categories: ["chat"], connectionMode: "special" },
   { id: "websiteWidget", categories: ["chat"], connectionMode: "special" },
@@ -66,4 +66,6 @@ export const INTEGRATION_PROVIDERS: ProviderConfig[] = [
     connectionMode: "oauth",
     oauth: { envPrefix: "HEADHUNTER", scopes: [] },
   },
-];
+] as const satisfies readonly ProviderConfig[];
+
+export type ProviderId = (typeof INTEGRATION_PROVIDERS)[number]["id"];
