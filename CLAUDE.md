@@ -165,6 +165,70 @@ dashboard'ning ichki ko'rinishi **detalma-detal worken.ru bilan bir xil** bo'lis
   - Telegram/WhatsApp tez-tez ishlatiladigan xabar shablonlari kutubxonasi (soha
     shabloniga bog'liq)
 
+## Integrations bo'limini qayta qurish — 2026-08-14'dan boshlab (TO'XTATILGAN, DAVOM ETTIRILADI)
+
+worken.ru'ning Integrations paneli (status dashboard, ko'p-rejimli ulanish, haqiqiy
+OAuth) Chrome orqali chuqur tahlil qilindi va shu darajaga moslashtirish maqsad
+qilingan. Spec: `docs/superpowers/specs/2026-08-14-integrations-overhaul-design.md`
+(bu fayl saqlangan, o'chirilmagan). Ijro `superpowers:subagent-driven-development`
+orqali, **alohida git worktree'da** olib borilmoqda:
+`.claude/worktrees/integrations-overhaul` (branch `worktree-integrations-overhaul`),
+6 ta ketma-ket guruh rejasi bo'yicha. **Muhim: bu ishning kodi hali `main`ga merge
+qilinmagan** — shuning uchun `/integrations` sahifasi ilgari qanday ko'rinsa hozir
+ham xuddi shunday ko'rinadi (eski holatda). Guruhlarning batafsil reja fayllari
+(`docs/superpowers/plans/2026-08-14-integrations-group-{1..6}-*.md`) endi bu
+bo'limdagi qisqacha bayonot foydasiga o'chirildi — **to'liq tafsilotlar worktree
+branch tarixida saqlanadi** (`git show 176ce73:docs/superpowers/plans/...` orqali
+tiklab olish mumkin, chunki 176ce73 commit worktree branchida ham mavjud).
+
+**Holat (2026-08-15'da tekshirilgan):**
+
+- [x] **Guruh 1 — Ma'lumotlar modeli va provider katalogi** — to'liq tugallangan,
+      review qilingan. `integrations`/`integration_events` jadvallari, umumiy
+      shifrlash moduli (`credential-crypto.ts`), config-driven provider katalogi,
+      status hisoblash funksiyasi. Yakuniy commit: `c7bdcad`.
+- [x] **Guruh 2 — Status dashboard va ikki-bo'limli grid** — to'liq tugallangan,
+      review qilingan. Status dashboard komponenti, status/kategoriya filter,
+      `IntegrationsGrid` connected/discoverable bo'limlarga bo'lingan. Yakuniy
+      commit: `0efc446`.
+- [x] **Guruh 3 — Telegram Bot/MTProto tanlov oynasi** — to'liq tugallangan,
+      review qilingan. MTProto server action'lari umumiy `lib`ga ko'chirilgan,
+      Bot va MTProto ulanishlari alohida `integrations` qatorlari sifatida
+      yoziladi, `TelegramChoiceDialog` qo'shilgan. Yakuniy commit: `d475b78`.
+- [~] **Guruh 4 — OAuth infratuzilmasi (amoCRM/Bitrix24/Google/GitHub/HeadHunter)**
+      — Task 1-6 (env o'zgaruvchilari, HMAC-imzolangan state, provayder
+      konfiguratsiyasi, OAuth start/callback route'lari, token-almashish)
+      implement va commit qilingan (`faeb89b`..`e7a2c2b`), **lekin hali
+      task-review qilinmagan** — 2026-08-15'da review dispatch qilingan edi, foydalanuvchi
+      so'rovi bilan to'xtatildi (review natijasi hali chiqmagan). **Ertaga davom
+      etish qadami:** avval shu 6-commit'lik diff uchun task review'ni qaytadan
+      dispatch qilish (yoki natijasini kutish), so'ng Task 7-8ga o'tish
+      (amoCRM/Bitrix24/Google/GitHub/HeadHunter kartalarini haqiqiy
+      `OAuthConnectButton`ga ulash + `isOAuthConfigured` holati va OAuth
+      xato/muvaffaqiyat toast'lari). Worktree'dagi to'liq ledger:
+      `.superpowers/sdd/2026-08-14-integrations-group-4-oauth-infra/progress.md`.
+- [ ] **Guruh 5 — Yangi/tuzatilgan formalar** — hali boshlanmagan. Qamrovi:
+      umumiy forma-integratsiya server action, SIP dialogini haqiqiy action'ga
+      ulash, 1C uchun yangi forma, VK uchun yangi forma, Custom MCP Server'ni
+      URL + dinamik headers ko'rinishiga qayta qurish.
+- [ ] **Guruh 6 — `/integrations/:id` boshqaruv sahifasi** — hali boshlanmagan.
+      Qamrovi: test-connection funksiyalari, Test/Archive/Delete server
+      action'lari, Profil/Ulanish tafsilotlari bo'limlari, lifecycle log
+      komponenti, Test/Archive/Delete tugmalari, "Sizning integratsiyalaringiz"
+      kartalaridan detail sahifaga havola.
+
+**Muhim arxitektura eslatmasi (Guruh 2/3'dan meros, Guruh 5/6 uchun ham amal
+qiladi):** Telegram katalogda bitta `"telegram"` id sifatida ko'rinadi, lekin
+DB'da ikkita alohida qator (`telegram_bot`/`telegram_mtproto`) sifatida
+saqlanadi — status dashboard va filtrlar buni to'liq ko'ra olmaydi (faqat
+kartaning o'zi `botConnected`/`mtprotoConnected` orqali to'g'ri ko'rsatadi).
+Bu ataylab tuzatilmagan (YAGNI).
+
+**Hammasi tugagach:** final whole-branch review (`superpowers:requesting-code-review`)
+→ `superpowers:finishing-a-development-branch` orqali `worktree-integrations-overhaul`
+branch `main`ga merge qilinadi va push qilinadi — shundan keyingina foydalanuvchi
+`/integrations` sahifasida yangi ko'rinishni ko'radi.
+
 ## Takomillashtirish yo'l xaritasi — 2026-08-14'dan boshlab
 
 ### 7 — UX/Foydalanuvchi Tajribasini Keskin Oshirish
