@@ -1,0 +1,66 @@
+import { describe, expect, it, vi, beforeEach } from "vitest";
+
+process.env.TELEGRAM_SESSION_ENCRYPTION_KEY = Buffer.alloc(32, 9).toString("base64");
+
+const dbUpdateSet = vi.fn().mockReturnThis();
+const dbUpdateWhere = vi.fn().mockResolvedValue(undefined);
+vi.mock("@/db/client", () => ({
+  db: {
+    update: vi.fn(() => ({ set: dbUpdateSet, where: dbUpdateWhere })),
+  },
+}));
+
+const invoke = vi.fn();
+const logOut = vi.fn();
+const sessionSave = vi.fn().mockReturnValue("final-session-string");
+
+function makeClient() {
+  return { invoke, logOut, session: { save: sessionSave } } as any;
+}
+
+import { finalizeConnection } from "./finalize-connection";
+
+beforeEach(() => {
+  invoke.mockReset();
+  logOut.mockReset();
+  dbUpdateSet.mockClear();
+  dbUpdateWhere.mockClear();
+});
+
+describe("finalizeConnection", () => {
+  it("marks the connection connected when the account administers the channel", async () => {
+    invoke
+      .mockResolvedValueOnce({ chats: [{ id: "1", title: "Arioo kanali", accessHash: "h" }] }) // ResolveUsername
+      .mockResolvedValueOnce({
+        participant: { className: "ChannelParticipantAdmin" },
+      }); // GetParticipant
+
+    const result = await finalizeConnection({
+      organizationId: "org_1",
+      channelUsername: "arioo_uz",
+      client: makeClient(),
+    });
+
+    expect(result).toEqual({ status: "connected" });
+    expect(dbUpdateSet).toHaveBeenCalledWith(
+      expect.objectContaining({ status: "connected", channelTitle: "Arioo kanali" }),
+    );
+    expect(logOut).not.toHaveBeenCalled();
+  });
+
+  it("rejects and logs out when the account is not an admin", async () => {
+    invoke
+      .mockResolvedValueOnce({ chats: [{ id: "1", title: "Arioo kanali", accessHash: "h" }] })
+      .mockResolvedValueOnce({ participant: { className: "ChannelParticipantSelf" } });
+
+    const result = await finalizeConnection({
+      organizationId: "org_1",
+      channelUsername: "arioo_uz",
+      client: makeClient(),
+    });
+
+    expect(result.status).toBe("error");
+    expect(logOut).toHaveBeenCalledOnce();
+    expect(dbUpdateSet).toHaveBeenCalledWith(expect.objectContaining({ status: "error" }));
+  });
+});
