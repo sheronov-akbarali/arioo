@@ -25,7 +25,8 @@ import {
   Gift,
   Handshake,
   Settings,
-  CreditCard,
+  Briefcase,
+  ShieldAlert,
   type LucideIcon,
 } from "lucide-react";
 
@@ -47,6 +48,7 @@ const GROUPS: NavGroup[] = [
       { key: "chats", icon: MessageSquare, href: "/chats" },
       { key: "calls", icon: PhoneCall, href: "/calls" },
       { key: "routines", icon: Repeat2, href: "/routines" },
+      { key: "crm", icon: Briefcase, href: "/crm" },
       { key: "approvals", icon: ShieldCheck, href: "/approvals" },
     ],
   },
@@ -74,7 +76,6 @@ const GROUPS: NavGroup[] = [
     items: [
       { key: "referralProgram", icon: Gift, href: "/referral-program" },
       { key: "affiliateProgram", icon: Handshake, href: "/affiliate-program" },
-      { key: "billing", icon: CreditCard, href: "/billing" },
     ],
   },
 ];
@@ -117,7 +118,7 @@ export function SidebarNav() {
               <SidebarMenuItem key={key}>
                 {href ? (
                   <SidebarMenuButton
-                    render={<Link href={href} />}
+                    render={<Link href={href} prefetch={true} />}
                     isActive={isNavItemActive(pathname, href)}
                     tooltip={t(key)}
                   >
@@ -141,7 +142,7 @@ export function SidebarNav() {
           <SidebarMenuItem>
             {/* base-ui uses a `render` prop instead of Radix's `asChild` for polymorphism. */}
             <SidebarMenuButton
-              render={<Link href={SETTINGS_ITEM.href!} />}
+              render={<Link href={SETTINGS_ITEM.href!} prefetch={true} />}
               isActive={isNavItemActive(pathname, SETTINGS_ITEM.href!)}
               tooltip={t("settings")}
             >

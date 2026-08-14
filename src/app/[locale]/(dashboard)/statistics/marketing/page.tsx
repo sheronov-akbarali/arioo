@@ -18,6 +18,7 @@ import {
   submitTelegramPassword,
   disconnectTelegramChannel,
 } from "./telegram-actions";
+import { MockConnectButton } from "@/components/dashboard/statistics/mock-connect-button";
 
 export default async function MarketingStatisticsPage({
   params,
@@ -211,7 +212,70 @@ export default async function MarketingStatisticsPage({
           <p className="text-sm text-muted-foreground">{t("marketing.channels.subtitle")}</p>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">{t("marketing.channels.comingSoon")}</p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {/* YouTube Analytics Mock */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">YouTube Analytics</CardTitle>
+                <p className="text-xs text-muted-foreground">Obunachilar va ko'rishlar</p>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <p className="text-2xl font-bold">12,450</p>
+                    <p className="text-xs text-green-600">+450 bu oy</p>
+                  </div>
+                  <ul className="text-sm divide-y divide-border">
+                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Ko'rishlar</span> <span className="font-medium">1.2M</span></li>
+                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Watch time</span> <span className="font-medium">45K soat</span></li>
+                  </ul>
+                  <MockConnectButton />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Instagram Insights Mock */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Instagram Insights</CardTitle>
+                <p className="text-xs text-muted-foreground">Followers va Reach</p>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <p className="text-2xl font-bold">45,200</p>
+                    <p className="text-xs text-green-600">+1.2K bu oy</p>
+                  </div>
+                  <ul className="text-sm divide-y divide-border">
+                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Profile ziyarati</span> <span className="font-medium">8.5K</span></li>
+                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Reach</span> <span className="font-medium">120K</span></li>
+                  </ul>
+                  <MockConnectButton />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* OLX Mock */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">OLX.uz E'lonlari</CardTitle>
+                <p className="text-xs text-muted-foreground">Ko'rishlar va Kontaktlar</p>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <p className="text-2xl font-bold">4,120</p>
+                    <p className="text-xs text-green-600">Umumiy ko'rishlar</p>
+                  </div>
+                  <ul className="text-sm divide-y divide-border">
+                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Raqamni ko'rganlar</span> <span className="font-medium">320</span></li>
+                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Xabarlar</span> <span className="font-medium">85</span></li>
+                  </ul>
+                  <MockConnectButton />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </CardContent>
       </Card>
     </div>

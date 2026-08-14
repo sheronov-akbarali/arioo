@@ -14,14 +14,14 @@ setDefaultResultOrder("ipv4first");
 // (observed: identical requests alternating between <1s success and
 // ETIMEDOUT). A couple of quick retries absorb that transient packet loss
 // instead of surfacing every blip as a fatal query error.
-const FETCH_RETRIES = 4;
+const FETCH_RETRIES = 10;
 neonConfig.fetchFunction = async (url: string | URL | Request, init?: RequestInit) => {
   for (let attempt = 0; ; attempt++) {
     try {
       return await fetch(url, init);
     } catch (err) {
       if (attempt >= FETCH_RETRIES) throw err;
-      await new Promise((resolve) => setTimeout(resolve, 200 * (attempt + 1)));
+      await new Promise((resolve) => setTimeout(resolve, 500 * (attempt + 1)));
     }
   }
 };

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-const TABS = ["project", "team", "limits", "accounts"] as const;
+const TABS = ["project", "team", "limits", "accounts", "security"] as const;
 
 export function SettingsTabs() {
   const t = useTranslations("settings.tabs");
@@ -26,7 +26,7 @@ export function SettingsTabs() {
                 : "border-transparent text-muted-foreground hover:text-foreground",
             )}
           >
-            {t(tab)}
+            {tab === "security" ? "Xavfsizlik" : t(tab)}
           </Link>
         );
       })}

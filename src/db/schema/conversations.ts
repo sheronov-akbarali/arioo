@@ -1,7 +1,13 @@
 import { pgTable, text, timestamp, pgEnum, integer, doublePrecision } from "drizzle-orm/pg-core";
 import { aiAgents } from "./agents";
 
-export const conversationChannel = pgEnum("conversation_channel", ["playground"]);
+export const conversationChannel = pgEnum("conversation_channel", [
+  "playground",
+  "telegram",
+  "whatsapp",
+  "widget",
+  "olx",
+]);
 export const messageRole = pgEnum("message_role", ["user", "assistant", "system"]);
 
 export const conversations = pgTable("conversation", {
@@ -10,6 +16,9 @@ export const conversations = pgTable("conversation", {
     .notNull()
     .references(() => aiAgents.id, { onDelete: "cascade" }),
   channel: conversationChannel("channel").notNull().default("playground"),
+  channelId: text("channelId"), // reference to channels.id
+  externalChatId: text("externalChatId"), // e.g. telegram chat ID
+  metadata: text("metadata"), // jsonified metadata
   startedAt: timestamp("startedAt", { mode: "date" }).notNull().defaultNow(),
 });
 
@@ -22,5 +31,6 @@ export const messages = pgTable("message", {
   content: text("content").notNull(),
   tokenCount: integer("tokenCount"),
   estimatedCostUsd: doublePrecision("estimatedCostUsd"),
+  externalMessageId: text("externalMessageId"),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
 });

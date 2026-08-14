@@ -18,6 +18,14 @@ import { ListSearchInput } from "@/components/dashboard/list-search-input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { TelegramConnectDialog } from "./telegram-connect-dialog";
+import { WidgetConnectDialog } from "./widget-connect-dialog";
+import { WhatsappConnectDialog } from "./whatsapp-connect-dialog";
+import { OlxConnectDialog } from "./olx-connect-dialog";
+import { ExternalCrmConnectDialog } from "./external-crm-connect-dialog";
+import { CalendarConnectDialog } from "./calendar-connect-dialog";
+import { McpConnectDialog } from "./mcp-connect-dialog";
+import { SipConnectDialog } from "./sip-connect-dialog";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   telegram: Send,
@@ -33,7 +41,13 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   customMcp: Webhook,
 };
 
-export function IntegrationsGrid() {
+export function IntegrationsGrid({
+  agents = [],
+  channels = [],
+}: {
+  agents?: { id: string; name: string }[];
+  channels?: { id: string; type: string; isActive: boolean; botUsername: string | null }[];
+}) {
   const t = useTranslations("integrations");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<IntegrationCategory | null>(null);
@@ -89,10 +103,54 @@ export function IntegrationsGrid() {
                       </Badge>
                     ))}
                   </div>
-                  <Button size="sm" variant="outline" disabled>
-                    {t("connect")}
-                    <span className="ml-1 text-xs opacity-70">{t("comingSoon")}</span>
-                  </Button>
+                  {provider.id === "telegram" ? (
+                    channels.find((c) => c.type === "telegram" && c.isActive) ? (
+                      <Badge variant="default" className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400">
+                        {t("connected")}
+                      </Badge>
+                    ) : (
+                      <TelegramConnectDialog agents={agents} />
+                    )
+                  ) : provider.id === "websiteWidget" ? (
+                    channels.find((c) => c.type === "widget" && c.isActive) ? (
+                      <Badge variant="default" className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400">
+                        {t("connected")}
+                      </Badge>
+                    ) : (
+                      <WidgetConnectDialog agents={agents} />
+                    )
+                  ) : provider.id === "whatsapp" ? (
+                    channels.find((c) => c.type === "whatsapp" && c.isActive) ? (
+                      <Badge variant="default" className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400">
+                        {t("connected")}
+                      </Badge>
+                    ) : (
+                      <WhatsappConnectDialog agents={agents} />
+                    )
+                  ) : provider.id === "olx" ? (
+                    channels.find((c) => c.type === "olx" && c.isActive) ? (
+                      <Badge variant="default" className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400">
+                        {t("connected")}
+                      </Badge>
+                    ) : (
+                      <OlxConnectDialog agents={agents} />
+                    )
+                  ) : provider.id === "sip" ? (
+                    <SipConnectDialog />
+                  ) : provider.id === "amocrm" ? (
+                    <ExternalCrmConnectDialog type="amocrm" />
+                  ) : provider.id === "bitrix24" ? (
+                    <ExternalCrmConnectDialog type="bitrix24" />
+                  ) : provider.id === "googleWorkspace" ? (
+                    <CalendarConnectDialog />
+                  ) : provider.id === "customMcp" ? (
+                    <McpConnectDialog />
+                  ) : (
+                    <Button size="sm" variant="outline" disabled>
+                      {t("connect")}
+                      <span className="ml-1 text-xs opacity-70">{t("comingSoon")}</span>
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>

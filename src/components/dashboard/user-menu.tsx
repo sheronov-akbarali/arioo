@@ -7,7 +7,6 @@ import { SidebarMenuButton } from "@/components/ui/sidebar";
 
 export function UserMenu({ name }: { name: string | null }) {
   const t = useTranslations("dashboard.userMenu");
-  const { signOut } = useClerk();
   const displayName = name ?? t("anonymous");
 
   // The dashboard sidebar is permanently locked to icon-rail mode (see
@@ -15,17 +14,13 @@ export function UserMenu({ name }: { name: string | null }) {
   // treatment) plus an icon-only sign-out button fit the rail instead of
   // the name + full button row this used to render.
   return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-2 px-1 py-1" title={displayName}>
-        <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-sidebar-accent text-xs font-semibold text-sidebar-accent-foreground">
-          {displayName.charAt(0).toUpperCase() || "?"}
-        </span>
-        <span className="truncate text-sm group-data-[collapsible=icon]:hidden">{displayName}</span>
-      </div>
-      <SidebarMenuButton tooltip={t("signOut")} onClick={() => signOut({ redirectUrl: "/sign-in" })}>
-        <LogOut />
-        <span>{t("signOut")}</span>
-      </SidebarMenuButton>
+    <div className="flex h-11 w-full items-center gap-3 rounded-lg px-3 transition-colors hover:bg-sidebar-accent">
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-sidebar-primary text-sm font-bold text-sidebar-primary-foreground shadow-sm">
+        {displayName.charAt(0).toUpperCase() || "?"}
+      </span>
+      <span className="truncate text-[15px] font-medium text-sidebar-foreground group-data-[collapsible=icon]:hidden">
+        {displayName}
+      </span>
     </div>
   );
 }

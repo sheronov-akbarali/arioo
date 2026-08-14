@@ -275,7 +275,8 @@
       "project": "Loyiha",
       "team": "Foydalanuvchilar",
       "limits": "Limitlar",
-      "accounts": "Akkauntlar"
+      "accounts": "Akkauntlar",
+      "security": "Xavfsizlik"
     },
     "project": {
       "save": "Saqlash",
@@ -342,6 +343,8 @@
       "settings": "Sozlamalar",
       "comingSoon": "Tez orada",
       "billing": "Billing",
+      "crm": "CRM",
+      "admin": "Admin",
       "groups": {
         "work": "Ish",
         "data": "Ma'lumotlar",
@@ -922,6 +925,7 @@
     "title": "Integratsiyalar",
     "subtitle": "AI Xodimlaringizni biznes tizimlaringizga ulang.",
     "connect": "Ulash",
+    "connected": "Ulangan",
     "comingSoon": "Tez orada",
     "searchPlaceholder": "Nomi bo'yicha qidirish...",
     "categoryFilters": {

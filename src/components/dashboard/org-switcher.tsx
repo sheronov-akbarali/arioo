@@ -25,11 +25,23 @@ export async function OrgSwitcher({ userId, activeOrgId }: { userId: string; act
   // labels use) rather than being omitted, so a future expandable sidebar
   // doesn't need this component touched again.
   return (
-    <div className="flex items-center gap-2 px-1 py-1" title={name}>
-      <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-xs font-semibold text-sidebar-primary-foreground">
-        {name.charAt(0).toUpperCase() || "?"}
+    <div className="flex h-11 w-full items-center gap-3 rounded-lg px-3 transition-colors hover:bg-sidebar-accent" title={name}>
+      <span className="flex size-6 shrink-0 items-center justify-center text-sidebar-primary">
+        <svg viewBox="0 0 512 512" className="size-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="currentColor" strokeWidth="32" strokeLinecap="round">
+            <line x1="256" y1="270" x2="150" y2="380" />
+            <line x1="256" y1="270" x2="362" y2="380" />
+            <line x1="256" y1="270" x2="256" y2="128" />
+          </g>
+          <circle cx="150" cy="380" r="42" fill="currentColor" />
+          <circle cx="362" cy="380" r="42" fill="currentColor" />
+          <circle cx="256" cy="128" r="42" fill="currentColor" />
+          <circle cx="256" cy="270" r="76" fill="currentColor" opacity="0.9" />
+        </svg>
       </span>
-      <span className="truncate text-sm font-medium group-data-[collapsible=icon]:hidden">{name}</span>
+      <span className="truncate text-[15px] font-bold text-sidebar-foreground group-data-[collapsible=icon]:hidden">
+        {name}
+      </span>
     </div>
   );
 }

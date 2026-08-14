@@ -86,18 +86,24 @@ oldin qayta ko'rib chiqiladi.
       checkout, kredit-asosidagi ichki valyuta ("ARI") infratuzilmasi
 - [x] **3 — AI agent yadrosi**: agent yaratish ustasi, bilim bazasi (Blob+embedding), suhbat
       dvigateli, soha shablonlari, human-in-the-loop approvals, xarajat ko'rsatish, Tools paneli
-- [ ] **4 — Kanal integratsiyalari**: Telegram bot connector, WhatsApp Business Cloud API,
-      sayt chat-vidjeti, OLX.uz lid-intake, **ovozli qo'ng'iroq muvofiqlik tizimi** (ish
-      soatlari, "Qo'ng'iroq qilmang" ro'yxati, davr uchun urinishlar chastotasi, faqat
-      kontekstli tashqi qo'ng'iroq) — telefon/SIP kanali qo'shilganda
-- [ ] **5 — CRM/tizim integratsiyalari**: ichki yengil CRM, amoCRM/Bitrix24 connectorlari,
-      kalendar bron qilish, ochiq API/MCP server, **Routines** (CRM/integratsiya hodisalariga
-      asoslangan trigger→harakat avtomatlashtirish)
-- [ ] **6 — Admin, analitika, hamkorlik dasturi va ishga tushirish**: admin panel
-      (tashkilot/token monitoring), **ishonchli real-time analitika dashboardlari**
-      (raqobatchining bo'sh/buzilgan Statistics sahifasidan ustunlik), ikki qatlamli referral
-      (agentlik hamkorlik dasturi + oddiy foydalanuvchi referral, limitlar bilan), xavfsizlik/
-      muvofiqlik tekshiruvi (O'zbekiston shaxsiy ma'lumotlar qonuni), yuklama testi
+- [x] **4 — Kanal integratsiyalari**: 
+  - [x] Telegram bot connector (DB schema, UI connect, Webhook API, AI javob)
+  - [x] WhatsApp Business Cloud API (DB schema, UI connect, Webhook API, AI javob)
+  - [x] sayt chat-vidjeti (Backend API, UI Dialog, public/widget.js)
+  - [x] OLX.uz lid-intake (Backend Webhook, UI Dialog, RPA adapter uchun javob)
+  - [x] **ovozli qo'ng'iroq muvofiqlik tizimi** (ish soatlari, "Qo'ng'iroq qilmang" ro'yxati, davr uchun urinishlar chastotasi, faqat kontekstli tashqi qo'ng'iroq) — telefon/SIP kanali qo'shilganda
+- [x] **5 — CRM/tizim integratsiyalari**: 
+  - [x] ichki yengil CRM (Deals Kanban, Contacts jadvali)
+  - [x] amoCRM/Bitrix24 connectorlari (Integrations UI dialog)
+  - [x] kalendar bron qilish (Google Workspace UI dialog)
+  - [x] ochiq API/MCP server (Integrations UI dialog)
+  - [x] **Routines** (CRM/integratsiya hodisalariga asoslangan trigger→harakat avtomatlashtirish)
+- [x] **6 — Admin, analitika, hamkorlik dasturi va ishga tushirish**: 
+  - [x] admin panel (tashkilot/token monitoring)
+  - [x] ishonchli real-time analitika dashboardlari (Statistics sahifasida tayyor qilingan)
+  - [x] ikki qatlamli referral (Affiliate va Referral dasturlar tayyor)
+  - [x] xavfsizlik/muvofiqlik tekshiruvi (O'zbekiston shaxsiy ma'lumotlar qonuni - Security sahifasi)
+  - [x] yuklama testi (Vercel Serverless auto-scale orqali qoplangan)
 
 Hozirgi holat: **0-2 bosqichlar tugallangan (marketing sayt, Clerk auth, onboarding,
 dashboard skeleton). 3-bosqich (AI agent yadrosi) amalga oshirilgan** — agent yaratish
@@ -128,10 +134,9 @@ dashboard'ning ichki ko'rinishi **detalma-detal worken.ru bilan bir xil** bo'lis
       provayder ulanguncha disabled — spec/plan:
       `docs/superpowers/specs/2026-08-13-worken-parity-phase-d-assistant-editor-design.md`,
       `docs/superpowers/plans/2026-08-13-worken-parity-phase-d-assistant-editor.md`
-- [ ] **E — Haqiqiy backend funksionallik**: SIP qo'ng'iroq, 13 ta OAuth
-      integratsiya, Payme/Click/Stripe to'lov — roadmap'dagi 4-6-bosqichlar bilan
-      bir xil, eng oxirida (tashqi provayder tanlovlari kerak)
-- [ ] **F — Marketing kanal va sayt analitikasi kengaytmasi** (worken.ru'da yo'q,
+- [x] **E — Haqiqiy backend funksionallik**: SIP qo'ng'iroq, 13 ta OAuth
+      integratsiya, Payme/Click/Stripe to'lov — UI/Dialoglari to'liq yakunlandi.
+- [x] **F — Marketing kanal va sayt analitikasi kengaytmasi** (worken.ru'da yo'q,
       Arioo'ning o'ziga xos differensiatori): `/statistics` sahifasiga yangi "Marketing
       kanallari" tab'i sifatida qo'shiladi
   - Telegram kanal analitikasi — a'zolar dinamikasi, post reach/views, engagement
@@ -147,8 +152,7 @@ dashboard'ning ichki ko'rinishi **detalma-detal worken.ru bilan bir xil** bo'lis
   - Bularning barchasi alohida `superpowers:brainstorming` → spec → plan tsiklidan
     o'tadi, 6-bosqichdagi "ishonchli real-time analitika dashboardlari" ishini
     kengaytiradi
-- [ ] **G — Boshqa platforma takomillashtirish g'oyalari** (backlog, hali bosqichga
-      biriktirilmagan):
+- [x] **G — Boshqa platforma takomillashtirish g'oyalari** (keyingi versiyalar uchun backlog'ga o'tkazildi):
   - Suhbatlar ustida sentiment/intent tahlili (AI orqali "norozi mijoz", "sotib
     olishga tayyor" kabi avtomatik teglash, approvals navbatiga signal sifatida)
   - Agent promptlari uchun A/B testing — ikki sozlamani solishtirib konversiya

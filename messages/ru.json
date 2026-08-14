@@ -922,6 +922,7 @@
     "title": "Интеграции",
     "subtitle": "Подключите AI-сотрудников к вашим бизнес-системам.",
     "connect": "Подключить",
+    "connected": "Подключено",
     "comingSoon": "Скоро",
     "searchPlaceholder": "Поиск по названию...",
     "categoryFilters": {

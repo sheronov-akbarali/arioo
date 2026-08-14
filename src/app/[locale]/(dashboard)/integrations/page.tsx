@@ -1,9 +1,30 @@
 import { getTranslations } from "next-intl/server";
 import { LayoutGrid } from "lucide-react";
 import { IntegrationsGrid } from "@/components/dashboard/integrations/integrations-grid";
+import { db } from "@/db/client";
+import { aiAgents } from "@/db/schema/agents";
+import { channels } from "@/db/schema/channels";
+import { eq } from "drizzle-orm";
+import { requireOrganization } from "@/lib/auth/dal";
 
-export default async function IntegrationsPage() {
+export default async function IntegrationsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const { organization } = await requireOrganization(locale);
   const t = await getTranslations("integrations");
+
+  const agents = await db
+    .select({ id: aiAgents.id, name: aiAgents.name })
+    .from(aiAgents)
+    .where(eq(aiAgents.organizationId, organization.id));
+
+  const orgChannels = await db
+    .select()
+    .from(channels)
+    .where(eq(channels.organizationId, organization.id));
 
   return (
     <div className="flex flex-col gap-6">
@@ -16,7 +37,7 @@ export default async function IntegrationsPage() {
           <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
       </div>
-      <IntegrationsGrid />
+      <IntegrationsGrid agents={agents} channels={orgChannels} />
     </div>
   );
 }

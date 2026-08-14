@@ -330,6 +330,7 @@
       "chats": "Chats",
       "calls": "Calls",
       "routines": "Routines",
+    "crm": "CRM",
       "knowledgeBases": "Knowledge base",
       "approvals": "Approvals",
       "products": "Products",
@@ -620,6 +621,7 @@
     "sourceFilters": {
       "all": "All",
       "routines": "Routines",
+    "crm": "CRM",
       "chats": "Chat & voice"
     },
     "search": {
@@ -922,6 +924,7 @@
     "title": "Integrations",
     "subtitle": "Connect your AI employees to your business systems.",
     "connect": "Connect",
+    "connected": "Connected",
     "comingSoon": "Coming soon",
     "searchPlaceholder": "Search by name...",
     "categoryFilters": {

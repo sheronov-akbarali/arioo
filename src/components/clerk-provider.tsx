@@ -10,6 +10,7 @@ export function AppClerkProvider({ children }: { children: ReactNode }) {
 
   return (
     <ClerkProvider
+      afterSignOutUrl="/uz"
       appearance={{
         theme: shadcn,
         variables: {

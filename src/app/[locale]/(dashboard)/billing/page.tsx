@@ -10,6 +10,7 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TopUpDialog } from "@/components/dashboard/billing/top-up-dialog";
 
 export default async function BillingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -73,10 +74,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
               <p className="mt-1 text-2xl font-bold">{credits.balance.toFixed(2)}W</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("balanceCard.hint")}</p>
             </div>
-            <Button size="sm" disabled className="w-fit">
-              {t("balanceCard.topUp")}
-              <span className="ml-2 text-xs opacity-70">{t("comingSoon")}</span>
-            </Button>
+            <TopUpDialog />
           </CardContent>
         </Card>
         <Card>

@@ -16,6 +16,7 @@ export default async function SettingsLayout({ children }: { children: React.Rea
           <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
       </div>
+
       <SettingsTabs />
       {children}
     </div>
