@@ -64,4 +64,51 @@ describe("finalizeConnection", () => {
     expect(invoke.mock.calls[2][0].className).toBe("auth.LogOut");
     expect(dbUpdateSet).toHaveBeenCalledWith(expect.objectContaining({ status: "error", phone: null }));
   });
+
+  it("returns channel_not_found when ResolveUsername rejects (typo'd or nonexistent channel)", async () => {
+    invoke.mockRejectedValueOnce({ errorMessage: "USERNAME_NOT_OCCUPIED" }); // ResolveUsername
+
+    const result = await finalizeConnection({
+      organizationId: "org_1",
+      channelUsername: "no_such_channel",
+      client: makeClient(),
+    });
+
+    expect(result).toEqual({ status: "error", error: "channel_not_found" });
+    expect(dbUpdateSet).toHaveBeenCalledWith(
+      expect.objectContaining({
+        status: "error",
+        lastError: "channel_not_found",
+        sessionSecretEncrypted: null,
+        phoneCodeHash: null,
+        phone: null,
+      }),
+    );
+  });
+
+  it("returns channel_not_found when ResolveUsername resolves with an empty chats array", async () => {
+    invoke.mockResolvedValueOnce({ chats: [] }); // ResolveUsername
+
+    const result = await finalizeConnection({
+      organizationId: "org_1",
+      channelUsername: "arioo_uz",
+      client: makeClient(),
+    });
+
+    expect(result).toEqual({ status: "error", error: "channel_not_found" });
+  });
+
+  it("returns channel_not_found when GetParticipant rejects (e.g. CHANNEL_INVALID)", async () => {
+    invoke
+      .mockResolvedValueOnce({ chats: [{ id: "1", title: "Arioo kanali", accessHash: "h" }] }) // ResolveUsername
+      .mockRejectedValueOnce({ errorMessage: "CHANNEL_INVALID" }); // GetParticipant
+
+    const result = await finalizeConnection({
+      organizationId: "org_1",
+      channelUsername: "arioo_uz",
+      client: makeClient(),
+    });
+
+    expect(result).toEqual({ status: "error", error: "channel_not_found" });
+  });
 });

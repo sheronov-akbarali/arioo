@@ -666,6 +666,7 @@
         "members": "Members",
         "views": "views",
         "notEnoughSubscribers": "Your channel doesn't have Telegram statistics yet (usually needs 500+ subscribers).",
+        "genericError": "Couldn't load statistics.",
         "disconnect": "Disconnect",
         "connect": {
           "riskWarning": "Note: this connects your personal Telegram account. Telegram may restrict this kind of automation — the risk applies only to the connected account.",
@@ -681,7 +682,8 @@
             "missing_fields": "Phone and channel username are required.",
             "invalid_code": "Incorrect code. Try again.",
             "invalid_password": "Incorrect password. Try again.",
-            "not_channel_admin": "This account is not an admin of the given channel."
+            "not_channel_admin": "This account is not an admin of the given channel.",
+            "channel_not_found": "Channel not found."
           }
         }
       },

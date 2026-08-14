@@ -666,6 +666,7 @@
         "members": "A'zolar",
         "views": "ko'rish",
         "notEnoughSubscribers": "Kanalingiz hali Telegram statistikasiga ega emas (odatda 500+ obunachi kerak).",
+        "genericError": "Statistikani yuklab bo'lmadi.",
         "disconnect": "Uzish",
         "connect": {
           "riskWarning": "Diqqat: bu shaxsiy Telegram akkountingizni ulaydi. Telegram bunday avtomatlashtirishni cheklashi mumkin — xavf faqat ulangan akkauntga tegishli.",
@@ -681,7 +682,8 @@
             "missing_fields": "Telefon va kanal username kiritilishi shart.",
             "invalid_code": "Kod noto'g'ri. Qayta urinib ko'ring.",
             "invalid_password": "Parol noto'g'ri. Qayta urinib ko'ring.",
-            "not_channel_admin": "Bu akkaunt ko'rsatilgan kanalga admin emas."
+            "not_channel_admin": "Bu akkaunt ko'rsatilgan kanalga admin emas.",
+            "channel_not_found": "Kanal topilmadi."
           }
         }
       },

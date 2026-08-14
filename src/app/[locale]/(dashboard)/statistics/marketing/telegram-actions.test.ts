@@ -32,7 +32,7 @@ vi.mock("@/lib/telegram/client", () => ({
   telegramApiCredentials: vi.fn().mockReturnValue({ apiId: 111, apiHash: "hash" }),
 }));
 
-const { dbValues, dbOnConflict, dbReturning, dbSelectWhere } = vi.hoisted(() => ({
+const { dbValues, dbOnConflict, dbReturning, dbSelectWhere, dbDeleteWhere } = vi.hoisted(() => ({
   dbValues: vi.fn().mockReturnThis(),
   dbOnConflict: vi.fn().mockReturnThis(),
   dbReturning: vi.fn().mockResolvedValue([{ id: "conn_1" }]),
@@ -41,20 +41,25 @@ const { dbValues, dbOnConflict, dbReturning, dbSelectWhere } = vi.hoisted(() => 
   // assignments at the top of this file, so calling encryptSessionSecret()
   // here would throw "TELEGRAM_SESSION_ENCRYPTION_KEY is not set".
   dbSelectWhere: vi.fn(),
+  dbDeleteWhere: vi.fn().mockResolvedValue(undefined),
 }));
 vi.mock("@/db/client", () => ({
   db: {
     insert: vi.fn(() => ({ values: dbValues, onConflictDoUpdate: dbOnConflict, returning: dbReturning })),
     select: vi.fn(() => ({ from: vi.fn(() => ({ where: dbSelectWhere })) })),
     update: vi.fn(() => ({ set: vi.fn().mockReturnThis(), where: vi.fn().mockResolvedValue(undefined) })),
+    delete: vi.fn(() => ({ where: dbDeleteWhere })),
   },
 }));
 
-vi.mock("@/lib/telegram/finalize-connection", () => ({
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
+
+const { finalizeConnection } = vi.hoisted(() => ({
   finalizeConnection: vi.fn().mockResolvedValue({ status: "connected" }),
 }));
+vi.mock("@/lib/telegram/finalize-connection", () => ({ finalizeConnection }));
 
-import { startTelegramConnection, submitTelegramCode } from "./telegram-actions";
+import { startTelegramConnection, submitTelegramCode, disconnectTelegramChannel } from "./telegram-actions";
 
 dbSelectWhere.mockResolvedValue([
   {
@@ -77,6 +82,10 @@ dbSelectWhere.mockResolvedValue([
 beforeEach(() => {
   invoke.mockReset();
   sendCode.mockClear();
+  disconnect.mockClear();
+  finalizeConnection.mockClear();
+  finalizeConnection.mockResolvedValue({ status: "connected" });
+  dbDeleteWhere.mockClear();
 });
 
 describe("startTelegramConnection", () => {
@@ -119,5 +128,43 @@ describe("submitTelegramCode", () => {
     const result = await submitTelegramCode("uz", { status: "pending_code" }, formData);
 
     expect(result).toEqual({ status: "pending_password" });
+  });
+
+  it("awaits finalizeConnection before disconnecting the client (regression: `return finalizeConnection(...)` in a try block does not await before `finally` runs)", async () => {
+    invoke.mockResolvedValueOnce({}); // Api.auth.SignIn resolves without SESSION_PASSWORD_NEEDED
+
+    const callOrder: string[] = [];
+    finalizeConnection.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            callOrder.push("finalizeConnection");
+            resolve({ status: "connected" });
+          }, 0);
+        }),
+    );
+    disconnect.mockImplementationOnce(async () => {
+      callOrder.push("disconnect");
+    });
+
+    const formData = new FormData();
+    formData.set("code", "12345");
+
+    const result = await submitTelegramCode("uz", { status: "pending_code" }, formData);
+
+    expect(result).toEqual({ status: "connected" });
+    expect(disconnect).toHaveBeenCalledTimes(1);
+    expect(callOrder).toEqual(["finalizeConnection", "disconnect"]);
+  });
+});
+
+describe("disconnectTelegramChannel", () => {
+  it("still deletes the connection row when Api.auth.LogOut throws (revoked session, AUTH_KEY_UNREGISTERED, etc.)", async () => {
+    invoke.mockRejectedValueOnce({ errorMessage: "AUTH_KEY_UNREGISTERED" }); // Api.auth.LogOut
+
+    await disconnectTelegramChannel("uz");
+
+    expect(dbDeleteWhere).toHaveBeenCalledTimes(1);
+    expect(disconnect).toHaveBeenCalledTimes(1);
   });
 });

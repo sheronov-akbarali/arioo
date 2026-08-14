@@ -15,38 +15,47 @@ export async function getTelegramChannelStats(connection: {
   channelUsername: string;
   sessionSecretEncrypted: string;
 }): Promise<TelegramChannelStats> {
-  const client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted));
+  let client: Awaited<ReturnType<typeof openTelegramClient>> | undefined;
   try {
-    let memberCount: number;
+    client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted));
     try {
-      const full = (await client.invoke(
-        new Api.channels.GetFullChannel({ channel: connection.channelUsername }),
-      )) as unknown as { fullChat: { participantsCount: number } };
-      memberCount = full.fullChat.participantsCount;
-    } catch {
-      return { available: false, reason: "unknown" };
-    }
+      let memberCount: number;
+      try {
+        const full = (await client.invoke(
+          new Api.channels.GetFullChannel({ channel: connection.channelUsername }),
+        )) as unknown as { fullChat: { participantsCount: number } };
+        memberCount = full.fullChat.participantsCount;
+      } catch {
+        return { available: false, reason: "unknown" };
+      }
 
-    try {
-      const stats = (await client.invoke(
-        new Api.stats.GetBroadcastStats({ channel: connection.channelUsername }),
-      )) as unknown as {
-        recentPostsInteractions: Array<{ msgId: number; views: number; forwards: number }>;
-      };
-      return {
-        available: true,
-        memberCount,
-        recentPosts: stats.recentPostsInteractions.map((post) => ({
-          id: post.msgId,
-          text: "",
-          views: post.views,
-          forwards: post.forwards,
-        })),
-      };
-    } catch {
-      return { available: false, reason: "not_enough_subscribers" };
+      try {
+        const stats = (await client.invoke(
+          new Api.stats.GetBroadcastStats({ channel: connection.channelUsername }),
+        )) as unknown as {
+          recentPostsInteractions: Array<{ msgId: number; views: number; forwards: number }>;
+        };
+        return {
+          available: true,
+          memberCount,
+          recentPosts: stats.recentPostsInteractions.map((post) => ({
+            id: post.msgId,
+            text: "",
+            views: post.views,
+            forwards: post.forwards,
+          })),
+        };
+      } catch {
+        return { available: false, reason: "not_enough_subscribers" };
+      }
+    } finally {
+      await client.disconnect();
     }
-  } finally {
-    await client.disconnect();
+  } catch {
+    // decryptSessionSecret or openTelegramClient itself failed (e.g. a rotated
+    // TELEGRAM_SESSION_ENCRYPTION_KEY) — no client was ever opened, so there's
+    // nothing to disconnect. Fail soft so this doesn't take down the whole
+    // /statistics/marketing page (including the unrelated Site analytics card).
+    return { available: false, reason: "unknown" };
   }
 }

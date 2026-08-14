@@ -96,7 +96,7 @@ export async function submitTelegramCode(
         phoneCode: code,
       }),
     );
-    return finalizeConnection({
+    return await finalizeConnection({
       organizationId: organization.id,
       channelUsername: connection.channelUsername,
       client,
@@ -136,7 +136,7 @@ export async function submitTelegramPassword(
     const { computeCheck } = await import("telegram/Password");
     const passwordSrpCheck = await computeCheck(passwordInfo, password);
     await client.invoke(new Api.auth.CheckPassword({ password: passwordSrpCheck }));
-    return finalizeConnection({
+    return await finalizeConnection({
       organizationId: organization.id,
       channelUsername: connection.channelUsername,
       client,
@@ -155,12 +155,19 @@ export async function disconnectTelegramChannel(locale: string): Promise<void> {
     .from(telegramChannelConnections)
     .where(eq(telegramChannelConnections.organizationId, organization.id));
   if (connection?.sessionSecretEncrypted) {
-    const client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted));
     try {
-      // gramjs has no logOut() convenience method — Api.auth.LogOut is invoked like any other MTProto call.
-      await client.invoke(new Api.auth.LogOut());
-    } finally {
-      await client.disconnect();
+      const client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted));
+      try {
+        // gramjs has no logOut() convenience method — Api.auth.LogOut is invoked like any other MTProto call.
+        // Best-effort: a revoked session or rotated encryption key must not block removing our own record.
+        await client.invoke(new Api.auth.LogOut());
+      } catch {
+        // ignore — proceed to delete our record regardless of remote logout outcome
+      } finally {
+        await client.disconnect();
+      }
+    } catch {
+      // decrypt/openTelegramClient itself failed — still proceed to delete our record
     }
   }
   await db

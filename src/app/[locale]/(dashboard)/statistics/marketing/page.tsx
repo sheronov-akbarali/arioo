@@ -183,7 +183,11 @@ export default async function MarketingStatisticsPage({
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                <p className="text-sm text-muted-foreground">{t("marketing.telegram.notEnoughSubscribers")}</p>
+                <p className="text-sm text-muted-foreground">
+                  {telegramStats?.reason === "unknown"
+                    ? t("marketing.telegram.genericError")
+                    : t("marketing.telegram.notEnoughSubscribers")}
+                </p>
                 <form action={disconnectTelegramChannel.bind(null, locale)}>
                   <Button type="submit" size="sm" variant="outline" className="w-fit">
                     {t("marketing.telegram.disconnect")}

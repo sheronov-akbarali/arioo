@@ -59,4 +59,19 @@ describe("getTelegramChannelStats", () => {
     expect(result).toEqual({ available: false, reason: "unknown" });
     expect(disconnect).toHaveBeenCalled();
   });
+
+  it("resolves to unknown (instead of throwing) when the session secret cannot be decrypted", async () => {
+    // A garbage/rotated ciphertext makes decryptSessionSecret throw before any
+    // client is ever opened. This must not crash the whole /statistics/marketing
+    // page — it should fail soft just like the other stats failures above.
+    const badConnection = { channelUsername: "arioo_uz", sessionSecretEncrypted: "not-valid-ciphertext" };
+    const disconnectCallsBefore = disconnect.mock.calls.length;
+
+    await expect(getTelegramChannelStats(badConnection)).resolves.toEqual({
+      available: false,
+      reason: "unknown",
+    });
+    // No client was ever opened, so disconnect() must not be invoked.
+    expect(disconnect.mock.calls.length).toBe(disconnectCallsBefore);
+  });
 });
