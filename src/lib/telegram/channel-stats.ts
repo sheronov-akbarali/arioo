@@ -17,10 +17,15 @@ export async function getTelegramChannelStats(connection: {
 }): Promise<TelegramChannelStats> {
   const client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted));
   try {
-    const full = (await client.invoke(
-      new Api.channels.GetFullChannel({ channel: connection.channelUsername }),
-    )) as unknown as { fullChat: { participantsCount: number } };
-    const memberCount = full.fullChat.participantsCount;
+    let memberCount: number;
+    try {
+      const full = (await client.invoke(
+        new Api.channels.GetFullChannel({ channel: connection.channelUsername }),
+      )) as unknown as { fullChat: { participantsCount: number } };
+      memberCount = full.fullChat.participantsCount;
+    } catch {
+      return { available: false, reason: "unknown" };
+    }
 
     try {
       const stats = (await client.invoke(

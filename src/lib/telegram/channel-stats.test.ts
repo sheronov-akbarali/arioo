@@ -50,4 +50,13 @@ describe("getTelegramChannelStats", () => {
 
     expect(result).toEqual({ available: false, reason: "not_enough_subscribers" });
   });
+
+  it("returns unknown when GetFullChannel itself fails", async () => {
+    invoke.mockRejectedValueOnce({ errorMessage: "CHANNEL_INVALID" });
+
+    const result = await getTelegramChannelStats(connection);
+
+    expect(result).toEqual({ available: false, reason: "unknown" });
+    expect(disconnect).toHaveBeenCalled();
+  });
 });
