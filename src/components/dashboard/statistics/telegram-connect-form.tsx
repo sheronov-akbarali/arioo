@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,8 @@ type BoundAction = (
   formData: FormData,
 ) => Promise<TelegramConnectState>;
 
+const IDLE: TelegramConnectState = { status: "idle" };
+
 export function TelegramConnectForm({
   startAction,
   submitCodeAction,
@@ -22,23 +24,44 @@ export function TelegramConnectForm({
   submitPasswordAction: BoundAction;
 }) {
   const t = useTranslations("statistics.marketing.telegram.connect");
-  const [startState, startFormAction, startPending] = useActionState(startAction, { status: "idle" });
-  const [codeState, codeFormAction, codePending] = useActionState(submitCodeAction, { status: "pending_code" });
-  const [passwordState, passwordFormAction, passwordPending] = useActionState(submitPasswordAction, {
-    status: "pending_password",
-  });
+  const [startState, startFormAction, startPending] = useActionState(startAction, IDLE);
+  const [codeState, codeFormAction, codePending] = useActionState(submitCodeAction, IDLE);
+  const [passwordState, passwordFormAction, passwordPending] = useActionState(submitPasswordAction, IDLE);
 
-  const step =
-    passwordState.status === "connected" || codeState.status === "connected"
-      ? "connected"
-      : passwordState.status === "pending_password" || codeState.status === "pending_password"
-        ? "password"
-        : startState.status === "pending_code"
-          ? "code"
-          : "start";
+  const [step, setStep] = useState<"start" | "code" | "password" | "connected" | "error">("start");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (startState.status === "pending_code") setStep("code");
+  }, [startState]);
+
+  useEffect(() => {
+    if (codeState.status === "pending_password") setStep("password");
+    else if (codeState.status === "connected") setStep("connected");
+    else if (codeState.status === "error") {
+      setStep("error");
+      setErrorMessage(codeState.error);
+    }
+  }, [codeState]);
+
+  useEffect(() => {
+    if (passwordState.status === "connected") setStep("connected");
+    else if (passwordState.status === "error") {
+      setStep("error");
+      setErrorMessage(passwordState.error);
+    }
+  }, [passwordState]);
 
   if (step === "connected") {
     return <p className="text-sm text-brand">{t("connected")}</p>;
+  }
+
+  if (step === "error") {
+    return (
+      <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+        {t(`errors.${errorMessage}`)}
+      </p>
+    );
   }
 
   if (step === "password") {
