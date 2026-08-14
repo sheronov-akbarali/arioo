@@ -365,18 +365,16 @@ vi.mock("@/db/client", () => ({
 }));
 
 const invoke = vi.fn();
-const logOut = vi.fn();
 const sessionSave = vi.fn().mockReturnValue("final-session-string");
 
 function makeClient() {
-  return { invoke, logOut, session: { save: sessionSave } } as any;
+  return { invoke, session: { save: sessionSave } } as any;
 }
 
 import { finalizeConnection } from "./finalize-connection";
 
 beforeEach(() => {
   invoke.mockReset();
-  logOut.mockReset();
   dbUpdateSet.mockClear();
   dbUpdateWhere.mockClear();
 });
@@ -399,13 +397,14 @@ describe("finalizeConnection", () => {
     expect(dbUpdateSet).toHaveBeenCalledWith(
       expect.objectContaining({ status: "connected", channelTitle: "Arioo kanali" }),
     );
-    expect(logOut).not.toHaveBeenCalled();
+    expect(invoke).toHaveBeenCalledTimes(2); // ResolveUsername + GetParticipant only — no LogOut call
   });
 
   it("rejects and logs out when the account is not an admin", async () => {
     invoke
       .mockResolvedValueOnce({ chats: [{ id: "1", title: "Arioo kanali", accessHash: "h" }] })
-      .mockResolvedValueOnce({ participant: { className: "ChannelParticipantSelf" } });
+      .mockResolvedValueOnce({ participant: { className: "ChannelParticipantSelf" } })
+      .mockResolvedValueOnce({}); // Api.auth.LogOut
 
     const result = await finalizeConnection({
       organizationId: "org_1",
@@ -414,11 +413,14 @@ describe("finalizeConnection", () => {
     });
 
     expect(result.status).toBe("error");
-    expect(logOut).toHaveBeenCalledOnce();
+    expect(invoke).toHaveBeenCalledTimes(3);
+    expect(invoke.mock.calls[2][0].className).toBe("auth.LogOut");
     expect(dbUpdateSet).toHaveBeenCalledWith(expect.objectContaining({ status: "error" }));
   });
 });
 ```
+
+Note: gramjs's `TelegramClient` has no `logOut()` convenience method — logging out is done via `client.invoke(new Api.auth.LogOut({}))`, same as every other MTProto call. The test above asserts on the 3rd `invoke` call's constructed request having `className === "auth.LogOut"` (every gramjs `Api.*` request class exposes `className` as its TL type name — this is how gramjs request objects self-identify, and is a safe, implementation-shape-agnostic way to assert which request was sent without depending on exact constructor argument shapes).
 
 - [ ] **Step 2: Run test to verify it fails**
 
@@ -462,7 +464,7 @@ export async function finalizeConnection(params: {
   const isAdmin = ADMIN_PARTICIPANT_TYPES.has(participantResult.participant.className);
 
   if (!isAdmin) {
-    await client.logOut();
+    await client.invoke(new Api.auth.LogOut({}));
     await db
       .update(telegramChannelConnections)
       .set({
@@ -774,7 +776,8 @@ export async function disconnectTelegramChannel(locale: string): Promise<void> {
   if (connection?.sessionSecretEncrypted) {
     const client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted));
     try {
-      await client.logOut();
+      // gramjs has no logOut() convenience method — Api.auth.LogOut is invoked like any other MTProto call.
+      await client.invoke(new Api.auth.LogOut({}));
     } finally {
       await client.disconnect();
     }
