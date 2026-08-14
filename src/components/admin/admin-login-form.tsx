@@ -19,7 +19,9 @@ export function AdminLoginForm({ locale }: { locale: string }) {
         <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-red-500/10 text-red-600 mb-2">
           <Activity className="size-6" />
         </div>
-        <CardTitle className="text-2xl font-bold">Admin Panel</CardTitle>
+        <CardTitle>
+          <h2 className="text-2xl font-bold">Arioo Admin Panel</h2>
+        </CardTitle>
         <CardDescription>
           Tizim boshqaruviga kirish uchun ma'lumotlarni kiriting
         </CardDescription>

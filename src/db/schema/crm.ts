@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer, pgEnum, decimal } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, pgEnum, decimal } from "drizzle-orm/pg-core";
 import { organizations } from "./org";
 import { aiAgents } from "./agents";
 import { channels } from "./channels";

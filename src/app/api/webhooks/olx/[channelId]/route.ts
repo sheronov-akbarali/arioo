@@ -4,7 +4,7 @@ import { db } from "@/db/client";
 import { channels } from "@/db/schema/channels";
 import { conversations, messages } from "@/db/schema/conversations";
 import { aiAgents } from "@/db/schema/agents";
-import { generateText } from "ai";
+import { executeAgentResponse } from "@/lib/ai/agent-executor";
 
 export async function POST(
   req: Request,
@@ -79,21 +79,15 @@ export async function POST(
       content: m.content,
     }));
 
-    // 6. AI SDK orqali javob olish
-    const { text: aiResponse } = await generateText({
-      model: agent.model,
-      system: agent.systemPrompt,
-      messages: formattedHistory,
-    });
-
-    // 7. AI javobini bazaga yozish
-    await db.insert(messages).values({
+    // 6. AI SDK orqali javob olish (RAG + A/B + Ledger)
+    const { text: aiResponse } = await executeAgentResponse({
+      agentId: agent.id,
       conversationId: conversation.id,
-      role: "assistant",
-      content: aiResponse,
+      userMessage: message,
+      history: formattedHistory,
     });
 
-    // 8. RPA bot uchun to'g'ridan-to'g'ri qaytarish
+    // 7. RPA bot uchun to'g'ridan-to'g'ri qaytarish
     return NextResponse.json({ response: aiResponse });
   } catch (error) {
     console.error("OLX webhook error:", error);

@@ -7,7 +7,8 @@ import { MessageSquare, CheckCircle2, Clock } from "lucide-react";
 import { db } from "@/db/client";
 import { tickets } from "@/db/schema/tickets";
 import { organizations } from "@/db/schema/org";
-import { desc, eq, count } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
+import { updateTicketStatusAction } from "../actions";
 
 export default async function AdminTicketsPage() {
   const allTickets = await db.select({
@@ -88,7 +89,28 @@ export default async function AdminTicketsPage() {
                     {ticket.status === "closed" && <Badge variant="outline" className="text-muted-foreground">Yopilgan</Badge>}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="outline" size="sm">Javob berish</Button>
+                    <div className="flex justify-end gap-2">
+                      {ticket.status === "open" && (
+                        <>
+                          <form action={updateTicketStatusAction.bind(null, ticket.id, "in_progress")}>
+                            <Button type="submit" variant="outline" size="sm">Ko'rib chiqish</Button>
+                          </form>
+                          <form action={updateTicketStatusAction.bind(null, ticket.id, "closed")}>
+                            <Button type="submit" variant="outline" size="sm">Yopish</Button>
+                          </form>
+                        </>
+                      )}
+                      {ticket.status === "in_progress" && (
+                        <form action={updateTicketStatusAction.bind(null, ticket.id, "closed")}>
+                          <Button type="submit" variant="outline" size="sm">Yopish</Button>
+                        </form>
+                      )}
+                      {ticket.status === "closed" && (
+                        <form action={updateTicketStatusAction.bind(null, ticket.id, "open")}>
+                          <Button type="submit" variant="outline" size="sm">Qayta ochish</Button>
+                        </form>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

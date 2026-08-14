@@ -12,7 +12,7 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import { Link, usePathname } from "@/i18n/navigation";
-import { Activity, Users, Settings, LogOut, ArrowLeft, KeySquare, Bot, CreditCard, MessageSquare, Megaphone, Gift } from "lucide-react";
+import { Activity, Users, LogOut, ArrowLeft, KeySquare, Bot, CreditCard, MessageSquare, Megaphone, Gift } from "lucide-react";
 import { SignOutButton } from "@clerk/nextjs";
 
 export function AdminSidebar() {

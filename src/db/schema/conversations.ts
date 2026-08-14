@@ -8,6 +8,11 @@ export const conversationChannel = pgEnum("conversation_channel", [
   "widget",
   "olx",
 ]);
+export const conversationSentiment = pgEnum("conversation_sentiment", [
+  "positive",
+  "neutral",
+  "negative",
+]);
 export const messageRole = pgEnum("message_role", ["user", "assistant", "system"]);
 
 export const conversations = pgTable("conversation", {
@@ -18,6 +23,9 @@ export const conversations = pgTable("conversation", {
   channel: conversationChannel("channel").notNull().default("playground"),
   channelId: text("channelId"), // reference to channels.id
   externalChatId: text("externalChatId"), // e.g. telegram chat ID
+  sentiment: conversationSentiment("sentiment").notNull().default("neutral"),
+  handoffFromAgentId: text("handoffFromAgentId"),
+  handoffReason: text("handoffReason"),
   metadata: text("metadata"), // jsonified metadata
   startedAt: timestamp("startedAt", { mode: "date" }).notNull().defaultNow(),
 });

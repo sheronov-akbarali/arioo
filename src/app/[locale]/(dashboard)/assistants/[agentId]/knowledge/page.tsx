@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { uploadKnowledgeDocumentAction, updateKnowledgeSettingsAction } from "./actions";
+import { KnowledgeDocItem } from "@/components/dashboard/knowledge-bases/knowledge-doc-item";
 
 export default async function KnowledgeBasePage({
   params,
@@ -41,10 +42,15 @@ export default async function KnowledgeBasePage({
         ) : (
           <ul className="flex flex-col gap-2">
             {documents.map((document) => (
-              <li key={document.id} className="flex items-center justify-between rounded-lg border p-3">
-                <span>{document.filename}</span>
-                <span className="text-muted-foreground text-sm">{t(`status.${document.status}`)}</span>
-              </li>
+              <KnowledgeDocItem
+                key={document.id}
+                locale={locale}
+                agentId={agent.id}
+                id={document.id}
+                filename={document.filename}
+                status={document.status}
+                statusLabel={t(`status.${document.status}`)}
+              />
             ))}
           </ul>
         )}

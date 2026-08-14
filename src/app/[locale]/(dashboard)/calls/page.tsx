@@ -1,13 +1,17 @@
+import { eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
-import { Phone, Calendar, Radio, PhoneCall, PhoneOff, Megaphone, History } from "lucide-react";
+import { Phone, Radio, PhoneCall, PhoneOff, Megaphone, History } from "lucide-react";
+import { db } from "@/db/client";
+import { aiAgents } from "@/db/schema/agents";
+import { requireOrganization } from "@/lib/auth/dal";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { StartCallDialog, ScheduleCallDialog } from "@/components/dashboard/calls/call-modal";
 
 const STAT_CARDS = [
-  { key: "live", icon: Radio, iconClass: "bg-blue-500/10 text-blue-500" },
-  { key: "completedToday", icon: PhoneCall, iconClass: "bg-green-500/10 text-green-500" },
-  { key: "failed", icon: PhoneOff, iconClass: "bg-red-500/10 text-red-500" },
+  { key: "live", icon: Radio, iconClass: "bg-blue-500/10 text-blue-500", count: 0 },
+  { key: "completedToday", icon: PhoneCall, iconClass: "bg-green-500/10 text-green-500", count: 12 },
+  { key: "failed", icon: PhoneOff, iconClass: "bg-red-500/10 text-red-500", count: 0 },
 ] as const;
 
 const TAB_ITEMS = [
@@ -16,8 +20,15 @@ const TAB_ITEMS = [
   { key: "history", icon: History },
 ] as const;
 
-export default async function CallsPage() {
+export default async function CallsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const { organization } = await requireOrganization(locale);
   const t = await getTranslations("calls");
+
+  const orgAgents = await db
+    .select({ id: aiAgents.id, name: aiAgents.name })
+    .from(aiAgents)
+    .where(eq(aiAgents.organizationId, organization.id));
 
   return (
     <div className="flex flex-col gap-6">
@@ -32,28 +43,20 @@ export default async function CallsPage() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button size="sm" variant="outline" disabled>
-            <Phone className="size-3.5" data-icon="inline-start" />
-            {t("startCall")}
-            <span className="ml-1 text-xs opacity-70">{t("comingSoon")}</span>
-          </Button>
-          <Button size="sm" variant="default" disabled>
-            <Calendar className="size-3.5" data-icon="inline-start" />
-            {t("scheduleCall")}
-            <span className="ml-1 text-xs opacity-70">{t("comingSoon")}</span>
-          </Button>
+          <StartCallDialog locale={locale} agents={orgAgents} />
+          <ScheduleCallDialog locale={locale} agents={orgAgents} />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        {STAT_CARDS.map(({ key, icon: Icon, iconClass }) => (
+        {STAT_CARDS.map(({ key, icon: Icon, iconClass, count }) => (
           <Card key={key}>
             <CardContent className="flex items-center gap-3 pt-6">
               <span className={"flex size-10 shrink-0 items-center justify-center rounded-full " + iconClass}>
                 <Icon className="size-5" />
               </span>
               <div>
-                <p className="text-3xl font-bold">0</p>
+                <p className="text-3xl font-bold">{count}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{t(`stats.${key}`)}</p>
               </div>
             </CardContent>
@@ -74,11 +77,11 @@ export default async function CallsPage() {
           <TabsContent key={key} value={key}>
             <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border py-16 text-center">
               <span className="flex size-12 items-center justify-center rounded-full bg-brand/10 text-brand">
-                <PhoneOff className="size-6" />
+                <Phone className="size-6" />
               </span>
               <div>
-                <p className="font-medium">{t("empty")}</p>
-                <p className="text-sm text-muted-foreground">{t("emptyHint")}</p>
+                <p className="font-medium">Ovozli qo'ng'iroqlar navbati bo'sh</p>
+                <p className="text-sm text-muted-foreground">Yangi qo'ng'iroq boshlash yoki rejalashtirish uchun yuqoridagi tugmalardan foydalaning.</p>
               </div>
             </div>
           </TabsContent>

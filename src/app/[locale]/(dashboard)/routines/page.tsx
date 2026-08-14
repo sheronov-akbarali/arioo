@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { createRoutineAction } from "./actions";
+import { RoutinesList, type RoutineRow } from "@/components/dashboard/routines/routines-list";
 
 export default async function RoutinesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -23,6 +24,15 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
     .where(eq(routines.organizationId, organization.id))
     .orderBy(desc(routines.createdAt));
 
+  const routineItems: RoutineRow[] = rows.map((r) => ({
+    id: r.id,
+    name: r.name,
+    triggerType: t(`triggerTypes.${r.triggerType}`),
+    resource: r.resource,
+    status: r.status as "active" | "paused",
+    createdAt: r.createdAt,
+  }));
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-start gap-3">
@@ -33,7 +43,7 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
           <h1 className="text-xl font-semibold">{t("title")}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
           <Badge variant="outline" className="mt-3">
-            {t("engineNotice")}
+            Avtomatlashtirilgan Cron faol (/api/cron/routines)
           </Badge>
         </div>
       </div>
@@ -43,11 +53,11 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
           <form action={action} className="grid gap-4 sm:grid-cols-3">
             <div className="flex flex-col gap-2">
               <Label htmlFor="name">{t("form.name")}</Label>
-              <Input id="name" name="name" required minLength={2} maxLength={100} />
+              <Input id="name" name="name" required minLength={2} maxLength={100} placeholder="Masalan: Kunlik hisobot" />
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="triggerType">{t("form.trigger")}</Label>
-              <select id="triggerType" name="triggerType" required className="rounded-md border border-input px-3 py-2">
+              <select id="triggerType" name="triggerType" required className="rounded-md border border-input bg-background px-3 py-2 text-sm">
                 {routineTriggerType.enumValues.map((value) => (
                   <option key={value} value={value}>
                     {t(`triggerTypes.${value}`)}
@@ -66,11 +76,11 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
         </CardContent>
       </Card>
 
-      {rows.length > 0 && (
-        <p className="text-sm text-muted-foreground">{t("foundCount", { count: rows.length })}</p>
+      {routineItems.length > 0 && (
+        <p className="text-sm text-muted-foreground">{t("foundCount", { count: routineItems.length })}</p>
       )}
 
-      {rows.length === 0 ? (
+      {routineItems.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border py-16 text-center">
           <span className="flex size-12 items-center justify-center rounded-full bg-brand/10 text-brand">
             <Repeat2 className="size-6" />
@@ -82,31 +92,8 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
         </div>
       ) : (
         <Card className="p-0">
-          <CardContent className="overflow-x-auto p-0">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-left text-xs text-muted-foreground">
-                  <th className="px-4 py-3 font-medium">{t("table.name")}</th>
-                  <th className="px-4 py-3 font-medium">{t("table.trigger")}</th>
-                  <th className="px-4 py-3 font-medium">{t("table.resource")}</th>
-                  <th className="px-4 py-3 font-medium">{t("table.status")}</th>
-                  <th className="px-4 py-3 font-medium">{t("table.lastFired")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((routine) => (
-                  <tr key={routine.id} className="border-b border-border last:border-0">
-                    <td className="px-4 py-3 font-medium">{routine.name}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{t(`triggerTypes.${routine.triggerType}`)}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{routine.resource}</td>
-                    <td className="px-4 py-3">
-                      <Badge variant="outline">{t(`status.${routine.status}`)}</Badge>
-                    </td>
-                    <td className="px-4 py-3 text-muted-foreground">—</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <CardContent className="p-0">
+            <RoutinesList locale={locale} routines={routineItems} />
           </CardContent>
         </Card>
       )}

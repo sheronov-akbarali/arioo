@@ -9,6 +9,7 @@ import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CopyLinkButton } from "@/components/dashboard/copy-link-button";
+import { PayoutDialog } from "@/components/dashboard/referral/payout-dialog";
 
 const DAILY_LIMIT = 100;
 const MONTHLY_LIMIT = 1000;
@@ -105,10 +106,7 @@ export default async function ReferralProgramPage({
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">{t("balance")}</p>
             <p className="mt-1 text-2xl font-bold">{account.balance.toFixed(2)}W</p>
-            <Button size="sm" disabled className="mt-3">
-              {t("withdraw")}
-              <span className="ml-1 text-xs opacity-70">{t("comingSoon")}</span>
-            </Button>
+            <PayoutDialog locale={locale} currentBalance={account.balance} />
           </CardContent>
         </Card>
         <Card>

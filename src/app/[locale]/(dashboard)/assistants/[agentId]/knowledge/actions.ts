@@ -70,3 +70,19 @@ export async function updateKnowledgeSettingsAction(
     .where(eq(agentKnowledgeSettings.id, existing.id));
   revalidatePath(`/${locale}/assistants/${agent.id}/knowledge`);
 }
+
+export async function deleteKnowledgeDocumentAction(
+  locale: string,
+  agentId: string,
+  documentId: string,
+): Promise<void> {
+  const { agent } = await requireAgent(locale, agentId);
+  const { and } = await import("drizzle-orm");
+
+  await db
+    .delete(knowledgeDocuments)
+    .where(and(eq(knowledgeDocuments.id, documentId), eq(knowledgeDocuments.agentId, agent.id)));
+
+  revalidatePath(`/${locale}/assistants/${agent.id}/knowledge`);
+  revalidatePath(`/${locale}/knowledge-bases`);
+}

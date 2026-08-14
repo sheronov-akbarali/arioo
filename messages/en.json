@@ -275,7 +275,8 @@
       "project": "Project",
       "team": "Users",
       "limits": "Limits",
-      "accounts": "Accounts"
+      "accounts": "Accounts",
+      "security": "Security"
     },
     "project": {
       "save": "Save",
@@ -341,8 +342,11 @@
       "referralProgram": "Referral program",
       "affiliateProgram": "Partner program",
       "settings": "Settings",
-      "comingSoon": "Coming soon",
+      "comingSoon": "Soon",
       "billing": "Billing",
+      "templates": "Template Marketplace",
+      "messageTemplates": "Message Templates",
+      "admin": "Admin",
       "groups": {
         "work": "Work",
         "data": "Data",
@@ -389,7 +393,9 @@
         "ai": "AI",
         "chats": "Chats",
         "calls": "Calls",
-        "knowledge": "Knowledge bases"
+        "knowledge": "Knowledge base",
+        "analytics": "Analytics",
+        "abTesting": "A/B Testing"
       },
       "connect": "Connect",
       "test": "Test",

@@ -165,6 +165,139 @@ dashboard'ning ichki ko'rinishi **detalma-detal worken.ru bilan bir xil** bo'lis
   - Telegram/WhatsApp tez-tez ishlatiladigan xabar shablonlari kutubxonasi (soha
     shabloniga bog'liq)
 
+## Takomillashtirish yo'l xaritasi — 2026-08-14'dan boshlab
+
+### 7 — UX/Foydalanuvchi Tajribasini Keskin Oshirish
+
+- [x] **7.1 — Real-time Bildirishnomalar (Notification System)**
+  - SSE (Server-Sent Events) yoki Vercel KV + polling orqali real-time push
+  - Sidebar'da bildirishnoma bell icon + oqilmagan bildirishnomalar soni badge
+  - Triggerlar: yangi suhbat kelganda, yangi CRM lid qo'shilganda, approval
+    kutayotgan bo'lganda, ticket javob kelganda
+  - DB schema: `notifications` jadvali (userId, type, title, body, isRead, createdAt)
+  - Foydalanuvchi bildirishnomalarni "O'qildi" deb belgilashi mumkin
+
+- [x] **7.2 — Global Qidiruv (⌘K / Ctrl+K Command Palette)**
+  - `cmdk` kutubxonasi bilan command palette dialog
+  - Qidirish sohasi: AI agentlar, CRM deal'lar, kontaktlar, suhbatlar, mahsulotlar
+  - Fuzzy search — foydalanuvchi istalgan so'zni yozsa topadi
+  - Tez navigatsiya: sahifalar o'rtasida tezkor o'tish (Assistants, CRM, Billing...)
+  - Keyboard shortcut: `⌘K` (Mac) / `Ctrl+K` (Windows/Linux)
+
+- [x] **7.3 — AI Agent Shaxsiy Performance Dashboard**
+  - Har bir AI xodim uchun alohida `/assistants/[agentId]/analytics` sahifasi
+  - Kunlik/haftalik/oylik javob berish tezligi (o'rtacha response time)
+  - Konversiya ko'rsatkichi: suhbatdan → CRM deal'ga o'tish foizi
+  - Eng ko'p so'raladigan savollar TOP-10 (AI orqali klasterlash)
+  - Xarajat vs daromad taqqoslash grafigi (Recharts)
+  - Token ishlatish trendi (kunlik/haftalik)
+
+- [x] **7.4 — Suhbat Sentiment Tahlili (AI-powered)**
+  - Har bir suhbat yakunlanganda AI orqali avtomatik baholash
+  - 3 daraja: 😊 Ijobiy / 😐 Neytral / 😡 Salbiy — avtomatik teg
+  - DB schema: `conversations` jadvaliga `sentiment` ustuni qo'shish
+  - "Norozi mijoz" aniqlanganda operator'ga avtomatik bildirishnoma (7.1 bilan bog'liq)
+  - Dashboard'da umumiy sentiment trend grafigi (Statistics sahifasiga yangi karta)
+  - "Sotib olishga tayyor" intent aniqlanganda CRM'ga avtomatik lid yaratish
+
+- [x] **7.5 — Onboarding Wizard (Bosqichma-bosqich Yo'riqnoma)**
+  - Yangi foydalanuvchi tashkilot yaratgandan keyin 5 bosqichli interactive tour:
+    1. Tashkilot sozlamalari (nom, soha)
+    2. Birinchi AI xodimni yaratish (shablondan tanlash)
+    3. Bilim bazasiga hujjat yuklash
+    4. Telegram/WhatsApp ulash
+    5. Test suhbat o'tkazish (playground)
+  - Progress bar bilan "85% tayyor" motivatsiya ko'rsatish
+  - Har bosqichda qisqa tooltip/popover ko'rsatma
+  - DB schema: `organizations` jadvaliga `onboardingStep` ustuni qo'shish
+  - Foydalanuvchi istalgan vaqtda o'tkazib yuborishi (skip) mumkin
+
+### 8 — Biznes O'sishi va Monetizatsiya
+
+- [x] **8.1 — AI Agent Shablonlar Bozori (Template Marketplace)**
+  - `/templates` yangi sahifa — soha bo'yicha tayyor konfiguratsiyalar
+  - Har bir shablon: nom, tavsif, soha, rol, tayyor systemPrompt, bilim bazasi namunasi
+  - 1 klikda o'rnatish — tanlangan shablon asosida yangi agent avtomatik yaratiladi
+  - Boshlang'ich shablonlar:
+    - "Do'kon sotuv bo'limi" — narxlar, buyurtma holati so'rovlari
+    - "Restoran bron qilish" — stol bron, menyu, ish vaqti
+    - "Ko'chmas mulk agenti" — OLX integratsiya, narx so'rash
+    - "Ta'lim markazi" — kurs ma'lumotlari, ro'yxatdan o'tish
+    - "Texnik qo'llab-quvvatlash" — FAQ, ticket yaratish
+  - DB schema: `agent_templates` jadvali (name, description, industry, role,
+    systemPrompt, sampleKnowledge, isPublic, createdByOrgId)
+  - Keyinchalik foydalanuvchilar o'z shablonlarini ulashishi mumkin (community)
+
+- [x] **8.2 — Agent Promptlari uchun A/B Testing**
+  - Ikki xil prompt sozlamasini (variant A / variant B) solishtirib sinash
+  - Traffic'ni 50/50 yoki 70/30 bo'lish
+  - Metrikalar: konversiya (deal yaratildi), javob sifati (sentiment), o'rtacha
+    suhbat uzunligi, mijoz qaytishi
+  - Belgilangan muddat (7/14/30 kun) yoki minimal suhbat soniga yetganda avtomatik
+    g'olibni tanlash va ikkinchisini o'chirish
+  - DB schema: `ab_tests` jadvali (agentId, variantAPrompt, variantBPrompt,
+    trafficSplit, startDate, endDate, status, winnerId)
+  - `/assistants/[agentId]/ab-testing` yangi tab
+
+- [x] **8.3 — WhatsApp/Telegram Xabar Shablonlari Kutubxonasi**
+  - Tez-tez ishlatiladigan javoblar to'plami
+  - "Buyurtma holati", "Narxlar ro'yxati", "Ish vaqti", "Manzil" kabi tayyor shablonlar
+  - AI xodim suhbat davomida mos shablonni avtomatik taklif qiladi (RAG orqali)
+  - Soha shabloniga bog'liq — do'kon shabloni boshqa, restoran boshqa
+  - Foydalanuvchi o'z shablonlarini qo'shishi/tahrirlashi mumkin
+  - DB schema: `message_templates` jadvali (organizationId, agentId, title,
+    body, category, usageCount)
+
+- [x] **8.4 — Multi-Agent Handoff (Agentlar Arasi Uzatish)**
+  - Bir AI xodim boshqa AI xodimga suhbatni avtomatik uzatishi
+  - Scenario'lar: Sotuv → Support, Support → HR, umumiy → ixtisoslashgan
+  - Trigger qoidalari Routines orqali sozlanadi (masalan: "texnik muammo"
+    aniqlanganda support agentiga uzat)
+  - Suhbat tarixi to'liq saqlanadi — yangi agent oldingi kontekstni ko'radi
+  - DB schema: `conversations` jadvaliga `handoffFromAgentId`, `handoffReason`
+    ustunlari qo'shish
+  - Foydalanuvchi dashboard'da handoff tarixini ko'rishi mumkin
+
+### 9 — Texnik Sifat va Xavfsizlik
+
+- [x] **9.1 — Server Action'larda Zod Validatsiya**
+  - Barcha admin va dashboard server action'lariga Zod schema qo'shish
+  - Xato bo'lsa foydalanuvchiga chiroyli, tushunarli xabar ko'rsatish (toast/alert)
+  - XSS va SQL injection himoyasi (input sanitization)
+  - Har bir action uchun error boundary va try/catch
+  - `useActionState` hook bilan form holat boshqaruvi (pending, success, error)
+  - Mavjud action'lar: admin CRUD (9 ta), approvals (2 ta), onboarding, integrations,
+    consultation — jami ~15-20 ta action tekshiriladi
+
+- [x] **9.2 — Optimistic UI Updates**
+  - Server action'dan keyin sahifa to'liq reload bo'lmasdan UI yangilanishi
+  - `useOptimistic` hook bilan — tugma bosilganda darhol UI yangilanadi
+  - Server'dan javob kelmaguncha "pending/loading" holat ko'rsatish
+  - Xato bo'lsa avtomatik rollback (oldingi holatga qaytish)
+  - Birinchi navbatda: CRM deal statusini o'zgartirish, approval tasdiqlash/rad etish,
+    agent statusini o'zgartirish — eng ko'p ishlatiladigan operatsiyalar
+
+- [x] **9.3 — E2E Test Coverage (Playwright)**
+  - `playwright.config.ts` mavjud, lekin testlar yozilmagan
+  - Asosiy user flow'larni qoplash:
+    - Marketing sayt: landing → pricing → sign-up
+    - Auth: sign-in → onboarding → dashboard
+    - Agent yaratish: new assistant → configure → test chat
+    - CRM: create deal → move through kanban → close
+    - Admin: login → CRUD operatsiyalari (e'lon, ticket, promokod)
+  - CI/CD'da har push/PR'da avtomatik ishga tushirish (GitHub Actions)
+  - Minimal maqsad: 15-20 ta asosiy test scenario
+
+- [x] **9.4 — White-label/Agentlik Rejimi**
+  - Hamkorlik dasturi ishtirokchilari Arioo'ni o'z brendi ostida taqdim etishi
+  - Sozlanuvchi elementlar: logo, accent rang, favicon, app nomi, custom domain
+  - DB schema: `organizations` jadvaliga `whitelabel` JSON ustuni (logo, colors,
+    domain, appName)
+  - Middleware'da custom domain'ni aniqlash va mos tashkilotga yo'naltirish
+  - Referral dasturini kuchaytiradi — hamkorlar o'z mijozlariga sotadi, Arioo
+    infratuzilmani ta'minlaydi
+  - Faqat Enterprise tarif uchun mavjud
+
 Har bir bosqich alohida spec (`superpowers:brainstorming`) → reja
 (`superpowers:writing-plans`) → ijro (`superpowers:subagent-driven-development`)
 tsiklidan o'tadi, xuddi A-bosqich kabi.

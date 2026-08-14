@@ -8,6 +8,13 @@
       "when": 1786692991366,
       "tag": "0000_young_mandrill",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786730432710,
+      "tag": "0001_tough_veda",
+      "breakpoints": true
     }
   ]
 }

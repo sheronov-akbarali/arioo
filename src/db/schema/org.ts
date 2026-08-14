@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, pgEnum, boolean, integer } from "drizzle-orm/pg-core";
 
 export const membershipRole = pgEnum("membership_role", [
   "owner",
@@ -19,6 +19,9 @@ export const organizations = pgTable("organization", {
   // Matches a PRICING_TIERS id (src/lib/pricing-data.ts) — no FK since pricing
   // tiers are static app config, not a DB table.
   plan: text("plan").notNull().default("freemium"),
+  onboardingCompleted: boolean("onboardingCompleted").notNull().default(false),
+  onboardingStep: integer("onboardingStep").notNull().default(1),
+  whitelabel: text("whitelabel"), // JSON stringified: { logoUrl, primaryColor, customDomain, appName }
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
 });
 

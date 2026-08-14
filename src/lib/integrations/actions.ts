@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
 import { db } from "@/db/client";
 import { channels } from "@/db/schema/channels";
 import { requireOrganization } from "@/lib/auth/dal";

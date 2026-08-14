@@ -4,7 +4,7 @@ import { db } from "@/db/client";
 import { channels } from "@/db/schema/channels";
 import { conversations, messages } from "@/db/schema/conversations";
 import { aiAgents } from "@/db/schema/agents";
-import { generateText } from "ai";
+import { executeAgentResponse } from "@/lib/ai/agent-executor";
 
 // Meta Webhook Verification
 export async function GET(
@@ -114,11 +114,12 @@ export async function POST(
       content: m.content,
     }));
 
-    // 6. AI SDK orqali javob olish
-    const { text: aiResponse } = await generateText({
-      model: agent.model,
-      system: agent.systemPrompt,
-      messages: formattedHistory,
+    // 6. AI SDK orqali javob olish (RAG + A/B + Ledger)
+    const { text: aiResponse } = await executeAgentResponse({
+      agentId: agent.id,
+      conversationId: conversation.id,
+      userMessage: text,
+      history: formattedHistory,
     });
 
     // 7. WhatsApp API orqali javob jo'natish
@@ -140,14 +141,12 @@ export async function POST(
     );
 
     const waData = await waRes.json();
-
-    // 8. AI javobini bazaga yozish
-    await db.insert(messages).values({
-      conversationId: conversation.id,
-      role: "assistant",
-      content: aiResponse,
-      externalMessageId: waData.messages?.[0]?.id || null,
-    });
+    if (waData.messages?.[0]?.id) {
+      await db
+        .update(messages)
+        .set({ externalMessageId: waData.messages[0].id })
+        .where(eq(messages.conversationId, conversation.id));
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error) {

@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function adminLoginAction(prevState: any, formData: FormData) {
+export async function adminLoginAction(_prevState: unknown, formData: FormData) {
   const email = formData.get("email");
   const password = formData.get("password");
   const locale = formData.get("locale") || "uz";

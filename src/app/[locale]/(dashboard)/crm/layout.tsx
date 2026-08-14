@@ -9,7 +9,7 @@ export default async function CRMLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  await params;
   const t = await getTranslations("dashboard.nav");
 
   return (

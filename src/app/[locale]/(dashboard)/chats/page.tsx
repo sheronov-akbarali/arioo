@@ -1,14 +1,16 @@
 import { asc, desc, eq, inArray } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, ArrowRightLeft } from "lucide-react";
 import { db } from "@/db/client";
 import { conversations, messages } from "@/db/schema/conversations";
 import { aiAgents } from "@/db/schema/agents";
 import { requireOrganization } from "@/lib/auth/dal";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { MessageBubble } from "@/components/dashboard/chat/message-bubble";
 import { ChatsList, type ChatThread } from "@/components/dashboard/chats/chats-list";
+import { handoffConversationAction } from "./actions";
 
 export default async function ChatsPage({
   params,
@@ -23,12 +25,18 @@ export default async function ChatsPage({
   const t = await getTranslations("chats");
   const tAssistants = await getTranslations("assistants.chat");
 
-  const threads = await db
-    .select({ conversation: conversations, agentId: aiAgents.id, agentName: aiAgents.name })
-    .from(conversations)
-    .innerJoin(aiAgents, eq(conversations.agentId, aiAgents.id))
-    .where(eq(aiAgents.organizationId, organization.id))
-    .orderBy(desc(conversations.startedAt));
+  const [threads, allOrgAgents] = await Promise.all([
+    db
+      .select({ conversation: conversations, agentId: aiAgents.id, agentName: aiAgents.name })
+      .from(conversations)
+      .innerJoin(aiAgents, eq(conversations.agentId, aiAgents.id))
+      .where(eq(aiAgents.organizationId, organization.id))
+      .orderBy(desc(conversations.startedAt)),
+    db
+      .select({ id: aiAgents.id, name: aiAgents.name, role: aiAgents.role })
+      .from(aiAgents)
+      .where(eq(aiAgents.organizationId, organization.id)),
+  ]);
 
   const threadIds = threads.map((row) => row.conversation.id);
   const lastMessageByThread = new Map<string, { content: string; createdAt: Date }>();
@@ -71,11 +79,15 @@ export default async function ChatsPage({
     return {
       id: row.conversation.id,
       agentName: row.agentName,
+      channel: row.conversation.channel,
+      sentiment: row.conversation.sentiment as "positive" | "neutral" | "negative",
       lastMessagePreview: last?.content ?? t("noMessages"),
       timestampLabel: dtf.format(last?.createdAt ?? row.conversation.startedAt),
       isActive: active?.conversation.id === row.conversation.id,
     };
   });
+
+  const otherAgents = allOrgAgents.filter((a) => a.id !== active?.agentId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -95,20 +107,78 @@ export default async function ChatsPage({
           </div>
         </div>
       ) : (
-        <div className="grid gap-4 lg:grid-cols-[320px_1fr]">
+        <div className="grid gap-4 lg:grid-cols-[340px_1fr]">
           <ChatsList threads={threadItems} />
 
           <Card className="flex max-h-[70vh] flex-col gap-4 overflow-y-auto p-4">
             {active ? (
               <>
-                <div className="flex items-center justify-between">
-                  <p className="font-medium">{active.agentName}</p>
-                  <Link
-                    href={`/assistants/${active.agentId}/chat`}
-                    className="text-xs font-medium text-brand hover:underline"
-                  >
-                    {t("continueInPlayground")}
-                  </Link>
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{active.agentName}</p>
+                      <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-muted">
+                        {active.conversation.channel}
+                      </span>
+                      {active.conversation.sentiment && (
+                        <span
+                          className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                            active.conversation.sentiment === "positive"
+                              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                              : active.conversation.sentiment === "negative"
+                                ? "bg-red-500/10 text-red-600 dark:text-red-400"
+                                : "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                          }`}
+                        >
+                          {active.conversation.sentiment === "positive"
+                            ? "😊 Ijobiy mijoz"
+                            : active.conversation.sentiment === "negative"
+                              ? "😡 Norozi mijoz"
+                              : "😐 Neytral muloqot"}
+                        </span>
+                      )}
+                    </div>
+                    {active.conversation.externalChatId && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Chat ID: {active.conversation.externalChatId}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    {otherAgents.length > 0 && (
+                      <form
+                        action={handoffConversationAction.bind(null, locale, active.conversation.id)}
+                        className="flex items-center gap-1.5"
+                      >
+                        <select
+                          name="targetAgentId"
+                          className="h-8 rounded-md border border-input bg-background px-2 text-xs"
+                          defaultValue=""
+                          required
+                        >
+                          <option value="" disabled>
+                            Boshqa xodimga uzatish...
+                          </option>
+                          {otherAgents.map((a) => (
+                            <option key={a.id} value={a.id}>
+                              {a.name} ({a.role})
+                            </option>
+                          ))}
+                        </select>
+                        <Button type="submit" size="sm" variant="outline" className="h-8 text-xs gap-1">
+                          <ArrowRightLeft className="size-3" /> Uzatish
+                        </Button>
+                      </form>
+                    )}
+
+                    <Link
+                      href={`/assistants/${active.agentId}/chat`}
+                      className="text-xs font-medium text-brand hover:underline shrink-0"
+                    >
+                      {t("continueInPlayground")}
+                    </Link>
+                  </div>
                 </div>
                 {activeMessages.map((message) => (
                   <MessageBubble
