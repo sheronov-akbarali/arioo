@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -44,12 +45,23 @@ function Button({
   className,
   variant = "default",
   size = "default",
+  render,
+  nativeButton,
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+  // base-ui's `nativeButton` defaults to `true`; when a `render` element that is
+  // not a real `<button>` (e.g. next-intl's `<Link>`) is passed, base-ui logs a
+  // dev warning unless `nativeButton={false}` is set. Infer it here so callers
+  // don't have to, while still honouring an explicit override.
+  const resolvedNativeButton =
+    nativeButton ?? (React.isValidElement(render) ? render.type === "button" : undefined)
+
   return (
     <ButtonPrimitive
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      render={render}
+      nativeButton={resolvedNativeButton}
       {...props}
     />
   )
