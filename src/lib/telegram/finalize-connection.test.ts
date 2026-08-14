@@ -11,18 +11,16 @@ vi.mock("@/db/client", () => ({
 }));
 
 const invoke = vi.fn();
-const logOut = vi.fn();
 const sessionSave = vi.fn().mockReturnValue("final-session-string");
 
 function makeClient() {
-  return { invoke, logOut, session: { save: sessionSave } } as any;
+  return { invoke, session: { save: sessionSave } } as any;
 }
 
 import { finalizeConnection } from "./finalize-connection";
 
 beforeEach(() => {
   invoke.mockReset();
-  logOut.mockReset();
   dbUpdateSet.mockClear();
   dbUpdateWhere.mockClear();
 });
@@ -45,13 +43,14 @@ describe("finalizeConnection", () => {
     expect(dbUpdateSet).toHaveBeenCalledWith(
       expect.objectContaining({ status: "connected", channelTitle: "Arioo kanali" }),
     );
-    expect(logOut).not.toHaveBeenCalled();
+    expect(invoke).toHaveBeenCalledTimes(2);
   });
 
   it("rejects and logs out when the account is not an admin", async () => {
     invoke
       .mockResolvedValueOnce({ chats: [{ id: "1", title: "Arioo kanali", accessHash: "h" }] })
-      .mockResolvedValueOnce({ participant: { className: "ChannelParticipantSelf" } });
+      .mockResolvedValueOnce({ participant: { className: "ChannelParticipantSelf" } })
+      .mockResolvedValueOnce({});
 
     const result = await finalizeConnection({
       organizationId: "org_1",
@@ -60,7 +59,8 @@ describe("finalizeConnection", () => {
     });
 
     expect(result.status).toBe("error");
-    expect(logOut).toHaveBeenCalledOnce();
+    expect(invoke).toHaveBeenCalledTimes(3);
+    expect(invoke.mock.calls[2][0].className).toBe("auth.LogOut");
     expect(dbUpdateSet).toHaveBeenCalledWith(expect.objectContaining({ status: "error" }));
   });
 });
