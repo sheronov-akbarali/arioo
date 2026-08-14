@@ -1,10 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { Api } from "telegram";
 import { db } from "@/db/client";
 import { telegramChannelConnections } from "@/db/schema/telegram-channel-connection";
+import { integrations } from "@/db/schema/integrations";
 import { requireOrganization } from "@/lib/auth/dal";
 import { openTelegramClient, telegramApiCredentials } from "@/lib/telegram/client";
 import { encryptSessionSecret, decryptSessionSecret } from "@/lib/telegram/session-crypto";
@@ -173,5 +174,11 @@ export async function disconnectTelegramChannel(locale: string): Promise<void> {
   await db
     .delete(telegramChannelConnections)
     .where(eq(telegramChannelConnections.organizationId, organization.id));
+
+  await db
+    .update(integrations)
+    .set({ status: "setup_needed", updatedAt: new Date() })
+    .where(and(eq(integrations.organizationId, organization.id), eq(integrations.providerId, "telegram_mtproto")));
+
   revalidatePath(`/${locale}/statistics/marketing`);
 }

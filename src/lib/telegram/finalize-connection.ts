@@ -1,9 +1,10 @@
 import "server-only";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import type { TelegramClient } from "telegram";
 import { Api } from "telegram";
 import { db } from "@/db/client";
 import { telegramChannelConnections } from "@/db/schema/telegram-channel-connection";
+import { integrations, integrationEvents } from "@/db/schema/integrations";
 import { encryptSessionSecret } from "./session-crypto";
 import type { TelegramConnectState } from "./connect-state";
 
@@ -82,5 +83,41 @@ export async function finalizeConnection(params: {
       updatedAt: new Date(),
     })
     .where(eq(telegramChannelConnections.organizationId, organizationId));
+
+  const [existingIntegration] = await db
+    .select({ id: integrations.id })
+    .from(integrations)
+    .where(
+      and(eq(integrations.organizationId, organizationId), eq(integrations.providerId, "telegram_mtproto")),
+    );
+
+  if (existingIntegration) {
+    await db
+      .update(integrations)
+      .set({ status: "active", lastVerifiedAt: new Date(), lastError: null, updatedAt: new Date() })
+      .where(eq(integrations.id, existingIntegration.id));
+    await db.insert(integrationEvents).values({
+      integrationId: existingIntegration.id,
+      type: "verified",
+      message: "MTProto session verified",
+    });
+  } else {
+    const [created] = await db
+      .insert(integrations)
+      .values({
+        organizationId,
+        providerId: "telegram_mtproto",
+        connectionMode: "wizard",
+        status: "active",
+        lastVerifiedAt: new Date(),
+      })
+      .returning({ id: integrations.id });
+    await db.insert(integrationEvents).values({
+      integrationId: created.id,
+      type: "created",
+      message: "MTProto connection established",
+    });
+  }
+
   return { status: "connected" };
 }
