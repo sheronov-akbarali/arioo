@@ -679,6 +679,19 @@
         "connectElsewhere": "Connect your channel on the Integrations page first to see Telegram statistics.",
         "goToIntegrations": "Go to Integrations"
       },
+      "youtube": {
+        "title": "YouTube Analytics",
+        "subtitle": "Subscribers and views",
+        "notConnected": "YouTube channel is not connected yet.",
+        "subscribers": "Subscribers",
+        "views": "Total views",
+        "videos": "Video count",
+        "recentVideos": "Recent videos",
+        "viewsShort": "views",
+        "disconnect": "Disconnect channel",
+        "quotaExceeded": "YouTube API quota temporarily exceeded.",
+        "genericError": "Could not load YouTube statistics."
+      },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
         "subtitle": "Analytics for your other marketing channels.",

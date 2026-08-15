@@ -679,6 +679,19 @@
         "connectElsewhere": "Чтобы увидеть статистику Telegram, сначала подключите канал на странице Интеграции.",
         "goToIntegrations": "Перейти к интеграциям"
       },
+      "youtube": {
+        "title": "YouTube Analytics",
+        "subtitle": "Подписчики и просмотры",
+        "notConnected": "YouTube-канал ещё не подключён.",
+        "subscribers": "Подписчики",
+        "views": "Всего просмотров",
+        "videos": "Количество видео",
+        "recentVideos": "Последние видео",
+        "viewsShort": "просмотров",
+        "disconnect": "Отключить канал",
+        "quotaExceeded": "Квота YouTube API временно исчерпана.",
+        "genericError": "Не удалось загрузить статистику YouTube."
+      },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
         "subtitle": "Аналитика по другим маркетинговым каналам.",
