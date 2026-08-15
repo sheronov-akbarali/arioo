@@ -43,7 +43,7 @@ describe("openTelegramClient", () => {
       { __session: "existing-session-string" },
       12345,
       "abc123hash",
-      expect.objectContaining({ connectionRetries: 5 }),
+      expect.objectContaining({ connectionRetries: 5, autoReconnect: false }),
     );
     expect(connectMock).toHaveBeenCalledOnce();
     expect(client).toBeDefined();

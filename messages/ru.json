@@ -660,8 +660,16 @@
       "empty": "За этот период нет данных.",
       "site": {
         "title": "Сайт",
-        "subtitle": "Трафик на сайт Arioo, на основе Vercel Web Analytics.",
-        "notConnected": "Аналитика сайта пока не подключена. Задайте VERCEL_API_TOKEN и VERCEL_ANALYTICS_PROJECT_ID, чтобы включить её.",
+        "subtitle": "Трафик и статистика посетителей вашего сайта.",
+        "notConnected": "Введите домен своего сайта, чтобы увидеть статистику.",
+        "domainLabel": "Домен сайта",
+        "domainPlaceholder": "example.uz",
+        "domainSubmit": "Подключить",
+        "invalidDomain": "Неверный формат домена. Например: example.uz",
+        "snippetHint": "Вставьте этот код в раздел head вашего сайта:",
+        "copySnippet": "Скопировать",
+        "copied": "Скопировано!",
+        "waitingForFirstEvent": "Код ещё не зафиксировал ни одного визита. Установите код на сайт и зайдите на него — статистика появится здесь.",
         "visitors": "Посетители",
         "pageviews": "Просмотры страниц",
         "vsPreviousPeriod": "по сравнению с предыдущим периодом",
@@ -692,8 +700,31 @@
         "quotaExceeded": "Квота YouTube API временно исчерпана.",
         "genericError": "Не удалось загрузить статистику YouTube."
       },
+      "instagram": {
+        "title": "Instagram Insights",
+        "subtitle": "Подписчики и активность",
+        "notConnected": "Аккаунт Instagram ещё не подключён.",
+        "followers": "Подписчики",
+        "reach": "Охват (Reach)",
+        "profileViews": "Просмотры профиля",
+        "mediaCount": "Количество публикаций",
+        "disconnect": "Отключить аккаунт",
+        "noBusinessAccount": "На подключённой странице Facebook не найден бизнес-аккаунт Instagram.",
+        "genericError": "Не удалось загрузить статистику Instagram."
+      },
+      "facebook": {
+        "title": "Facebook Insights",
+        "subtitle": "Подписчики страницы и активность",
+        "notConnected": "Страница Facebook ещё не подключена.",
+        "fans": "Подписчики страницы",
+        "impressions": "Показы (Impressions)",
+        "engagedUsers": "Активные пользователи",
+        "disconnect": "Отключить страницу",
+        "noPage": "Не найдена страница Facebook, привязанная к вашему аккаунту.",
+        "genericError": "Не удалось загрузить статистику Facebook."
+      },
       "channels": {
-        "title": "Telegram, YouTube, Instagram, OLX.uz",
+        "title": "Telegram, YouTube, Instagram, Facebook, OLX.uz",
         "subtitle": "Аналитика по другим маркетинговым каналам.",
         "comingSoon": "Скоро."
       }
@@ -1032,6 +1063,7 @@
           "connected": "Telegram-канал подключён.",
           "errors": {
             "missing_fields": "Укажите телефон и username канала.",
+            "invalid_channel_format": "Неверный username канала. Введите только username (например: arioo_uz), а не полную ссылку.",
             "invalid_code": "Неверный код. Попробуйте ещё раз.",
             "invalid_password": "Неверный пароль. Попробуйте ещё раз.",
             "not_channel_admin": "Этот аккаунт не является администратором указанного канала.",

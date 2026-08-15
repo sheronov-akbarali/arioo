@@ -10,6 +10,7 @@ import { requireOrganization } from "@/lib/auth/dal";
 import { openTelegramClient, telegramApiCredentials } from "@/lib/telegram/client";
 import { encryptSessionSecret, decryptSessionSecret } from "@/lib/telegram/session-crypto";
 import { finalizeConnection } from "@/lib/telegram/finalize-connection";
+import { normalizeTelegramUsername } from "@/lib/telegram/normalize-username";
 import type { TelegramConnectState } from "@/lib/telegram/connect-state";
 
 function maskPhone(phone: string): string {
@@ -25,11 +26,14 @@ export async function startTelegramConnection(
 ): Promise<TelegramConnectState> {
   const { organization } = await requireOrganization(locale);
   const phone = String(formData.get("phone") ?? "").trim();
-  const channelUsername = String(formData.get("channelUsername") ?? "")
-    .trim()
-    .replace(/^@/, "");
-  if (!phone || !channelUsername) {
+  const rawChannelUsername = String(formData.get("channelUsername") ?? "");
+  if (!phone || !rawChannelUsername.trim()) {
     return { status: "idle", error: "missing_fields" };
+  }
+
+  const channelUsername = normalizeTelegramUsername(rawChannelUsername);
+  if (!channelUsername) {
+    return { status: "idle", error: "invalid_channel_format" };
   }
 
   const client = await openTelegramClient("");

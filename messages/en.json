@@ -660,8 +660,16 @@
       "empty": "No data for this period.",
       "site": {
         "title": "Site",
-        "subtitle": "Traffic to your Arioo site, powered by Vercel Web Analytics.",
-        "notConnected": "Site analytics isn't connected yet. Set VERCEL_API_TOKEN and VERCEL_ANALYTICS_PROJECT_ID to enable this.",
+        "subtitle": "Traffic and visitor stats for your site.",
+        "notConnected": "Enter your site's domain to see its statistics.",
+        "domainLabel": "Site domain",
+        "domainPlaceholder": "example.com",
+        "domainSubmit": "Connect",
+        "invalidDomain": "That doesn't look like a valid domain. Example: example.com",
+        "snippetHint": "Paste this snippet into your site's head section:",
+        "copySnippet": "Copy",
+        "copied": "Copied!",
+        "waitingForFirstEvent": "This snippet hasn't recorded any visits yet. Add it to your site and visit it — stats will show up here.",
         "visitors": "Visitors",
         "pageviews": "Page views",
         "vsPreviousPeriod": "vs previous period",
@@ -692,8 +700,31 @@
         "quotaExceeded": "YouTube API quota temporarily exceeded.",
         "genericError": "Could not load YouTube statistics."
       },
+      "instagram": {
+        "title": "Instagram Insights",
+        "subtitle": "Followers and activity",
+        "notConnected": "Instagram account is not connected yet.",
+        "followers": "Followers",
+        "reach": "Reach",
+        "profileViews": "Profile views",
+        "mediaCount": "Post count",
+        "disconnect": "Disconnect account",
+        "noBusinessAccount": "No Instagram Business account was found on the connected Facebook page.",
+        "genericError": "Could not load Instagram statistics."
+      },
+      "facebook": {
+        "title": "Facebook Insights",
+        "subtitle": "Page fans and activity",
+        "notConnected": "Facebook page is not connected yet.",
+        "fans": "Page fans",
+        "impressions": "Impressions",
+        "engagedUsers": "Engaged users",
+        "disconnect": "Disconnect page",
+        "noPage": "No Facebook page linked to your account was found.",
+        "genericError": "Could not load Facebook statistics."
+      },
       "channels": {
-        "title": "Telegram, YouTube, Instagram, OLX.uz",
+        "title": "Telegram, YouTube, Instagram, Facebook, OLX.uz",
         "subtitle": "Analytics for your other marketing channels.",
         "comingSoon": "Coming soon."
       }
@@ -1032,6 +1063,7 @@
           "connected": "Telegram channel connected.",
           "errors": {
             "missing_fields": "Phone and channel username are required.",
+            "invalid_channel_format": "Invalid channel username. Enter just the username (e.g. arioo_uz), not the full link.",
             "invalid_code": "Incorrect code. Try again.",
             "invalid_password": "Incorrect password. Try again.",
             "not_channel_admin": "This account is not an admin of the given channel.",

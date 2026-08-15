@@ -5,6 +5,7 @@ import { integrations, integrationEvents } from "@/db/schema/integrations";
 import { verifyOAuthState } from "@/lib/integrations/oauth/state";
 import { exchangeCodeForToken } from "@/lib/integrations/oauth/exchange";
 import { encryptCredential } from "@/lib/integrations/credential-crypto";
+import { exchangeLongLivedToken } from "@/lib/meta/token-exchange";
 
 export async function GET(req: Request, { params }: { params: Promise<{ provider: string }> }) {
   const { provider } = await params;
@@ -31,7 +32,21 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
     }
 
     const { accessToken, refreshToken, expiresAt } = await exchangeCodeForToken(provider, code, extra);
-    const credentialsEncrypted = encryptCredential(JSON.stringify({ accessToken, refreshToken, expiresAt }));
+
+    // Meta's short-lived code-exchange token only lasts ~1-2h — upgrade it to a
+    // 60-day long-lived token immediately so the connection survives past the
+    // first page load.
+    let finalAccessToken = accessToken;
+    let finalExpiresAt = expiresAt;
+    if (provider === "instagram" || provider === "facebook") {
+      const longLived = await exchangeLongLivedToken(provider, accessToken);
+      finalAccessToken = longLived.accessToken;
+      finalExpiresAt = longLived.expiresAt;
+    }
+
+    const credentialsEncrypted = encryptCredential(
+      JSON.stringify({ accessToken: finalAccessToken, refreshToken, expiresAt: finalExpiresAt })
+    );
 
     const [existing] = await db
       .select({ id: integrations.id })

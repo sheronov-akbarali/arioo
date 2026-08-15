@@ -26,3 +26,48 @@ describe("youtube OAuth config", () => {
     expect(youtube?.clientSecret).toBe(google?.clientSecret);
   });
 });
+
+describe("instagram OAuth config", () => {
+  beforeEach(() => {
+    process.env.META_CLIENT_ID = "meta_client";
+    process.env.META_CLIENT_SECRET = "meta_secret";
+  });
+
+  it("is configured when META_CLIENT_ID/SECRET are set", () => {
+    expect(isOAuthConfigured("instagram")).toBe(true);
+  });
+
+  it("requests Instagram business + page scopes", () => {
+    const config = getOAuthConfig("instagram");
+    expect(config).not.toBeNull();
+    expect(config?.scopes).toEqual([
+      "instagram_basic",
+      "instagram_manage_insights",
+      "pages_show_list",
+      "pages_read_engagement",
+      "business_management",
+    ]);
+    expect(config?.authUrl).toBe("https://www.facebook.com/v21.0/dialog/oauth");
+    expect(config?.tokenUrl).toBe("https://graph.facebook.com/v21.0/oauth/access_token");
+  });
+});
+
+describe("facebook OAuth config", () => {
+  beforeEach(() => {
+    process.env.META_CLIENT_ID = "meta_client";
+    process.env.META_CLIENT_SECRET = "meta_secret";
+  });
+
+  it("is configured when META_CLIENT_ID/SECRET are set", () => {
+    expect(isOAuthConfigured("facebook")).toBe(true);
+  });
+
+  it("requests page insights scopes and reuses the Meta app credentials", () => {
+    const config = getOAuthConfig("facebook");
+    const instagram = getOAuthConfig("instagram");
+    expect(config).not.toBeNull();
+    expect(config?.scopes).toEqual(["pages_show_list", "pages_read_engagement"]);
+    expect(config?.clientId).toBe(instagram?.clientId);
+    expect(config?.clientSecret).toBe(instagram?.clientSecret);
+  });
+});

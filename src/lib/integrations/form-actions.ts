@@ -5,12 +5,8 @@ import { db } from "@/db/client";
 import { integrations, integrationEvents } from "@/db/schema/integrations";
 import { requireOrganization } from "@/lib/auth/dal";
 import { encryptCredential } from "@/lib/integrations/credential-crypto";
+import { buildIntegrationCredentials } from "@/lib/integrations/credential-helpers";
 import { revalidatePath } from "next/cache";
-
-export function buildIntegrationCredentials(secretConfig: Record<string, string>): string | null {
-  if (Object.keys(secretConfig).length === 0) return null;
-  return JSON.stringify(secretConfig);
-}
 
 export async function connectFormIntegrationAction(input: {
   providerId: string;

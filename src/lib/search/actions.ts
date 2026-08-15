@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, ilike, or } from "drizzle-orm";
+import { and, eq, ilike, or, sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { aiAgents } from "@/db/schema/agents";
 import { crmDeals, crmContacts } from "@/db/schema/crm";
@@ -69,7 +69,7 @@ export async function searchGlobal(
       .where(
         and(
           eq(aiAgents.organizationId, organization.id),
-          or(ilike(aiAgents.name, `%${q}%`), ilike(aiAgents.role, `%${q}%`))
+          or(ilike(aiAgents.name, `%${q}%`), ilike(sql`${aiAgents.role}::text`, `%${q}%`))
         )
       )
       .limit(5);

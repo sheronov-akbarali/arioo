@@ -16,6 +16,8 @@ const PROVIDER_ENV_PREFIX: Record<string, string> = {
   youtube: "GOOGLE",
   github: "GITHUB",
   headhunter: "HEADHUNTER",
+  instagram: "META",
+  facebook: "META",
 };
 
 const PROVIDER_ENDPOINTS: Record<
@@ -55,6 +57,22 @@ const PROVIDER_ENDPOINTS: Record<
     authUrl: "https://hh.ru/oauth/authorize",
     tokenUrl: "https://hh.ru/oauth/token",
     scopes: [],
+  },
+  instagram: {
+    authUrl: "https://www.facebook.com/v21.0/dialog/oauth",
+    tokenUrl: "https://graph.facebook.com/v21.0/oauth/access_token",
+    scopes: [
+      "instagram_basic",
+      "instagram_manage_insights",
+      "pages_show_list",
+      "pages_read_engagement",
+      "business_management",
+    ],
+  },
+  facebook: {
+    authUrl: "https://www.facebook.com/v21.0/dialog/oauth",
+    tokenUrl: "https://graph.facebook.com/v21.0/oauth/access_token",
+    scopes: ["pages_show_list", "pages_read_engagement"],
   },
 };
 

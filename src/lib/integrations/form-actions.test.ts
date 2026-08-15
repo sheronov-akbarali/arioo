@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildIntegrationCredentials } from "./form-actions";
+import { buildIntegrationCredentials } from "./credential-helpers";
 
 describe("buildIntegrationCredentials", () => {
   it("serializes secret fields into a single JSON string for encryption", () => {

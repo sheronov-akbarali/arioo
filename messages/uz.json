@@ -660,8 +660,16 @@
       "empty": "Bu davrda ma'lumot yo'q.",
       "site": {
         "title": "Sayt",
-        "subtitle": "Arioo saytingizga trafik, Vercel Web Analytics asosida.",
-        "notConnected": "Sayt analitikasi hali ulanmagan. Buni yoqish uchun VERCEL_API_TOKEN va VERCEL_ANALYTICS_PROJECT_ID o'rnating.",
+        "subtitle": "Saytingizga trafik va tashrif buyuruvchilar statistikasi.",
+        "notConnected": "Statistikani ko'rish uchun saytingiz domenini kiriting.",
+        "domainLabel": "Sayt domeni",
+        "domainPlaceholder": "misol.uz",
+        "domainSubmit": "Ulash",
+        "invalidDomain": "Domen noto'g'ri formatda. Masalan: misol.uz",
+        "snippetHint": "Quyidagi kodni saytingizning head qismiga joylashtiring:",
+        "copySnippet": "Nusxalash",
+        "copied": "Nusxalandi!",
+        "waitingForFirstEvent": "Kod hali hech qanday tashrifni qayd etmadi. Kodni saytingizga joylashtirib, saytga kiring — statistika shu yerda paydo bo'ladi.",
         "visitors": "Tashrif buyuruvchilar",
         "pageviews": "Sahifa ko'rishlar",
         "vsPreviousPeriod": "oldingi davrga nisbatan",
@@ -692,8 +700,31 @@
         "quotaExceeded": "YouTube API kvotasi vaqtincha tugadi.",
         "genericError": "YouTube statistikasini yuklab bo'lmadi."
       },
+      "instagram": {
+        "title": "Instagram Insights",
+        "subtitle": "Obunachilar va faollik",
+        "notConnected": "Instagram hisobi hali ulanmagan.",
+        "followers": "Obunachilar",
+        "reach": "Qamrov (Reach)",
+        "profileViews": "Profil ko'rishlari",
+        "mediaCount": "Postlar soni",
+        "disconnect": "Hisobni uzish",
+        "noBusinessAccount": "Ulangan Facebook sahifada Instagram Business/Creator hisobi topilmadi.",
+        "genericError": "Instagram statistikasini yuklab bo'lmadi."
+      },
+      "facebook": {
+        "title": "Facebook Insights",
+        "subtitle": "Sahifa muxlislari va faollik",
+        "notConnected": "Facebook sahifasi hali ulanmagan.",
+        "fans": "Sahifa muxlislari",
+        "impressions": "Ko'rishlar (Impressions)",
+        "engagedUsers": "Faol foydalanuvchilar",
+        "disconnect": "Sahifani uzish",
+        "noPage": "Hisobingizga ulangan Facebook sahifasi topilmadi.",
+        "genericError": "Facebook statistikasini yuklab bo'lmadi."
+      },
       "channels": {
-        "title": "Telegram, YouTube, Instagram, OLX.uz",
+        "title": "Telegram, YouTube, Instagram, Facebook, OLX.uz",
         "subtitle": "Boshqa marketing kanallaringiz bo'yicha analitika.",
         "comingSoon": "Tez orada."
       }
@@ -1032,6 +1063,7 @@
           "connected": "Telegram kanali ulandi.",
           "errors": {
             "missing_fields": "Telefon va kanal username kiritilishi shart.",
+            "invalid_channel_format": "Kanal username noto'g'ri. Faqat username'ni kiriting (masalan: arioo_uz), to'liq havolani emas.",
             "invalid_code": "Kod noto'g'ri. Qayta urinib ko'ring.",
             "invalid_password": "Parol noto'g'ri. Qayta urinib ko'ring.",
             "not_channel_admin": "Bu akkaunt ko'rsatilgan kanalga admin emas.",

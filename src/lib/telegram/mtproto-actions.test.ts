@@ -99,6 +99,28 @@ describe("startTelegramConnection", () => {
     expect(sendCode).toHaveBeenCalledWith({ apiId: 111, apiHash: "hash" }, "+998901234567");
     expect(result).toEqual({ status: "pending_code" });
   });
+
+  it("normalizes a pasted t.me link into a bare username before storing/sending it", async () => {
+    const formData = new FormData();
+    formData.set("phone", "+998901234567");
+    formData.set("channelUsername", "https://t.me/Avtotest_Plus_Uz");
+
+    const result = await startTelegramConnection("uz", { status: "idle" }, formData);
+
+    expect(result).toEqual({ status: "pending_code" });
+    expect(dbValues).toHaveBeenCalledWith(expect.objectContaining({ channelUsername: "Avtotest_Plus_Uz" }));
+  });
+
+  it("rejects a private invite link without ever calling sendCode", async () => {
+    const formData = new FormData();
+    formData.set("phone", "+998901234567");
+    formData.set("channelUsername", "https://t.me/+AbCdEf123");
+
+    const result = await startTelegramConnection("uz", { status: "idle" }, formData);
+
+    expect(result).toEqual({ status: "idle", error: "invalid_channel_format" });
+    expect(sendCode).not.toHaveBeenCalled();
+  });
 });
 
 describe("submitTelegramCode", () => {
