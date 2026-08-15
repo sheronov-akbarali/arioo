@@ -58,6 +58,7 @@ export async function archiveIntegrationAction(integrationId: string, locale: st
   await db.insert(integrationEvents).values({ integrationId, type: "archived" });
   revalidatePath(`/${locale}/integrations`);
   revalidatePath(`/${locale}/integrations/${integrationId}`);
+  revalidatePath(`/${locale}/statistics/marketing`);
 }
 
 export async function deleteIntegrationAction(integrationId: string, locale: string): Promise<void> {

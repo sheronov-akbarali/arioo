@@ -5,10 +5,12 @@ export function OAuthConnectButton({
   provider,
   configured,
   locale,
+  returnPath,
 }: {
   provider: string;
   configured: boolean;
   locale: string;
+  returnPath?: string;
 }) {
   const t = useTranslations("integrations");
 
@@ -20,12 +22,12 @@ export function OAuthConnectButton({
     );
   }
 
+  const href = `/api/integrations/${provider}/oauth/start?locale=${locale}${
+    returnPath ? `&returnPath=${encodeURIComponent(returnPath)}` : ""
+  }`;
+
   return (
-    <Button
-      size="sm"
-      variant="outline"
-      render={<a href={`/api/integrations/${provider}/oauth/start?locale=${locale}`} />}
-    >
+    <Button size="sm" variant="outline" render={<a href={href} />}>
       {t("connect")}
     </Button>
   );
