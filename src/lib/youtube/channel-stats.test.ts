@@ -54,6 +54,11 @@ describe("getYoutubeChannelStats", () => {
       ],
       updatedCredentials: baseCredentials,
     });
+
+    // The search.list call must include the required `part` parameter, or
+    // Google returns HTTP 400 missingRequiredParameter on every real call.
+    const searchCallUrl = fetchMock.mock.calls[1][0] as URL;
+    expect(searchCallUrl.toString()).toContain("part=id");
   });
 
   it("refreshes an expired token before fetching stats", async () => {
@@ -152,5 +157,57 @@ describe("getYoutubeChannelStats", () => {
     const result = await getYoutubeChannelStats(baseCredentials, refresh);
 
     expect(result).toEqual({ available: false, reason: "unknown" });
+  });
+
+  it("returns reauth_required when the Data API responds with HTTP 401", async () => {
+    const refresh = vi.fn();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse({}, false, 401)));
+
+    const result = await getYoutubeChannelStats(baseCredentials, refresh);
+
+    expect(result).toEqual({ available: false, reason: "reauth_required" });
+  });
+
+  it("refreshes when expiresAt is missing", async () => {
+    const missingExpiry: YoutubeCredentials = { ...baseCredentials, expiresAt: undefined };
+    const refresh = vi.fn().mockResolvedValue({
+      accessToken: "ya29.refreshed",
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({ items: [{ statistics: { subscriberCount: "10", viewCount: "20", videoCount: "1" } }] })
+      )
+      .mockResolvedValueOnce(jsonResponse({ items: [] }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await getYoutubeChannelStats(missingExpiry, refresh);
+
+    expect(refresh).toHaveBeenCalledWith("1//refresh");
+    expect(result.available).toBe(true);
+  });
+
+  it("refreshes when the access token expires within the buffer window", async () => {
+    const almostExpired: YoutubeCredentials = {
+      ...baseCredentials,
+      expiresAt: new Date(Date.now() + 30 * 1000).toISOString(),
+    };
+    const refresh = vi.fn().mockResolvedValue({
+      accessToken: "ya29.refreshed",
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({ items: [{ statistics: { subscriberCount: "10", viewCount: "20", videoCount: "1" } }] })
+      )
+      .mockResolvedValueOnce(jsonResponse({ items: [] }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await getYoutubeChannelStats(almostExpired, refresh);
+
+    expect(refresh).toHaveBeenCalledWith("1//refresh");
+    expect(result.available).toBe(true);
   });
 });

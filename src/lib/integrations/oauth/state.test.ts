@@ -1,5 +1,15 @@
 import { describe, it, expect, beforeAll } from "vitest";
+import { createHmac, randomBytes } from "node:crypto";
 import { signOAuthState, verifyOAuthState } from "./state";
+
+function signRawState(body: Record<string, unknown>): string {
+  const nonce = randomBytes(8).toString("hex");
+  const bodyBase64 = Buffer.from(JSON.stringify({ ...body, nonce })).toString("base64url");
+  const signature = createHmac("sha256", process.env.OAUTH_STATE_SIGNING_SECRET!)
+    .update(bodyBase64)
+    .digest("base64url");
+  return `${bodyBase64}.${signature}`;
+}
 
 beforeAll(() => {
   process.env.OAUTH_STATE_SIGNING_SECRET = "test-secret-value-for-hmac-signing";
@@ -39,8 +49,9 @@ describe("OAuth state signing", () => {
   });
 
   it("rejects a payload missing locale", () => {
-    // Simulates a pre-migration token signed before `locale` was required.
-    const legacyToken = signOAuthState({ organizationId: "org_123", provider: "amocrm", locale: "uz" });
-    expect(verifyOAuthState(legacyToken)).not.toBeNull();
+    // Simulates a pre-migration token signed before `locale` was required —
+    // hand-crafted with a valid signature but no `locale` field in the body.
+    const legacyToken = signRawState({ organizationId: "org_123", provider: "amocrm" });
+    expect(verifyOAuthState(legacyToken)).toBeNull();
   });
 });

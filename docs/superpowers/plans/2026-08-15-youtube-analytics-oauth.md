@@ -1053,6 +1053,7 @@ export async function getYoutubeChannelStats(
     if (!stats) return { available: false, reason: "unknown" };
 
     const searchData = await youtubeApiFetch(creds.accessToken, "search", {
+      part: "id",
       channelId: creds.channelId,
       type: "video",
       order: "date",

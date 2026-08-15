@@ -20,10 +20,16 @@ export async function syncYoutubeStats(organizationId: string): Promise<YoutubeC
     return { connected: false };
   }
 
-  const credentials: YoutubeCredentials = JSON.parse(decryptCredential(row.credentialsEncrypted));
-  const result = await getYoutubeChannelStats(credentials, (refreshToken) =>
-    refreshAccessToken("youtube", refreshToken)
-  );
+  let credentials: YoutubeCredentials;
+  let result: YoutubeStatsResult;
+  try {
+    credentials = JSON.parse(decryptCredential(row.credentialsEncrypted));
+    result = await getYoutubeChannelStats(credentials, (refreshToken) =>
+      refreshAccessToken("youtube", refreshToken)
+    );
+  } catch {
+    return { connected: false };
+  }
 
   if (result.available) {
     await db

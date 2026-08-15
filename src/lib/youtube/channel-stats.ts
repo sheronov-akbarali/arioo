@@ -28,9 +28,11 @@ type RefreshFn = (
 
 class YoutubeApiError extends Error {
   reason?: string;
-  constructor(message: string, reason?: string) {
+  status?: number;
+  constructor(message: string, reason?: string, status?: number) {
     super(message);
     this.reason = reason;
+    this.status = status;
   }
 }
 
@@ -48,7 +50,7 @@ async function youtubeApiFetch(
       | { error?: { errors?: { reason?: string }[] } }
       | null;
     const reason = body?.error?.errors?.[0]?.reason;
-    throw new YoutubeApiError(`YouTube API error ${res.status}`, reason);
+    throw new YoutubeApiError(`YouTube API error ${res.status}`, reason, res.status);
   }
   return res.json();
 }
@@ -59,7 +61,9 @@ export async function getYoutubeChannelStats(
 ): Promise<YoutubeStatsResult> {
   let creds = credentials;
 
-  if (creds.expiresAt && new Date(creds.expiresAt) < new Date()) {
+  const EXPIRY_BUFFER_MS = 60_000;
+  const isExpired = !creds.expiresAt || new Date(creds.expiresAt).getTime() - EXPIRY_BUFFER_MS < Date.now();
+  if (isExpired) {
     if (!creds.refreshToken) return { available: false, reason: "reauth_required" };
     try {
       const refreshed = await refresh(creds.refreshToken);
@@ -95,6 +99,7 @@ export async function getYoutubeChannelStats(
     if (!stats) return { available: false, reason: "unknown" };
 
     const searchData = await youtubeApiFetch(creds.accessToken, "search", {
+      part: "id",
       channelId,
       type: "video",
       order: "date",
@@ -133,6 +138,9 @@ export async function getYoutubeChannelStats(
   } catch (error) {
     if (error instanceof YoutubeApiError && error.reason === "quotaExceeded") {
       return { available: false, reason: "quota_exceeded" };
+    }
+    if (error instanceof YoutubeApiError && error.status === 401) {
+      return { available: false, reason: "reauth_required" };
     }
     return { available: false, reason: "unknown" };
   }

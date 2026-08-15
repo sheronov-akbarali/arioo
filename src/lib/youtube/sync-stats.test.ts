@@ -18,14 +18,22 @@ vi.mock("./channel-stats", () => ({ getYoutubeChannelStats }));
 const { refreshAccessToken } = vi.hoisted(() => ({ refreshAccessToken: vi.fn() }));
 vi.mock("@/lib/integrations/oauth/exchange", () => ({ refreshAccessToken }));
 
-import { encryptCredential } from "@/lib/integrations/credential-crypto";
+import { encryptCredential, decryptCredential } from "@/lib/integrations/credential-crypto";
 import { syncYoutubeStats } from "./sync-stats";
+
+vi.mock("@/lib/integrations/credential-crypto", async () => {
+  const actual = await vi.importActual<typeof import("@/lib/integrations/credential-crypto")>(
+    "@/lib/integrations/credential-crypto"
+  );
+  return { ...actual, decryptCredential: vi.fn(actual.decryptCredential) };
+});
 
 beforeEach(() => {
   dbSelectWhere.mockReset();
   dbUpdateSet.mockClear();
   dbUpdateWhere.mockClear();
   getYoutubeChannelStats.mockReset();
+  vi.mocked(decryptCredential).mockClear();
 });
 
 describe("syncYoutubeStats", () => {
@@ -91,5 +99,20 @@ describe("syncYoutubeStats", () => {
     expect(dbUpdateSet).toHaveBeenCalledWith(
       expect.objectContaining({ status: "need_attention", lastError: "quota_exceeded" })
     );
+  });
+
+  it("returns connected:false without throwing when credentials cannot be decrypted", async () => {
+    dbSelectWhere.mockResolvedValue([
+      { id: "int_1", status: "active", credentialsEncrypted: encryptCredential(JSON.stringify({ accessToken: "old" })) },
+    ]);
+    vi.mocked(decryptCredential).mockImplementationOnce(() => {
+      throw new Error("bad decrypt key");
+    });
+
+    const result = await syncYoutubeStats("org_1");
+
+    expect(result).toEqual({ connected: false });
+    expect(getYoutubeChannelStats).not.toHaveBeenCalled();
+    expect(dbUpdateSet).not.toHaveBeenCalled();
   });
 });
