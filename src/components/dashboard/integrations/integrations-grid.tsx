@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   Send,
   MessageCircle,
@@ -22,13 +23,13 @@ import {
 import { ListSearchInput } from "@/components/dashboard/list-search-input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { TelegramChoiceDialog } from "./telegram-choice-dialog";
 import { WidgetConnectDialog } from "./widget-connect-dialog";
 import { WhatsappConnectDialog } from "./whatsapp-connect-dialog";
 import { OlxConnectDialog } from "./olx-connect-dialog";
-import { ExternalCrmConnectDialog } from "./external-crm-connect-dialog";
-import { CalendarConnectDialog } from "./calendar-connect-dialog";
+import { OAuthConnectButton } from "./oauth-connect-button";
+import { OneCConnectDialog } from "./onec-connect-dialog";
+import { VkConnectDialog } from "./vk-connect-dialog";
 import { McpConnectDialog } from "./mcp-connect-dialog";
 import { SipConnectDialog } from "./sip-connect-dialog";
 import { IntegrationStatusDashboard } from "./integration-status-dashboard";
@@ -55,6 +56,7 @@ export function IntegrationsGrid({
   agents = [],
   channels = [],
   integrationRows = [],
+  isOAuthConfigured = {},
   locale,
   mtprotoConnected = false,
 }: {
@@ -67,6 +69,7 @@ export function IntegrationsGrid({
     connectionMode?: ConnectionMode;
     lastError: string | null;
   }[];
+  isOAuthConfigured?: Record<string, boolean>;
   locale: string;
   mtprotoConnected?: boolean;
 }) {
@@ -79,11 +82,6 @@ export function IntegrationsGrid({
 
   const integrationByProvider = new Map(integrationRows.map((row) => [row.providerId, row]));
 
-  // channels.type ("widget") va provider.id ("websiteWidget") turlicha yozilishi mumkin.
-  // "telegram" ham shu yerda qoladi: integrations jadvalida "telegram" providerId'i
-  // hech qachon yozilmaydi (guruh-3'dan keyin "telegram_bot"/"telegram_mtproto" yoziladi),
-  // shuning uchun Telegram kartasining ulanish holati doim shu channels-fallback orqali
-  // aniqlanadi — bu guruh-3'dan keyin ham to'g'ri ishlashda davom etadi.
   const CHANNEL_TYPE_BY_PROVIDER: Record<string, string> = {
     telegram: "telegram",
     whatsapp: "whatsapp",
@@ -115,7 +113,10 @@ export function IntegrationsGrid({
   });
 
   function renderProviderCard(provider: ProviderConfig) {
-    const Icon = ICONS[provider.id];
+    const Icon = ICONS[provider.id] ?? Building2;
+    const isConnected = integrationByProvider.has(provider.id);
+    const connectedRow = integrationByProvider.get(provider.id);
+
     return (
       <Card key={provider.id}>
         <CardContent className="flex flex-col gap-3 pt-6">
@@ -145,7 +146,10 @@ export function IntegrationsGrid({
               />
             ) : provider.id === "websiteWidget" ? (
               channels.find((c) => c.type === "widget" && c.isActive) ? (
-                <Badge variant="default" className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400">
+                <Badge
+                  variant="default"
+                  className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400"
+                >
                   {t("connected")}
                 </Badge>
               ) : (
@@ -153,7 +157,10 @@ export function IntegrationsGrid({
               )
             ) : provider.id === "whatsapp" ? (
               channels.find((c) => c.type === "whatsapp" && c.isActive) ? (
-                <Badge variant="default" className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400">
+                <Badge
+                  variant="default"
+                  className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400"
+                >
                   {t("connected")}
                 </Badge>
               ) : (
@@ -161,29 +168,47 @@ export function IntegrationsGrid({
               )
             ) : provider.id === "olx" ? (
               channels.find((c) => c.type === "olx" && c.isActive) ? (
-                <Badge variant="default" className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400">
+                <Badge
+                  variant="default"
+                  className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400"
+                >
                   {t("connected")}
                 </Badge>
               ) : (
                 <OlxConnectDialog agents={agents} />
               )
             ) : provider.id === "sip" ? (
-              <SipConnectDialog />
-            ) : provider.id === "amocrm" ? (
-              <ExternalCrmConnectDialog type="amocrm" />
-            ) : provider.id === "bitrix24" ? (
-              <ExternalCrmConnectDialog type="bitrix24" />
-            ) : provider.id === "google" ? (
-              <CalendarConnectDialog />
+              <SipConnectDialog locale={locale} />
+            ) : provider.id === "oneC" ? (
+              <OneCConnectDialog locale={locale} />
+            ) : provider.id === "vk" ? (
+              <VkConnectDialog locale={locale} />
             ) : provider.id === "customMcp" ? (
-              <McpConnectDialog />
+              <McpConnectDialog locale={locale} />
+            ) : provider.connectionMode === "oauth" ? (
+              <OAuthConnectButton
+                provider={provider.id}
+                configured={isOAuthConfigured[provider.id] ?? false}
+                locale={locale}
+              />
             ) : (
-              <Button size="sm" variant="outline" disabled>
-                {t("connect")}
-                <span className="ml-1 text-xs opacity-70">{t("comingSoon")}</span>
-              </Button>
+              <OAuthConnectButton
+                provider={provider.id}
+                configured={isOAuthConfigured[provider.id] ?? false}
+                locale={locale}
+              />
             )}
           </div>
+          {isConnected && connectedRow && (
+            <div className="pt-1">
+              <Link
+                href={`/integrations/${connectedRow.id}`}
+                className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+              >
+                {t("manage")}
+              </Link>
+            </div>
+          )}
         </CardContent>
       </Card>
     );

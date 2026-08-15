@@ -916,9 +916,50 @@
     "connect": "Подключить",
     "connected": "Подключено",
     "comingSoon": "Скоро",
+    "setupNeeded": "Требует настройки",
+    "manage": "Управление",
     "searchPlaceholder": "Поиск по названию...",
     "yourIntegrations": "Ваши интеграции",
     "discoverMore": "Найти ещё",
+    "oauthResult": {
+      "success": "{provider} успешно подключен.",
+      "notConfigured": "Администратор еще не настроил OAuth ключи для {provider}.",
+      "failed": "Произошла ошибка при подключении к {provider}. Попробуйте снова."
+    },
+    "detail": {
+      "back": "Назад к интеграциям",
+      "profile": "Профиль",
+      "status": {
+        "setup_needed": "Требует настройки",
+        "verifying": "Проверяется",
+        "active": "Активна",
+        "need_attention": "Требует внимания",
+        "archived": "В архиве"
+      },
+      "lastVerified": "Последняя проверка",
+      "errors": "Ошибки",
+      "noErrors": "Ошибок нет",
+      "usedBy": "Используется (агент)",
+      "lifecycleLog": "Журнал жизненного цикла",
+      "lifecycleLogSubtitle": "История аудита изменений статуса, результатов проверки и событий реаутентификации.",
+      "noEvents": "Событий пока нет.",
+      "eventTypes": {
+        "created": "Создано",
+        "status_changed": "Статус изменен",
+        "verified": "Проверено",
+        "error": "Ошибка",
+        "reauth": "Реаутентификация",
+        "archived": "Архивировано",
+        "deleted": "Удалено"
+      },
+      "testConnection": "Проверить подключение",
+      "testing": "Проверка...",
+      "archive": "Архивировать",
+      "delete": "Удалить",
+      "deleteConfirm": "Вы уверены, что хотите удалить эту интеграцию? Это действие необратимо.",
+      "dangerZone": "Опасная зона",
+      "dangerZoneDescription": "Удаление интеграции навсегда сотрет ее и все зашифрованные учетные данные."
+    },
     "statusDashboard": {
       "labels": {
         "active": "Активна",

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Building2, Save } from "lucide-react";
+import { Building2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -15,24 +15,27 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { connectFormIntegrationAction } from "@/lib/integrations/form-actions";
 
-export function ExternalCrmConnectDialog({
-  type,
-}: {
-  type: "amocrm" | "bitrix24";
-}) {
+export function OneCConnectDialog({ locale }: { locale: string }) {
   const t = useTranslations("integrations");
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  const title = type === "amocrm" ? "amoCRM ulanishi" : "Bitrix24 ulanishi";
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     startTransition(async () => {
-      // Mocked server action call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setOpen(false);
+      const result = await connectFormIntegrationAction({
+        providerId: "oneC",
+        publicConfig: { baseUrl: String(formData.get("baseUrl") ?? "") },
+        secretConfig: {
+          login: String(formData.get("login") ?? ""),
+          password: String(formData.get("password") ?? ""),
+        },
+        locale,
+      });
+      if (result.success) setOpen(false);
     });
   };
 
@@ -48,37 +51,31 @@ export function ExternalCrmConnectDialog({
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>1C ulanishi</DialogTitle>
             <DialogDescription>
-              Tizimdagi lidlar va chatlarni {type === "amocrm" ? "amoCRM" : "Bitrix24"} bilan sinxronizatsiya qilish uchun API kalitlarini kiriting.
+              Mahsulot va narxlar ma'lumotlarini 1C bilan sinxronizatsiya qilish uchun ulanish ma'lumotlarini kiriting.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="domain">Domen URL</Label>
-              <Input
-                id="domain"
-                name="domain"
-                placeholder={`https://mycompany.${type === "amocrm" ? "amocrm.ru" : "bitrix24.com"}`}
-                required
-              />
+              <Label htmlFor="baseUrl">Bazaviy URL</Label>
+              <Input id="baseUrl" name="baseUrl" placeholder="https://erp.example.uz/ut" required />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="apiKey">API / Webhook Key</Label>
-              <Input
-                id="apiKey"
-                name="apiKey"
-                placeholder="Ochiq API kalitingiz..."
-                required
-              />
+              <Label htmlFor="login">Foydalanuvchi nomi</Label>
+              <Input id="login" name="login" required />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="password">Parol</Label>
+              <Input id="password" name="password" type="password" required />
             </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Bekor qilish
             </Button>
-            <Button type="submit" disabled={isPending} className="gap-2">
-              <Save className="size-4" /> {isPending ? "Saqlanmoqda..." : "Saqlash va Ulash"}
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Saqlanmoqda..." : "Saqlash va Ulash"}
             </Button>
           </DialogFooter>
         </form>

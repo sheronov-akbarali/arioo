@@ -916,9 +916,50 @@
     "connect": "Ulash",
     "connected": "Ulangan",
     "comingSoon": "Tez orada",
+    "setupNeeded": "Sozlash kerak",
+    "manage": "Boshqarish",
     "searchPlaceholder": "Nomi bo'yicha qidirish...",
     "yourIntegrations": "Sizning integratsiyalaringiz",
     "discoverMore": "Yana toping",
+    "oauthResult": {
+      "success": "{provider} muvaffaqiyatli ulandi.",
+      "notConfigured": "{provider} uchun administrator hali OAuth kalitlarini sozlamagan.",
+      "failed": "{provider} bilan ulanishda xatolik yuz berdi. Qayta urinib ko'ring."
+    },
+    "detail": {
+      "back": "Integratsiyalarga qaytish",
+      "profile": "Profil",
+      "status": {
+        "setup_needed": "Sozlanmoqda",
+        "verifying": "Tekshirilmoqda",
+        "active": "Faol",
+        "need_attention": "E'tibor talab qiladi",
+        "archived": "Arxivlangan"
+      },
+      "lastVerified": "Oxirgi tekshiruv",
+      "errors": "Xatolar",
+      "noErrors": "Xato yo'q",
+      "usedBy": "Foydalanuvchi (agent)",
+      "lifecycleLog": "Lifecycle jurnali",
+      "lifecycleLogSubtitle": "Holat o'zgarishlari, tekshiruv natijalari va reauth hodisalarining audit tarixi.",
+      "noEvents": "Hali hech qanday hodisa yo'q.",
+      "eventTypes": {
+        "created": "Yaratildi",
+        "status_changed": "Holat o'zgardi",
+        "verified": "Tekshirildi",
+        "error": "Xato",
+        "reauth": "Qayta autentifikatsiya",
+        "archived": "Arxivlandi",
+        "deleted": "O'chirildi"
+      },
+      "testConnection": "Ulanishni tekshirish",
+      "testing": "Tekshirilmoqda...",
+      "archive": "Arxivlash",
+      "delete": "O'chirish",
+      "deleteConfirm": "Bu integratsiyani butunlay o'chirmoqchimisiz? Bu amalni orqaga qaytarib bo'lmaydi.",
+      "dangerZone": "Xavfli hudud",
+      "dangerZoneDescription": "Integratsiyani o'chirish uni va unga tegishli shifrlangan ma'lumotlarni butunlay olib tashlaydi."
+    },
     "statusDashboard": {
       "labels": {
         "active": "Faol",

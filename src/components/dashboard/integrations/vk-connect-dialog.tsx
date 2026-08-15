@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Phone, Save } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { connectFormIntegrationAction } from "@/lib/integrations/form-actions";
 
-export function SipConnectDialog({ locale }: { locale: string }) {
+export function VkConnectDialog({ locale }: { locale: string }) {
   const t = useTranslations("integrations");
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -27,11 +27,11 @@ export function SipConnectDialog({ locale }: { locale: string }) {
     const formData = new FormData(e.currentTarget);
     startTransition(async () => {
       const result = await connectFormIntegrationAction({
-        providerId: "sip",
-        publicConfig: { server: String(formData.get("server") ?? "") },
+        providerId: "vk",
+        publicConfig: { groupId: String(formData.get("groupId") ?? "") },
         secretConfig: {
-          login: String(formData.get("login") ?? ""),
-          password: String(formData.get("password") ?? ""),
+          accessToken: String(formData.get("accessToken") ?? ""),
+          webhookSecret: String(formData.get("webhookSecret") ?? ""),
         },
         locale,
       });
@@ -44,38 +44,36 @@ export function SipConnectDialog({ locale }: { locale: string }) {
       <DialogTrigger
         render={
           <Button size="sm" variant="outline" className="gap-2">
-            {t("connect")} <Phone className="size-3" />
+            {t("connect")} <MessageCircle className="size-3" />
           </Button>
         }
       />
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>SIP Telefoniya ulanishi</DialogTitle>
-            <DialogDescription>
-              AI xodimingiz kiruvchi qo'ng'iroqlarga javob berishi va chiquvchi qo'ng'iroqlarni amalga oshirishi uchun SIP (IP-telefoniya) ma'lumotlarini kiriting.
-            </DialogDescription>
+            <DialogTitle>VK · ВКонтакте ulanishi</DialogTitle>
+            <DialogDescription>VK · ВКонтакте integratsiyasini ulash uchun maydonlarni to'ldiring.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="server">SIP Server / Domen</Label>
-              <Input id="server" name="server" placeholder="sip.provider.uz" required />
+              <Label htmlFor="accessToken">Access token (VK API uchun)</Label>
+              <Input id="accessToken" name="accessToken" required />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="login">Login / Raqam</Label>
-              <Input id="login" name="login" placeholder="998901234567" required />
+              <Label htmlFor="groupId">VK guruh ID</Label>
+              <Input id="groupId" name="groupId" required />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="password">Parol</Label>
-              <Input id="password" name="password" type="password" required />
+              <Label htmlFor="webhookSecret">Webhook so'rovlarini tasdiqlash uchun Secret key</Label>
+              <Input id="webhookSecret" name="webhookSecret" required />
             </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Bekor qilish
             </Button>
-            <Button type="submit" disabled={isPending} className="gap-2">
-              <Save className="size-4" /> {isPending ? "Saqlanmoqda..." : "Ulash"}
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Saqlanmoqda..." : "Saqlash va Ulash"}
             </Button>
           </DialogFooter>
         </form>

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Webhook, Check, Copy } from "lucide-react";
+import { Webhook, Plus, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,28 +13,37 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { connectFormIntegrationAction } from "@/lib/integrations/form-actions";
 
-export function McpConnectDialog() {
+type HeaderRow = { key: string; value: string };
+
+export function McpConnectDialog({ locale }: { locale: string }) {
   const t = useTranslations("integrations");
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const [apiKey, setApiKey] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [headers, setHeaders] = useState<HeaderRow[]>([{ key: "Authorization", value: "" }]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    startTransition(async () => {
-      // Mock generate API key
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setApiKey("arioo_mcp_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
+    const formData = new FormData(e.currentTarget);
+    const secretConfig: Record<string, string> = {};
+    headers.forEach((header, index) => {
+      if (header.key.trim()) secretConfig[`header_${index}_${header.key}`] = header.value;
     });
-  };
-
-  const copyToClipboard = () => {
-    if (!apiKey) return;
-    navigator.clipboard.writeText(apiKey);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    startTransition(async () => {
+      const result = await connectFormIntegrationAction({
+        providerId: "customMcp",
+        publicConfig: {
+          url: String(formData.get("mcpUrl") ?? ""),
+          headerKeys: JSON.stringify(headers.map((h) => h.key)),
+        },
+        secretConfig,
+        locale,
+      });
+      if (result.success) setOpen(false);
+    });
   };
 
   return (
@@ -47,61 +56,72 @@ export function McpConnectDialog() {
         }
       />
       <DialogContent className="sm:max-w-[425px]">
-        {!apiKey ? (
-          <form onSubmit={handleSubmit}>
-            <DialogHeader>
-              <DialogTitle>Ochiq API va MCP Server</DialogTitle>
-              <DialogDescription>
-                Arioo platformasiga maxsus (custom) integratsiyalar yoki Model Context Protocol (MCP) serverlarni ulash uchun API kalit yarating.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="py-6">
-              <ul className="list-disc pl-4 text-sm text-muted-foreground space-y-2">
-                <li>Barcha AI Xodimlarni API orqali boshqarish imkoniyati</li>
-                <li>Mavjud CRM/ERP tizimingizdan ma'lumotlarni to'g'ridan-to'g'ri AI ga uzatish</li>
-                <li>Mahalliy MCP serverlarni ulash</li>
-              </ul>
+        <form onSubmit={handleSubmit}>
+          <DialogHeader>
+            <DialogTitle>Custom MCP Server ulash</DialogTitle>
+            <DialogDescription>
+              Self-hosted MCP serverni ulab, uning MCP imkoniyatlar ro'yxatini olib kelish uchun.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="mcpUrl">MCP server URL</Label>
+              <Input id="mcpUrl" name="mcpUrl" placeholder="https://mcp.example.com" required />
             </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-                Bekor qilish
-              </Button>
-              <Button type="submit" disabled={isPending}>
-                {isPending ? "Yaratilmoqda..." : "API Kalit yaratish"}
-              </Button>
-            </DialogFooter>
-          </form>
-        ) : (
-          <>
-            <DialogHeader>
-              <DialogTitle>API Kalit yaratildi</DialogTitle>
-              <DialogDescription>
-                Quyidagi API kalitni nusxalab oling. Xavfsizlik sababli u qayta ko'rsatilmaydi.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="py-4 flex flex-col gap-4">
-              <div className="relative rounded-md bg-muted p-4 pr-12">
-                <code className="text-sm font-mono break-all">{apiKey}</code>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <Label>HTTP headers</Label>
                 <Button
-                  size="icon"
-                  variant="ghost"
-                  className="absolute right-2 top-2 h-8 w-8"
-                  onClick={copyToClipboard}
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  className="gap-1"
+                  onClick={() => setHeaders([...headers, { key: "", value: "" }])}
                 >
-                  {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+                  <Plus className="size-3" /> Header qo'shish
                 </Button>
               </div>
-              <p className="text-xs text-amber-600 dark:text-amber-500">
-                Ushbu kalit orqali butun tashkilotingiz ma'lumotlariga kirish mumkin, uni hech kimga bermang!
-              </p>
+              {headers.map((header, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <Input
+                    placeholder="Header"
+                    value={header.key}
+                    onChange={(e) => {
+                      const next = [...headers];
+                      next[index] = { ...next[index], key: e.target.value };
+                      setHeaders(next);
+                    }}
+                  />
+                  <Input
+                    placeholder="Value"
+                    value={header.value}
+                    onChange={(e) => {
+                      const next = [...headers];
+                      next[index] = { ...next[index], value: e.target.value };
+                      setHeaders(next);
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => setHeaders(headers.filter((_, i) => i !== index))}
+                  >
+                    <Trash2 className="size-4" />
+                  </Button>
+                </div>
+              ))}
             </div>
-            <DialogFooter>
-              <Button type="button" onClick={() => setOpen(false)}>
-                Yopish
-              </Button>
-            </DialogFooter>
-          </>
-        )}
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              Bekor qilish
+            </Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Ulanmoqda..." : "Ulash"}
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

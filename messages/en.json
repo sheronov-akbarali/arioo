@@ -916,9 +916,50 @@
     "connect": "Connect",
     "connected": "Connected",
     "comingSoon": "Coming soon",
+    "setupNeeded": "Setup needed",
+    "manage": "Manage",
     "searchPlaceholder": "Search by name...",
     "yourIntegrations": "Your integrations",
     "discoverMore": "Discover more",
+    "oauthResult": {
+      "success": "{provider} connected successfully.",
+      "notConfigured": "The administrator has not configured OAuth keys for {provider} yet.",
+      "failed": "An error occurred while connecting to {provider}. Please try again."
+    },
+    "detail": {
+      "back": "Back to Integrations",
+      "profile": "Profile",
+      "status": {
+        "setup_needed": "Setup needed",
+        "verifying": "Verifying",
+        "active": "Active",
+        "need_attention": "Needs attention",
+        "archived": "Archived"
+      },
+      "lastVerified": "Last verified",
+      "errors": "Errors",
+      "noErrors": "No errors",
+      "usedBy": "Used by (agent)",
+      "lifecycleLog": "Lifecycle log",
+      "lifecycleLogSubtitle": "Audit trail of status changes, verification checks and reauth events.",
+      "noEvents": "No events recorded yet.",
+      "eventTypes": {
+        "created": "Created",
+        "status_changed": "Status changed",
+        "verified": "Verified",
+        "error": "Error",
+        "reauth": "Re-authenticated",
+        "archived": "Archived",
+        "deleted": "Deleted"
+      },
+      "testConnection": "Test connection",
+      "testing": "Testing...",
+      "archive": "Archive",
+      "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete this integration? This action cannot be undone.",
+      "dangerZone": "Danger zone",
+      "dangerZoneDescription": "Deleting this integration will permanently remove it and all encrypted credentials."
+    },
     "statusDashboard": {
       "labels": {
         "active": "Active",
