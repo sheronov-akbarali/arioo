@@ -5,7 +5,9 @@ import { requireOrganization } from "@/lib/auth/dal";
 
 export async function GET(req: Request, { params }: { params: Promise<{ provider: string }> }) {
   const { provider } = await params;
-  const locale = new URL(req.url).searchParams.get("locale") ?? "uz";
+  const url = new URL(req.url);
+  const locale = url.searchParams.get("locale") ?? "uz";
+  const returnPath = url.searchParams.get("returnPath") ?? undefined;
   const { organization } = await requireOrganization(locale);
 
   if (!isOAuthConfigured(provider)) {
@@ -19,7 +21,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
     return NextResponse.redirect(new URL(`/${locale}/integrations?oauthError=unknown_provider`, req.url));
   }
 
-  const state = signOAuthState({ organizationId: organization.id, provider });
+  const state = signOAuthState({ organizationId: organization.id, provider, locale, returnPath });
   const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/${provider}/oauth/callback`;
 
   const authorizeUrl = new URL(config.authUrl);
@@ -29,6 +31,11 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
   authorizeUrl.searchParams.set("state", state);
   if (config.scopes.length > 0) {
     authorizeUrl.searchParams.set("scope", config.scopes.join(" "));
+  }
+  if (config.extraAuthParams) {
+    for (const [key, value] of Object.entries(config.extraAuthParams)) {
+      authorizeUrl.searchParams.set(key, value);
+    }
   }
 
   return NextResponse.redirect(authorizeUrl.toString());

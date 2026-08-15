@@ -14,7 +14,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
   const referer = url.searchParams.get("referer"); // amoCRM's portal subdomain hint
 
   const state = stateToken ? verifyOAuthState(stateToken) : null;
-  const locale = "uz"; // callback'da locale state'da saqlanmagan, standart tilga qaytariladi
+  const locale = state?.locale ?? "uz";
 
   if (!code || !state || state.provider !== provider) {
     return NextResponse.redirect(
@@ -22,14 +22,16 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
     );
   }
 
+  const returnPath = state.returnPath ?? "/integrations";
+
   try {
     const extra: Record<string, string> = {};
     if (provider === "amocrm" && referer) {
       extra.tokenUrl = `${referer.replace(/\/$/, "")}/oauth2/access_token`;
     }
 
-    const { accessToken, refreshToken } = await exchangeCodeForToken(provider, code, extra);
-    const credentialsEncrypted = encryptCredential(JSON.stringify({ accessToken, refreshToken }));
+    const { accessToken, refreshToken, expiresAt } = await exchangeCodeForToken(provider, code, extra);
+    const credentialsEncrypted = encryptCredential(JSON.stringify({ accessToken, refreshToken, expiresAt }));
 
     const [existing] = await db
       .select({ id: integrations.id })
@@ -60,11 +62,11 @@ export async function GET(req: Request, { params }: { params: Promise<{ provider
 
     await db.insert(integrationEvents).values({ integrationId, type: "verified", message: "OAuth token obtained" });
 
-    return NextResponse.redirect(new URL(`/${locale}/integrations?oauthSuccess=${provider}`, req.url));
+    return NextResponse.redirect(new URL(`/${locale}${returnPath}?oauthSuccess=${provider}`, req.url));
   } catch (error) {
     console.error(`OAuth callback failed for provider "${provider}":`, error);
     return NextResponse.redirect(
-      new URL(`/${locale}/integrations?oauthError=exchange_failed&provider=${provider}`, req.url)
+      new URL(`/${locale}${returnPath}?oauthError=exchange_failed&provider=${provider}`, req.url)
     );
   }
 }
