@@ -322,51 +322,32 @@ Har bir bosqich alohida spec (`superpowers:brainstorming`) → reja
 (`superpowers:writing-plans`) → ijro (`superpowers:subagent-driven-development`)
 tsiklidan o'tadi, xuddi A-bosqich kabi.
 
-## Integrations bo'limini qayta qurish — 2026-08-14'dan boshlab (DAVOM ETMOQDA)
+## Integrations bo'limini qayta qurish — 2026-08-14'dan boshlab (TUGALLANGAN)
 
 worken.ru'ning Integrations paneli Chrome orqali chuqur tahlil qilindi (status
 dashboard, ko'p-rejimli ulanish, real OAuth) va Arioo'ning Integrations bo'limi
-shu darajaga olib chiqilmoqda. Spec:
-`docs/superpowers/specs/2026-08-14-integrations-overhaul-design.md`. Ijro
-`superpowers:subagent-driven-development` orqali, alohida git worktree'da
-(`.claude/worktrees/integrations-overhaul`, branch
-`worktree-integrations-overhaul`) 6 ta guruh rejasi bo'yicha ketma-ket
-bajarilmoqda — har biri o'z faylida:
-`docs/superpowers/plans/2026-08-14-integrations-group-{1..6}-*.md`.
+shu darajaga to'liq olib chiqildi va `main`ga merge qilindi. Spec:
+`docs/superpowers/specs/2026-08-14-integrations-overhaul-design.md`.
 
-**Joriy holat (2026-08-14 kuni to'xtatildi, foydalanuvchi so'rovi bilan):**
-- [x] **Guruh 1 — Ma'lumotlar modeli va provider katalogi** — to'liq tugallangan,
-      final review'dan o'tgan (commit `c7bdcad`)
-- [x] **Guruh 2 — Status dashboard va ikki-bo'limli grid** — to'liq tugallangan,
-      final review'dan o'tgan (commit `0efc446`)
-- [x] **Guruh 3 — Telegram Bot/MTProto tanlov oynasi** — to'liq tugallangan,
-      final review'dan o'tgan (commit `d475b78`)
-- [~] **Guruh 4 — OAuth infratuzilmasi** — Task 1-6 (env o'zgaruvchilari, HMAC
-      state, provider config, start/callback route'lar, token exchange)
-      implement qilingan va commit qilingan (`faeb89b`..`e7a2c2b`), **lekin hali
-      task-review qilinmagan**. **Davom ettirish uchun keyingi qadam: shu
-      6-commit'lik diff uchun task reviewer dispatch qilish, keyin Task 7-8ga
-      o'tish** (amoCRM/Bitrix24/Google/GitHub/HeadHunter kartalarini
-      `OAuthConnectButton`ga ulash + `isOAuthConfigured`/toast wiring). To'liq
-      tafsilot: `.superpowers/sdd/2026-08-14-integrations-group-4-oauth-infra/progress.md`
-      (worktree ichida, git-ignored — agar o'chirilgan bo'lsa, shu commit
-      range'idan qayta tiklash mumkin).
-- [ ] **Guruh 5 — Yangi/tuzatilgan formalar** (SIP, 1C, VK, Custom MCP dinamik
-      headers) — hali boshlanmagan
-- [ ] **Guruh 6 — `/integrations/:id` boshqaruv sahifasi** — hali boshlanmagan
+- [x] **Guruh 1 — Ma'lumotlar modeli va provider katalogi**: `integrations`/`integration_events`
+      jadvallari, AES-256-GCM credential shifrlash, config-driven provider katalogi,
+      status hisoblash funksiyasi.
+- [x] **Guruh 2 — Status dashboard va ikki-bo'limli grid**: Status dashboard
+      komponenti, status/kategoriya filter, `IntegrationsGrid` connected/discoverable
+      bo'limlarga bo'lingan.
+- [x] **Guruh 3 — Telegram Bot/MTProto tanlov oynasi**: MTProto server action'lari
+      umumiy `lib`ga ko'chirilgan, Bot va MTProto ulanishlari alohida `integrations`
+      qatorlari sifatida yoziladi, `TelegramChoiceDialog` qo'shilgan.
+- [x] **Guruh 4 — OAuth infratuzilmasi**: amoCRM, Bitrix24, Google, GitHub, HeadHunter
+      uchun umumiy OAuth start/callback route'lari, HMAC imzolangan state, token
+      almashish, `OAuthConnectButton` va `isOAuthConfigured` holat boshqaruvi.
+- [x] **Guruh 5 — Yangi/tuzatilgan formalar**: umumiy forma-integratsiya server action
+      (`connectFormIntegrationAction`), SIP telefoniya dialogi, 1C uchun yangi forma,
+      VK uchun yangi forma, Custom MCP Server (URL + dinamik headers).
+- [x] **Guruh 6 — `/integrations/:id` boshqaruv sahifasi**: test-connection funksiyalari,
+      Test/Archive/Delete server action'lari, Profil/Ulanish tafsilotlari bo'limlari,
+      lifecycle audit log komponenti, ulangan integratsiya kartalaridan "Boshqarish" havolasi.
 
-**Muhim arxitektura eslatmasi (Guruh 2/3'dan meros)**: Telegram katalogda bitta
-`"telegram"` id sifatida ko'rinadi, lekin DB'da ikkita alohida qator
-(`telegram_bot`/`telegram_mtproto`) sifatida saqlanadi — status dashboard va
-filtrlar hozircha buni to'liq ko'ra olmaydi (faqat kartaning o'zi
-`botConnected`/`mtprotoConnected` orqali to'g'ri ko'rsatadi). Bu ataylab
-tuzatilmagan (YAGNI) — Guruh 5/6 shunga o'xshash ko'p-qatorli holatga duch
-kelsa (masalan Custom MCP bir nechta server bilan), `ProviderConfig`ga
-`integrationProviderIds: string[]` fan-out xaritasi qo'shish tavsiya etiladi.
-
-Davom ettirish uchun: shu worktree'ga qaytib (yoki yangisini ochib),
-`superpowers:subagent-driven-development` skilini qayta chaqirib, yuqoridagi
-"Davom ettirish uchun keyingi qadam"dan boshlash kifoya.
 
 ## Rivojlantirish konventsiyalari
 
