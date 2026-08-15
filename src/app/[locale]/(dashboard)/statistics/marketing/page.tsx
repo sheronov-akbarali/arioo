@@ -13,16 +13,19 @@ import { telegramChannelConnections } from "@/db/schema/telegram-channel-connect
 import { getTelegramChannelStats } from "@/lib/telegram/channel-stats";
 import { disconnectTelegramChannel } from "@/lib/telegram/mtproto-actions";
 import { MockConnectButton } from "@/components/dashboard/statistics/mock-connect-button";
+import { OAuthResultToast } from "@/components/dashboard/integrations/oauth-result-toast";
+import { syncYoutubeStats } from "@/lib/youtube/sync-stats";
+import { YoutubeAnalyticsCard } from "@/components/dashboard/statistics/youtube-analytics-card";
 
 export default async function MarketingStatisticsPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ range?: string }>;
+  searchParams: Promise<{ range?: string; oauthSuccess?: string; oauthError?: string; provider?: string }>;
 }) {
   const { locale } = await params;
-  const { range: rawRange } = await searchParams;
+  const { range: rawRange, oauthSuccess, oauthError, provider } = await searchParams;
   const { organization } = await requireOrganization(locale);
   const t = await getTranslations("statistics");
 
@@ -43,6 +46,8 @@ export default async function MarketingStatisticsPage({
         })
       : null;
 
+  const youtubeCard = await syncYoutubeStats(organization.id);
+
   const formatNumber = (value: number) => new Intl.NumberFormat(locale).format(value);
   const changePct = (current: number, previous: number) =>
     previous > 0 ? ((current - previous) / previous) * 100 : current > 0 ? 100 : 0;
@@ -62,6 +67,8 @@ export default async function MarketingStatisticsPage({
       </div>
 
       <StatisticsTabs />
+
+      <OAuthResultToast success={oauthSuccess} error={oauthError} provider={provider} />
 
       <div className="flex flex-wrap gap-2">
         {RANGES.map((r) => (
@@ -208,26 +215,7 @@ export default async function MarketingStatisticsPage({
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {/* YouTube Analytics Mock */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">YouTube Analytics</CardTitle>
-                <p className="text-xs text-muted-foreground">Obunachilar va ko'rishlar</p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col gap-4">
-                  <div>
-                    <p className="text-2xl font-bold">12,450</p>
-                    <p className="text-xs text-green-600">+450 bu oy</p>
-                  </div>
-                  <ul className="text-sm divide-y divide-border">
-                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Ko'rishlar</span> <span className="font-medium">1.2M</span></li>
-                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Watch time</span> <span className="font-medium">45K soat</span></li>
-                  </ul>
-                  <MockConnectButton />
-                </div>
-              </CardContent>
-            </Card>
+            <YoutubeAnalyticsCard data={youtubeCard} locale={locale} />
 
             {/* Instagram Insights Mock */}
             <Card>
