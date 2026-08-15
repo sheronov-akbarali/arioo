@@ -10,8 +10,11 @@ import { STATISTICS_RANGES as RANGES, parseStatisticsRange, statisticsWindow } f
 import { getSiteAnalytics } from "@/lib/analytics/web-analytics";
 import { db } from "@/db/client";
 import { telegramChannelConnections } from "@/db/schema/telegram-channel-connection";
+import { youtubeChannelConnections } from "@/db/schema/youtube-channel-connection";
 import { getTelegramChannelStats } from "@/lib/telegram/channel-stats";
+import { getYoutubeChannelStats } from "@/lib/youtube/channel-stats";
 import { disconnectTelegramChannel } from "@/lib/telegram/mtproto-actions";
+import { YoutubeAnalyticsCard } from "@/components/dashboard/statistics/youtube-analytics-card";
 import { MockConnectButton } from "@/components/dashboard/statistics/mock-connect-button";
 
 export default async function MarketingStatisticsPage({
@@ -19,10 +22,10 @@ export default async function MarketingStatisticsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ range?: string }>;
+  searchParams: Promise<{ range?: string; youtube?: string }>;
 }) {
   const { locale } = await params;
-  const { range: rawRange } = await searchParams;
+  const { range: rawRange, youtube: youtubeParam } = await searchParams;
   const { organization } = await requireOrganization(locale);
   const t = await getTranslations("statistics");
 
@@ -43,6 +46,20 @@ export default async function MarketingStatisticsPage({
         })
       : null;
 
+  const [youtubeConnection] = await db
+    .select()
+    .from(youtubeChannelConnections)
+    .where(eq(youtubeChannelConnections.organizationId, organization.id));
+
+  const youtubeStats =
+    youtubeConnection?.status === "connected"
+      ? await getYoutubeChannelStats(youtubeConnection)
+      : null;
+
+  const isYoutubeOAuthConfigured = Boolean(
+    process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID
+  );
+
   const formatNumber = (value: number) => new Intl.NumberFormat(locale).format(value);
   const changePct = (current: number, previous: number) =>
     previous > 0 ? ((current - previous) / previous) * 100 : current > 0 ? 100 : 0;
@@ -62,6 +79,22 @@ export default async function MarketingStatisticsPage({
       </div>
 
       <StatisticsTabs />
+
+      {youtubeParam === "connected" && (
+        <div className="rounded-md bg-green-500/10 px-4 py-3 text-sm text-green-700 dark:text-green-400">
+          {t("marketing.youtube.connectedToast")}
+        </div>
+      )}
+      {youtubeParam === "error" && (
+        <div className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {t("marketing.youtube.errorToast")}
+        </div>
+      )}
+      {youtubeParam === "not_configured" && (
+        <div className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {t("marketing.youtube.notConfiguredToast")}
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2">
         {RANGES.map((r) => (
@@ -208,26 +241,13 @@ export default async function MarketingStatisticsPage({
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {/* YouTube Analytics Mock */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">YouTube Analytics</CardTitle>
-                <p className="text-xs text-muted-foreground">Obunachilar va ko'rishlar</p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col gap-4">
-                  <div>
-                    <p className="text-2xl font-bold">12,450</p>
-                    <p className="text-xs text-green-600">+450 bu oy</p>
-                  </div>
-                  <ul className="text-sm divide-y divide-border">
-                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Ko'rishlar</span> <span className="font-medium">1.2M</span></li>
-                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Watch time</span> <span className="font-medium">45K soat</span></li>
-                  </ul>
-                  <MockConnectButton />
-                </div>
-              </CardContent>
-            </Card>
+            {/* Real YouTube Analytics Card */}
+            <YoutubeAnalyticsCard
+              connection={youtubeConnection ?? null}
+              stats={youtubeStats}
+              locale={locale}
+              isOAuthConfigured={isYoutubeOAuthConfigured}
+            />
 
             {/* Instagram Insights Mock */}
             <Card>

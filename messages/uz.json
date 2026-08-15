@@ -679,6 +679,26 @@
         "connectElsewhere": "Telegram statistikasini ko'rish uchun avval Integratsiyalar sahifasida ulang.",
         "goToIntegrations": "Integratsiyalarga o'tish"
       },
+      "youtube": {
+        "title": "YouTube Analytics",
+        "subtitle": "Obunachilar va ko'rishlar",
+        "subscribers": "Obunachilar",
+        "views": "Ko'rishlar",
+        "videos": "Videolar soni",
+        "viewsShort": "ko'rish",
+        "recentVideos": "So'nggi videolar",
+        "connected": "Ulangan",
+        "notConnected": "YouTube kanali hali ulanmagan.",
+        "connect": "Google orqali ulash",
+        "reconnect": "Qayta ulash",
+        "disconnect": "Kanalni uzish",
+        "setupNeeded": "Sozlash kerak",
+        "genericError": "YouTube statistikasini yuklab bo'lmadi.",
+        "quotaExceeded": "YouTube API kvotasi vaqtincha tugadi.",
+        "connectedToast": "YouTube kanali muvaffaqiyatli ulandi.",
+        "errorToast": "YouTube kanalini ulashda xatolik yuz berdi.",
+        "notConfiguredToast": "YouTube OAuth kalitlari hali sozlanmagan."
+      },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
         "subtitle": "Boshqa marketing kanallaringiz bo'yicha analitika.",
