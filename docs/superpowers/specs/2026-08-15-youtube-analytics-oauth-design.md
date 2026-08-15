@@ -105,11 +105,18 @@ xavfsizroq va boshqa provider'lar bilan bir xil naqsh).
 
 ## Provider katalogi o'zgarishi
 
-`providers.ts` (`INTEGRATION_PROVIDERS`) faqat `/integrations` katalog
-sahifasi UI'sida (`integrations-grid.tsx`, `integration-filters.tsx`)
-ishlatiladi — bu spec qamrovidan tashqarida qoldirilgani uchun bu faylga
-tegilmaydi. `isOAuthConfigured`/`getOAuthConfig`/route'lar faqat
-`oauth/config.ts`ga bog'liq, u yerga qo'shish yetarli:
+`src/lib/integrations/providers.ts`:
+```ts
+{
+  id: "youtube",
+  categories: ["marketplace"], // yoki mos kategoriya
+  connectionMode: "oauth",
+  oauth: {
+    envPrefix: "GOOGLE",
+    scopes: ["https://www.googleapis.com/auth/youtube.readonly"],
+  },
+},
+```
 
 `src/lib/integrations/oauth/config.ts`:
 ```ts

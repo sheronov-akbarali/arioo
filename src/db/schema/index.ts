@@ -14,7 +14,6 @@ export * from "./marketing";
 export * from "./products";
 export * from "./referrals";
 export * from "./telegram-channel-connection";
-export * from "./youtube-channel-connection";
 export * from "./channels";
 export * from "./integrations";
 export * from "./notifications";

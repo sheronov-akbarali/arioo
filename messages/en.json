@@ -679,26 +679,6 @@
         "connectElsewhere": "Connect your channel on the Integrations page first to see Telegram statistics.",
         "goToIntegrations": "Go to Integrations"
       },
-      "youtube": {
-        "title": "YouTube Analytics",
-        "subtitle": "Subscribers and views",
-        "subscribers": "Subscribers",
-        "views": "Views",
-        "videos": "Total videos",
-        "viewsShort": "views",
-        "recentVideos": "Recent videos",
-        "connected": "Connected",
-        "notConnected": "YouTube channel is not connected yet.",
-        "connect": "Connect via Google",
-        "reconnect": "Reconnect",
-        "disconnect": "Disconnect channel",
-        "setupNeeded": "Setup needed",
-        "genericError": "Failed to load YouTube statistics.",
-        "quotaExceeded": "YouTube API quota temporarily exceeded.",
-        "connectedToast": "YouTube channel connected successfully.",
-        "errorToast": "Failed to connect YouTube channel.",
-        "notConfiguredToast": "YouTube OAuth credentials are not configured."
-      },
       "channels": {
         "title": "Telegram, YouTube, Instagram, OLX.uz",
         "subtitle": "Analytics for your other marketing channels.",

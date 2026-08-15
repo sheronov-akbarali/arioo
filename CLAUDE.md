@@ -139,10 +139,10 @@ dashboard'ning ichki ko'rinishi **detalma-detal worken.ru bilan bir xil** bo'lis
 - [x] **F — Marketing kanal va sayt analitikasi kengaytmasi** (worken.ru'da yo'q,
       Arioo'ning o'ziga xos differensiatori): `/statistics` sahifasiga yangi "Marketing
       kanallari" tab'i sifatida qo'shiladi
-  - [x] Telegram kanal analitikasi — a'zolar dinamikasi, post reach/views, engagement
-    rate, faol vaqtlar (Telegram Bot API / MTProto kanal admin ulanishi)
-  - [x] YouTube kanal analitikasi — obunachilar, ko'rishlar, videolar soni, so'nggi
-    videolar tahlili (Google OAuth + YouTube Data API v3, avto token-refresh)
+  - Telegram kanal analitikasi — a'zolar dinamikasi, post reach/views, engagement
+    rate, faol vaqtlar (Telegram Bot API, kanal admin sifatida ulanish)
+  - YouTube kanal analitikasi — obunachilar o'sishi, ko'rishlar, watch time, CTR
+    (YouTube Data API v3 + YouTube Analytics API, OAuth — qo'lda integratsiya)
   - Instagram/Facebook (Meta) Insights — WhatsApp bilan bitta Meta App orqali OAuth
     ulanadi, shu sababli arzon qo'shimcha
   - Sayt statistikasi — Vercel Web Analytics (birinchi navbatda, Marketplace orqali
