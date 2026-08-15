@@ -275,7 +275,8 @@
       "project": "Проект",
       "team": "Пользователи",
       "limits": "Лимиты",
-      "accounts": "Аккаунты"
+      "accounts": "Аккаунты",
+      "security": "Безопасность"
     },
     "project": {
       "save": "Сохранить",
@@ -333,6 +334,7 @@
       "knowledgeBases": "База знаний",
       "approvals": "Подтверждения",
       "products": "Товары",
+      "crm": "CRM",
       "integrations": "Интеграции",
       "statistics": "Статистика",
       "runs": "Запуски",
@@ -342,6 +344,9 @@
       "settings": "Настройки",
       "comingSoon": "Скоро",
       "billing": "Биллинг",
+      "templates": "Маркетплейс Шаблонов",
+      "messageTemplates": "Шаблоны Сообщений",
+      "admin": "Админ",
       "groups": {
         "work": "Работа",
         "data": "Данные",
@@ -385,10 +390,12 @@
     },
     "detail": {
       "tabs": {
-        "ai": "ИИ",
+        "ai": "AI",
         "chats": "Чаты",
         "calls": "Звонки",
-        "knowledge": "Базы знаний"
+        "knowledge": "Базы знаний",
+        "analytics": "Аналитика",
+        "abTesting": "A/B Тест"
       },
       "connect": "Подключить",
       "test": "Протестировать",
@@ -620,6 +627,7 @@
     "sourceFilters": {
       "all": "Все",
       "routines": "Рутины",
+      "crm": "CRM",
       "chats": "Чат и голос"
     },
     "search": {

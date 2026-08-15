@@ -4,7 +4,7 @@ import { db } from "@/db/client";
 import { channels } from "@/db/schema/channels";
 import { conversations, messages } from "@/db/schema/conversations";
 import { aiAgents } from "@/db/schema/agents";
-import { generateText } from "ai";
+import { executeAgentResponse } from "@/lib/ai/agent-executor";
 
 export async function POST(
   req: Request,
@@ -84,11 +84,12 @@ export async function POST(
       content: m.content,
     }));
 
-    // 6. Vercel AI SDK orqali javob generatsiya qilish
-    const { text: aiResponse } = await generateText({
-      model: agent.model,
-      system: agent.systemPrompt,
-      messages: formattedHistory,
+    // 6. AI javobini generatsiya qilish (RAG + A/B test + Ledger orqali)
+    const { text: aiResponse } = await executeAgentResponse({
+      agentId: agent.id,
+      conversationId: conversation.id,
+      userMessage: text,
+      history: formattedHistory,
     });
 
     // 7. Telegram API orqali javobni yuborish
@@ -107,14 +108,12 @@ export async function POST(
     );
 
     const telegramData = await telegramRes.json();
-
-    // 8. AI javobini bazaga yozish
-    await db.insert(messages).values({
-      conversationId: conversation.id,
-      role: "assistant",
-      content: aiResponse,
-      externalMessageId: telegramData.ok ? telegramData.result.message_id.toString() : null,
-    });
+    if (telegramData.ok && telegramData.result?.message_id) {
+      await db
+        .update(messages)
+        .set({ externalMessageId: telegramData.result.message_id.toString() })
+        .where(eq(messages.conversationId, conversation.id));
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error) {

@@ -6,9 +6,12 @@ import { db } from "@/db/client";
 import { aiAgents } from "@/db/schema/agents";
 import { crmDeals } from "@/db/schema/crm";
 import { conversations } from "@/db/schema/conversations";
+import { knowledgeDocuments } from "@/db/schema/knowledge";
+import { channels } from "@/db/schema/channels";
 import { eq, count } from "drizzle-orm";
 import { Bot, MessageSquare, Briefcase, Plus } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { OnboardingWizard } from "@/components/dashboard/onboarding-wizard";
 
 export default async function DashboardPage({
   params,
@@ -32,6 +35,22 @@ export default async function DashboardPage({
     .from(conversations)
     .innerJoin(aiAgents, eq(conversations.agentId, aiAgents.id))
     .where(eq(aiAgents.organizationId, organization.id));
+
+  // Check onboarding prerequisites
+  const [knowledgeCountRow] = await db.select({ value: count() })
+    .from(knowledgeDocuments)
+    .innerJoin(aiAgents, eq(knowledgeDocuments.agentId, aiAgents.id))
+    .where(eq(aiAgents.organizationId, organization.id));
+
+  const [channelsCountRow] = await db.select({ value: count() })
+    .from(channels)
+    .innerJoin(aiAgents, eq(channels.agentId, aiAgents.id))
+    .where(eq(aiAgents.organizationId, organization.id));
+
+  const firstAgent = await db.select({ id: aiAgents.id })
+    .from(aiAgents)
+    .where(eq(aiAgents.organizationId, organization.id))
+    .limit(1);
 
   const stats = [
     {
@@ -58,7 +77,7 @@ export default async function DashboardPage({
   ];
 
   return (
-    <div className="flex flex-col gap-8 w-full max-w-6xl mx-auto py-6">
+    <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto py-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{t("title", { org: organization.name })}</h1>
@@ -69,9 +88,18 @@ export default async function DashboardPage({
         </Button>
       </div>
 
+      {/* Interactive Onboarding Wizard */}
+      <OnboardingWizard
+        hasAgents={agentsCountRow.value > 0}
+        hasKnowledge={knowledgeCountRow.value > 0}
+        hasChannels={channelsCountRow.value > 0}
+        hasChats={chatsCountRow.value > 0}
+        firstAgentId={firstAgent[0]?.id}
+      />
+
       <div className="grid gap-4 md:grid-cols-3">
         {stats.map((stat, i) => (
-          <Link key={i} href={stat.href} className="block transition-transform hover:scale-[1.02]">
+          <Link key={i} href={stat.href} className="block transition-transform hover:scale-[1.01]">
             <Card className="h-full border-muted/50 hover:border-primary/50 transition-colors">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -86,19 +114,6 @@ export default async function DashboardPage({
           </Link>
         ))}
       </div>
-      
-      {agentsCountRow.value === 0 && (
-        <div className="flex flex-col items-center justify-center p-12 text-center border rounded-xl border-dashed bg-muted/10 mt-4">
-          <Bot className="size-12 text-muted-foreground mb-4 opacity-20" />
-          <h2 className="text-xl font-semibold mb-2">Hali hech qanday AI Xodim yaratmadingiz</h2>
-          <p className="text-muted-foreground max-w-md mb-6">
-            Sotuv, qo'llab-quvvatlash yoki HR vazifalari uchun o'zingizning birinchi sun'iy intellekt xodimingizni yarating.
-          </p>
-          <Button render={<Link href="/assistants/new" />} size="lg">
-            Boshlash
-          </Button>
-        </div>
-      )}
     </div>
   );
 }

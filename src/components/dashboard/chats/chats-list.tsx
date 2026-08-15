@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/card";
 export type ChatThread = {
   id: string;
   agentName: string;
+  channel: string;
+  sentiment?: "positive" | "neutral" | "negative";
   lastMessagePreview: string;
   timestampLabel: string;
   isActive: boolean;
@@ -18,7 +20,7 @@ export function ChatsList({ threads }: { threads: ChatThread[] }) {
   const t = useTranslations("chats");
   const [query, setQuery] = useState("");
   const filtered = threads.filter((thread) => {
-    const haystack = `${thread.agentName} ${thread.lastMessagePreview}`.toLowerCase();
+    const haystack = `${thread.agentName} ${thread.lastMessagePreview} ${thread.channel}`.toLowerCase();
     return haystack.includes(query.trim().toLowerCase());
   });
 
@@ -36,17 +38,37 @@ export function ChatsList({ threads }: { threads: ChatThread[] }) {
               <Link
                 href={`/chats?conversation=${thread.id}`}
                 className={
-                  "block px-4 py-3 transition-colors hover:bg-muted " +
-                  (thread.isActive ? "bg-muted" : "")
+                  "block px-4 py-3 transition-colors hover:bg-muted/70 rounded-lg " +
+                  (thread.isActive ? "bg-muted font-medium" : "")
                 }
               >
                 <div className="flex items-center justify-between gap-2">
-                  <p className="font-medium">{thread.agentName}</p>
-                  <span className="text-xs text-muted-foreground">{thread.timestampLabel}</span>
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <p className="font-medium truncate text-sm">{thread.agentName}</p>
+                    <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-muted-foreground/10 text-muted-foreground shrink-0">
+                      {thread.channel}
+                    </span>
+                  </div>
+                  <span className="text-xs text-muted-foreground shrink-0">{thread.timestampLabel}</span>
                 </div>
-                <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
-                  {thread.lastMessagePreview}
-                </p>
+                <div className="mt-1 flex items-center justify-between gap-2">
+                  <p className="line-clamp-1 text-xs text-muted-foreground flex-1">
+                    {thread.lastMessagePreview}
+                  </p>
+                  {thread.sentiment && (
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded-full shrink-0 font-medium ${
+                        thread.sentiment === "positive"
+                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          : thread.sentiment === "negative"
+                            ? "bg-red-500/10 text-red-600 dark:text-red-400"
+                            : "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                      }`}
+                    >
+                      {thread.sentiment === "positive" ? "😊 Ijobiy" : thread.sentiment === "negative" ? "😡 Salbiy" : "😐 Neytral"}
+                    </span>
+                  )}
+                </div>
               </Link>
             </li>
           ))}

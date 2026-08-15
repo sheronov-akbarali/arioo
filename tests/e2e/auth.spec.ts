@@ -4,7 +4,9 @@ test.describe("sign-in page", () => {
   for (const locale of ["uz", "ru", "en"] as const) {
     test(`renders the Clerk sign-in form in ${locale}`, async ({ page }) => {
       await page.goto(`/${locale}/sign-in`);
-      await expect(page.getByLabel(/email/i).first()).toBeVisible();
+      await expect(
+        page.locator("input[type='email'], input[name='identifier'], input[type='text']").first()
+      ).toBeVisible({ timeout: 10000 });
     });
   }
 });

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { CreditCard, Wallet } from "lucide-react";
+import { useParams } from "next/navigation";
+import { Wallet, CheckCircle2, Sparkles, ExternalLink } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -15,19 +16,43 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { initiateTopUpAction } from "@/app/[locale]/(dashboard)/billing/actions";
 
 export function TopUpDialog() {
+  const params = useParams();
+  const locale = (params?.locale as string) || "uz";
+
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const [method, setMethod] = useState("payme");
+  const [method, setMethod] = useState<"payme" | "click" | "test">("test");
   const [amount, setAmount] = useState("100000");
+  const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
+    setSuccessMsg("");
+
     startTransition(async () => {
-      // Mock payment redirection
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setOpen(false);
+      const numAmount = Number(amount);
+      const res = await initiateTopUpAction(locale, numAmount, method);
+
+      if (!res.success) {
+        setError(res.error || "To'lovni boshlashda xatolik yuz berdi");
+        return;
+      }
+
+      if (res.redirectUrl) {
+        window.open(res.redirectUrl, "_blank");
+        setOpen(false);
+      } else {
+        setSuccessMsg("Hisobingiz muvaffaqiyatli to'ldirildi! (+10% bonus qo'shildi)");
+        setTimeout(() => {
+          setOpen(false);
+          setSuccessMsg("");
+        }, 1800);
+      }
     });
   };
 
@@ -40,71 +65,103 @@ export function TopUpDialog() {
           </Button>
         }
       />
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[460px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Hisobni to'ldirish (ARI tokenlari)</DialogTitle>
             <DialogDescription>
-              AI xodimlaringiz ishlashi uchun hisobingizni to'ldiring. 1 ARI = 1 UZS
+              AI xodimlaringiz uzluksiz ishlashi uchun hisobingizni to'ldiring. 1 ARI = 1 UZS
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-6 py-4">
-            <div className="flex flex-col gap-3">
+
+          <div className="grid gap-5 py-4">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="amount">To'lov summasi (UZS)</Label>
               <Input
                 id="amount"
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                min="10000"
-                step="10000"
+                min="5000"
+                step="5000"
                 required
               />
+              <div className="flex gap-2 pt-1">
+                {["50000", "100000", "500000", "1000000"].map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setAmount(preset)}
+                    className="text-xs px-2.5 py-1 rounded border bg-muted/50 hover:bg-muted font-medium"
+                  >
+                    {(Number(preset) / 1000).toFixed(0)}k
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-col gap-3">
+
+            <div className="flex flex-col gap-2.5">
               <Label>To'lov tizimi</Label>
               <RadioGroup
                 value={method}
-                onValueChange={(value) => setMethod(value as string)}
-                className="grid grid-cols-2 gap-4"
+                onValueChange={(val) => setMethod(val as "payme" | "click" | "test")}
+                className="grid grid-cols-3 gap-3"
               >
+                <div>
+                  <RadioGroupItem value="test" id="test" className="peer sr-only" />
+                  <Label
+                    htmlFor="test"
+                    className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent peer-data-[state=checked]:border-brand [&:has([data-state=checked])]:border-brand cursor-pointer text-center"
+                  >
+                    <Sparkles className="size-5 text-amber-500 mb-1" />
+                    <span className="font-bold text-xs">Test Top-Up</span>
+                    <span className="text-[10px] text-muted-foreground">Darhol kredit</span>
+                  </Label>
+                </div>
+
                 <div>
                   <RadioGroupItem value="payme" id="payme" className="peer sr-only" />
                   <Label
                     htmlFor="payme"
-                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-brand [&:has([data-state=checked])]:border-brand cursor-pointer"
+                    className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent peer-data-[state=checked]:border-brand [&:has([data-state=checked])]:border-brand cursor-pointer text-center"
                   >
-                    <span className="font-bold text-teal-500 text-lg">Payme</span>
+                    <span className="font-bold text-teal-500 text-sm mb-1">Payme</span>
+                    <span className="text-[10px] text-muted-foreground">Karta orqali</span>
                   </Label>
                 </div>
+
                 <div>
                   <RadioGroupItem value="click" id="click" className="peer sr-only" />
                   <Label
                     htmlFor="click"
-                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-brand [&:has([data-state=checked])]:border-brand cursor-pointer"
+                    className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent peer-data-[state=checked]:border-brand [&:has([data-state=checked])]:border-brand cursor-pointer text-center"
                   >
-                    <span className="font-bold text-blue-500 text-lg">Click</span>
-                  </Label>
-                </div>
-                <div className="col-span-2">
-                  <RadioGroupItem value="stripe" id="stripe" className="peer sr-only" />
-                  <Label
-                    htmlFor="stripe"
-                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-brand [&:has([data-state=checked])]:border-brand cursor-pointer flex-row gap-2"
-                  >
-                    <CreditCard className="size-5" />
-                    <span className="font-semibold">Xalqaro karta (Stripe)</span>
+                    <span className="font-bold text-blue-500 text-sm mb-1">Click</span>
+                    <span className="text-[10px] text-muted-foreground">Click Pass / App</span>
                   </Label>
                 </div>
               </RadioGroup>
             </div>
+
+            {error && (
+              <p className="text-xs font-medium text-destructive">{error}</p>
+            )}
+
+            {successMsg && (
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 text-xs font-medium">
+                <CheckCircle2 className="size-4" />
+                {successMsg}
+              </div>
+            )}
           </div>
+
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Bekor qilish
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "O'tilmoqda..." : "To'lov sahifasiga o'tish"}
+              {isPending ? "Bajarilmoqda..." : method === "test" ? "Hisobni to'ldirish" : "To'lov sahifasiga o'tish"}
+              {method !== "test" && <ExternalLink className="size-3.5 ml-1.5" />}
             </Button>
           </DialogFooter>
         </form>

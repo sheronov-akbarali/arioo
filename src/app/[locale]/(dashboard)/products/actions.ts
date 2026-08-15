@@ -25,3 +25,14 @@ export async function createProductAction(locale: string, formData: FormData): P
 
   revalidatePath(`/${locale}/products`);
 }
+
+export async function deleteProductAction(locale: string, productId: string): Promise<void> {
+  const { organization } = await requireOrganization(locale);
+  const { eq, and } = await import("drizzle-orm");
+
+  await db
+    .delete(products)
+    .where(and(eq(products.id, productId), eq(products.organizationId, organization.id)));
+
+  revalidatePath(`/${locale}/products`);
+}

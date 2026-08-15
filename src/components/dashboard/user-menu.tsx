@@ -1,9 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useClerk } from "@clerk/nextjs";
-import { LogOut } from "lucide-react";
-import { SidebarMenuButton } from "@/components/ui/sidebar";
 
 export function UserMenu({ name }: { name: string | null }) {
   const t = useTranslations("dashboard.userMenu");

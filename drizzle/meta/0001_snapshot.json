@@ -1,5 +1,5 @@
 {
-  "id": "b1a20e74-9676-4860-9f23-7086a41962c7",
+  "id": "933ab687-536d-498a-8f99-f4740ee15667",
   "prevId": "57b2cd54-94c0-4a73-af0a-a79084b600e7",
   "version": "7",
   "dialect": "postgresql",
@@ -398,6 +398,26 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'freemium'"
+        },
+        "onboardingCompleted": {
+          "name": "onboardingCompleted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "onboardingStep": {
+          "name": "onboardingStep",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "whitelabel": {
+          "name": "whitelabel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
@@ -1284,6 +1304,26 @@
         },
         "externalChatId": {
           "name": "externalChatId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sentiment": {
+          "name": "sentiment",
+          "type": "conversation_sentiment",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'neutral'"
+        },
+        "handoffFromAgentId": {
+          "name": "handoffFromAgentId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "handoffReason": {
+          "name": "handoffReason",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -2294,67 +2334,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.integration_event": {
-      "name": "integration_event",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "integrationId": {
-          "name": "integrationId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type": {
-          "name": "type",
-          "type": "integration_event_type",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "message": {
-          "name": "message",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "integration_event_integrationId_integration_id_fk": {
-          "name": "integration_event_integrationId_integration_id_fk",
-          "tableFrom": "integration_event",
-          "tableTo": "integration",
-          "columnsFrom": [
-            "integrationId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.integration": {
-      "name": "integration",
+    "public.notification": {
+      "name": "notification",
       "schema": "",
       "columns": {
         "id": {
@@ -2369,65 +2350,238 @@
           "primaryKey": false,
           "notNull": true
         },
-        "providerId": {
-          "name": "providerId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "connectionMode": {
-          "name": "connectionMode",
-          "type": "integration_connection_mode",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "status": {
-          "name": "status",
-          "type": "integration_status",
+        "type": {
+          "name": "type",
+          "type": "notification_type",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
-          "default": "'setup_needed'"
+          "default": "'system'"
         },
-        "credentialsEncrypted": {
-          "name": "credentialsEncrypted",
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "link": {
+          "name": "link",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "config": {
-          "name": "config",
-          "type": "jsonb",
+        "isRead": {
+          "name": "isRead",
+          "type": "boolean",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": false
         },
-        "linkedChannelId": {
-          "name": "linkedChannelId",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "notification_organizationId_organization_id_fk": {
+          "name": "notification_organizationId_organization_id_fk",
+          "tableFrom": "notification",
+          "tableTo": "organization",
+          "columnsFrom": [
+            "organizationId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.agent_template": {
+      "name": "agent_template",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "industry": {
+          "name": "industry",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "agent_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "systemPrompt": {
+          "name": "systemPrompt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sampleKnowledge": {
+          "name": "sampleKnowledge",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "linkedTelegramConnectionId": {
-          "name": "linkedTelegramConnectionId",
+        "icon": {
+          "name": "icon",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'Bot'"
+        },
+        "isFeatured": {
+          "name": "isFeatured",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "downloadsCount": {
+          "name": "downloadsCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ab_test": {
+      "name": "ab_test",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "organizationId": {
+          "name": "organizationId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         },
         "agentId": {
           "name": "agentId",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "lastVerifiedAt": {
-          "name": "lastVerifiedAt",
-          "type": "timestamp",
+        "name": {
+          "name": "name",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "lastError": {
-          "name": "lastError",
+        "variantAPrompt": {
+          "name": "variantAPrompt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "variantBPrompt": {
+          "name": "variantBPrompt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trafficSplit": {
+          "name": "trafficSplit",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 50
+        },
+        "variantAConversations": {
+          "name": "variantAConversations",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "variantBConversations": {
+          "name": "variantBConversations",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "variantAConversions": {
+          "name": "variantAConversions",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "variantBConversions": {
+          "name": "variantBConversions",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "status": {
+          "name": "status",
+          "type": "ab_test_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'running'"
+        },
+        "winnerVariant": {
+          "name": "winnerVariant",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -2439,41 +2593,18 @@
           "notNull": true,
           "default": "now()"
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "endedAt": {
+          "name": "endedAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": false
         }
       },
-      "indexes": {
-        "integration_org_provider_idx": {
-          "name": "integration_org_provider_idx",
-          "columns": [
-            {
-              "expression": "organizationId",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "providerId",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
-        "integration_organizationId_organization_id_fk": {
-          "name": "integration_organizationId_organization_id_fk",
-          "tableFrom": "integration",
+        "ab_test_organizationId_organization_id_fk": {
+          "name": "ab_test_organizationId_organization_id_fk",
+          "tableFrom": "ab_test",
           "tableTo": "organization",
           "columnsFrom": [
             "organizationId"
@@ -2484,35 +2615,100 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "integration_linkedChannelId_channel_id_fk": {
-          "name": "integration_linkedChannelId_channel_id_fk",
-          "tableFrom": "integration",
-          "tableTo": "channel",
+        "ab_test_agentId_ai_agent_id_fk": {
+          "name": "ab_test_agentId_ai_agent_id_fk",
+          "tableFrom": "ab_test",
+          "tableTo": "ai_agent",
           "columnsFrom": [
-            "linkedChannelId"
+            "agentId"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
+          "onDelete": "cascade",
           "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.message_template": {
+      "name": "message_template",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
         },
-        "integration_linkedTelegramConnectionId_telegram_channel_connection_id_fk": {
-          "name": "integration_linkedTelegramConnectionId_telegram_channel_connection_id_fk",
-          "tableFrom": "integration",
-          "tableTo": "telegram_channel_connection",
+        "organizationId": {
+          "name": "organizationId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "agentId": {
+          "name": "agentId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'general'"
+        },
+        "usageCount": {
+          "name": "usageCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "message_template_organizationId_organization_id_fk": {
+          "name": "message_template_organizationId_organization_id_fk",
+          "tableFrom": "message_template",
+          "tableTo": "organization",
           "columnsFrom": [
-            "linkedTelegramConnectionId"
+            "organizationId"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "integration_agentId_ai_agent_id_fk": {
-          "name": "integration_agentId_ai_agent_id_fk",
-          "tableFrom": "integration",
+        "message_template_agentId_ai_agent_id_fk": {
+          "name": "message_template_agentId_ai_agent_id_fk",
+          "tableFrom": "message_template",
           "tableTo": "ai_agent",
           "columnsFrom": [
             "agentId"
@@ -2716,6 +2912,15 @@
         "olx"
       ]
     },
+    "public.conversation_sentiment": {
+      "name": "conversation_sentiment",
+      "schema": "public",
+      "values": [
+        "positive",
+        "neutral",
+        "negative"
+      ]
+    },
     "public.message_role": {
       "name": "message_role",
       "schema": "public",
@@ -2828,38 +3033,24 @@
         "olx"
       ]
     },
-    "public.integration_connection_mode": {
-      "name": "integration_connection_mode",
+    "public.notification_type": {
+      "name": "notification_type",
       "schema": "public",
       "values": [
-        "oauth",
-        "form",
-        "wizard",
-        "special"
+        "chat",
+        "lead",
+        "approval",
+        "ticket",
+        "system"
       ]
     },
-    "public.integration_event_type": {
-      "name": "integration_event_type",
+    "public.ab_test_status": {
+      "name": "ab_test_status",
       "schema": "public",
       "values": [
-        "created",
-        "status_changed",
-        "verified",
-        "error",
-        "reauth",
-        "archived",
-        "deleted"
-      ]
-    },
-    "public.integration_status": {
-      "name": "integration_status",
-      "schema": "public",
-      "values": [
-        "setup_needed",
-        "verifying",
-        "active",
-        "need_attention",
-        "archived"
+        "running",
+        "concluded",
+        "cancelled"
       ]
     }
   },

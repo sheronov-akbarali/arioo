@@ -34,11 +34,11 @@ export default async function DashboardLayout({
           <UserMenu name={user.name} />
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset>
+      <SidebarInset className="overflow-x-hidden">
         <DashboardTopbar />
-        <div className="flex-1 p-[15px] w-full">
+        <main className="flex-1 p-3 sm:p-4 md:p-6 w-full max-w-7xl mx-auto overflow-x-hidden">
           {children}
-        </div>
+        </main>
       </SidebarInset>
     </SidebarProvider>
   );

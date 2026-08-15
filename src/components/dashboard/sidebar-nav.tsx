@@ -26,25 +26,20 @@ import {
   Handshake,
   Settings,
   Briefcase,
-  ShieldAlert,
+  Sparkles,
+  MessageSquareText,
   type LucideIcon,
 } from "lucide-react";
 
 type NavItem = { key: string; icon: LucideIcon; href?: string };
 type NavGroup = { key: string; items: NavItem[] };
 
-// Grouped the way worken.ru's authenticated sidebar groups its nav: Work
-// (agent-facing day-to-day) / Data (knowledge + commerce + integrations) /
-// Monitoring (analytics) / Development (agent-building tools) / Partnership
-// (referral, affiliate, billing — worken shows billing in its icon rail
-// too, alongside referral/affiliate). Items without an `href` render as
-// disabled "coming soon" — most of these track roadmap phases 4-6
-// (docs/superpowers/specs, CLAUDE.md roadmap) that aren't built yet.
 const GROUPS: NavGroup[] = [
   {
     key: "work",
     items: [
       { key: "assistants", icon: Bot, href: "/assistants" },
+      { key: "templates", icon: Sparkles, href: "/templates" },
       { key: "chats", icon: MessageSquare, href: "/chats" },
       { key: "calls", icon: PhoneCall, href: "/calls" },
       { key: "routines", icon: Repeat2, href: "/routines" },
@@ -57,6 +52,7 @@ const GROUPS: NavGroup[] = [
     items: [
       { key: "knowledgeBases", icon: BookOpen, href: "/knowledge-bases" },
       { key: "products", icon: Package, href: "/products" },
+      { key: "messageTemplates", icon: MessageSquareText, href: "/message-templates" },
       { key: "integrations", icon: Plug, href: "/integrations" },
     ],
   },
@@ -69,7 +65,7 @@ const GROUPS: NavGroup[] = [
   },
   {
     key: "development",
-    items: [{ key: "codeAgent", icon: Code2 }],
+    items: [{ key: "codeAgent", icon: Code2, href: "/code-agent" }],
   },
   {
     key: "partnership",

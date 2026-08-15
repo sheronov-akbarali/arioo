@@ -344,6 +344,8 @@
       "comingSoon": "Tez orada",
       "billing": "Billing",
       "crm": "CRM",
+      "templates": "Shablonlar Bozori",
+      "messageTemplates": "Xabar Shablonlari",
       "admin": "Admin",
       "groups": {
         "work": "Ish",
@@ -391,7 +393,9 @@
         "ai": "AI",
         "chats": "Chatlar",
         "calls": "Qo'ng'iroqlar",
-        "knowledge": "Bilim bazalari"
+        "knowledge": "Bilim bazalari",
+        "analytics": "Analitika",
+        "abTesting": "A/B Test"
       },
       "connect": "Ulash",
       "test": "Sinab ko'rish",
@@ -623,6 +627,7 @@
     "sourceFilters": {
       "all": "Barchasi",
       "routines": "Rutinalar",
+      "crm": "CRM",
       "chats": "Chat va ovoz"
     },
     "search": {

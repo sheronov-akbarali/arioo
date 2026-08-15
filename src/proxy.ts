@@ -7,6 +7,22 @@ const handleI18nRouting = createIntlMiddleware(routing);
 
 const isProtectedRoute = createRouteMatcher([
   "/(uz|ru|en)/dashboard(.*)",
+  "/(uz|ru|en)/assistants(.*)",
+  "/(uz|ru|en)/chats(.*)",
+  "/(uz|ru|en)/calls(.*)",
+  "/(uz|ru|en)/routines(.*)",
+  "/(uz|ru|en)/crm(.*)",
+  "/(uz|ru|en)/approvals(.*)",
+  "/(uz|ru|en)/knowledge-bases(.*)",
+  "/(uz|ru|en)/products(.*)",
+  "/(uz|ru|en)/integrations(.*)",
+  "/(uz|ru|en)/statistics(.*)",
+  "/(uz|ru|en)/runs(.*)",
+  "/(uz|ru|en)/templates(.*)",
+  "/(uz|ru|en)/message-templates(.*)",
+  "/(uz|ru|en)/code-agent(.*)",
+  "/(uz|ru|en)/referral-program(.*)",
+  "/(uz|ru|en)/affiliate-program(.*)",
   "/(uz|ru|en)/settings(.*)",
   "/(uz|ru|en)/onboarding(.*)",
 ]);

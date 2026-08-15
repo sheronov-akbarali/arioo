@@ -1,11 +1,8 @@
-import { getTranslations } from "next-intl/server";
-import { Shield, ShieldCheck, Key, Trash2 } from "lucide-react";
+import { ShieldCheck, Key, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default async function SecuritySettingsPage() {
-  const t = await getTranslations("settings.security");
-
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">

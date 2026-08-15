@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatUZS } from "@/lib/pricing-data";
 import { createProductAction } from "./actions";
+import { ProductRow } from "@/components/dashboard/products/product-row";
 
 export default async function ProductsPage({
   params,
@@ -185,20 +186,20 @@ export default async function ProductsPage({
                   <th className="px-4 py-3 font-medium">{t("table.type")}</th>
                   <th className="px-4 py-3 font-medium">{t("table.status")}</th>
                   <th className="px-4 py-3 text-right font-medium">{t("table.price")}</th>
+                  <th className="px-4 py-3 text-right font-medium">Amallar</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((product) => (
-                  <tr key={product.id} className="border-b border-border last:border-0">
-                    <td className="px-4 py-3 font-medium">{product.name}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{t(`types.${product.type}`)}</td>
-                    <td className="px-4 py-3">
-                      <Badge variant="outline">{t(`status.${product.status}`)}</Badge>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      {product.priceUZS ? formatUZS(product.priceUZS, t("currency")) : "—"}
-                    </td>
-                  </tr>
+                  <ProductRow
+                    key={product.id}
+                    locale={locale}
+                    id={product.id}
+                    name={product.name}
+                    typeLabel={t(`types.${product.type}`)}
+                    statusLabel={t(`status.${product.status}`)}
+                    formattedPrice={product.priceUZS ? formatUZS(product.priceUZS, t("currency")) : "—"}
+                  />
                 ))}
               </tbody>
             </table>

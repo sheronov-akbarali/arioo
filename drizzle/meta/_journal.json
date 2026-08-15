@@ -12,8 +12,15 @@
     {
       "idx": 1,
       "version": "7",
-      "when": 1786705889330,
-      "tag": "0001_demonic_tana_nile",
+      "when": 1786730432710,
+      "tag": "0001_tough_veda",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786735000000,
+      "tag": "0002_integrations_overhaul",
       "breakpoints": true
     }
   ]

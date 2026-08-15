@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Calendar, Save } from "lucide-react";
+import { Calendar } from "lucide-react";
 import {
   Dialog,
   DialogContent,
