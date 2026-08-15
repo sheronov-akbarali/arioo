@@ -133,19 +133,32 @@ Mavjud generic route'lar ishlatiladi, o'zgarishsiz qoladi (faqat yuqoridagi
    Button` shu URL'ga link qiladi
 2. Google consent screen
 3. `GET /api/integrations/youtube/oauth/callback` — kodni token'ga
-   almashtiradi (endi to'g'ri form-urlencoded bilan), YouTube Data API
-   `channels?part=snippet&mine=true`dan `channelId`/`channelTitle`ni oladi,
-   `credentialsEncrypted`ga yozadi, `integrations` qatorini `status=
-   "active"` bilan yaratadi/yangilaydi, `integrationEvents`ga `"verified"`
-   yozadi, `/${locale}/statistics/marketing?oauthSuccess=youtube`ga
-   qaytaradi
+   almashtiradi (endi to'g'ri form-urlencoded bilan), `{accessToken,
+   refreshToken, expiresAt}`ni shifrlab `integrations` qatorini `status=
+   "active"` bilan yaratadi/yangilaydi (**provider-agnostic — hech qanday
+   YouTube-maxsus API chaqiruvi callback route'da yo'q**, chunki bu route 5
+   ta boshqa provider bilan ham baham ko'riladi), `integrationEvents`ga
+   `"verified"` yozadi, `state.returnPath ?? "/integrations"`ga qaytaradi
+   (`?oauthSuccess=youtube` bilan)
 
-**Callback route'ga kichik o'zgarish kerak:** hozir har doim
-`/${locale}/integrations?oauthSuccess=...`ga qaytaradi. YouTube uchun
-foydalanuvchi Statistics sahifasidan boshlagani uchun `state` payload'iga
-`returnPath` (yoki oddiy `redirectTo`) qo'shiladi — `signOAuthState`/
-`verifyOAuthState`ga ixtiyoriy maydon sifatida (orqaga mos, boshqa
-provider'lar uchun `undefined` bo'lsa hozirgi `/integrations`ga qaytadi).
+`channelId`/`channelTitle` callback'da emas, **birinchi statistika
+o'qishda** (`channel-stats.ts` ichida) laziy ravishda olinadi va
+`credentialsEncrypted`ga qo'shib qayta yoziladi — shu tufayli generic
+callback route hech qachon YouTube-maxsus kod bilmaydi.
+
+**Callback route'ga kichik o'zgarish kerak:** hozir har doim `locale`ni
+`"uz"` deb hardcode qiladi (`state`da saqlanmagani uchun) va doim
+`/${locale}/integrations?oauthSuccess=...`ga qaytaradi. Ikkalasi ham
+tuzatiladi: `StatePayload`ga `locale: string` (majburiy — `start/route.ts`
+allaqachon `?locale=` query param oladi, faqat `signOAuthState`ga
+uzatilmagan edi) va `returnPath?: string` (ixtiyoriy) qo'shiladi. Callback
+`/${state.locale}${state.returnPath ?? "/integrations"}?oauthSuccess=...`ga
+qaytaradi. Boshqa provider'lar uchun `returnPath` berilmagani uchun
+xatti-harakati o'zgarmaydi (`/integrations`ga qaytadi), faqat endi to'g'ri
+`locale` bilan. `start/route.ts` yangi ixtiyoriy `?returnPath=` query
+param'ni qabul qilib `signOAuthState`ga uzatadi. `OAuthConnectButton`
+YouTube kartasida ishlatilganda href'ga
+`&returnPath=/statistics/marketing` qo'shiladi.
 
 ## Ma'lumot olish
 
@@ -159,6 +172,9 @@ export async function getYoutubeChannelStats(organizationId: string):
 - Credential'ni ochadi; `expiresAt < now`bo'lsa `refreshAccessToken("youtube",
   refreshToken)` chaqiradi, yangi `accessToken`/`expiresAt`ni qayta
   shifrlab DB'ga yozadi.
+- `channelId` credential JSON'da yo'q bo'lsa (birinchi o'qish) —
+  `channels?part=snippet&mine=true` chaqirib `channelId`/`channelTitle`ni
+  oladi, credential JSON'ga qo'shib qayta shifrlab DB'ga yozadi.
 - `channels?part=statistics&id=${channelId}` → `subscriberCount`,
   `viewCount`, `videoCount`.
 - `search?channelId=${channelId}&type=video&order=date&maxResults=5` →
