@@ -141,8 +141,10 @@ dashboard'ning ichki ko'rinishi **detalma-detal worken.ru bilan bir xil** bo'lis
       kanallari" tab'i sifatida qo'shiladi
   - Telegram kanal analitikasi — a'zolar dinamikasi, post reach/views, engagement
     rate, faol vaqtlar (Telegram Bot API, kanal admin sifatida ulanish)
-  - YouTube kanal analitikasi — obunachilar o'sishi, ko'rishlar, watch time, CTR
-    (YouTube Data API v3 + YouTube Analytics API, OAuth — qo'lda integratsiya)
+  - [x] YouTube kanal analitikasi — obunachilar, umumiy ko'rishlar, videolar soni,
+    so'nggi videolar (Google OAuth + YouTube Data API v3, umumiy Integrations OAuth
+    infratuzilmasi orqali, avto token-refresh). Watch time qamrovdan tashqarida
+    (YouTube Analytics API talab qiladi).
   - Instagram/Facebook (Meta) Insights — WhatsApp bilan bitta Meta App orqali OAuth
     ulanadi, shu sababli arzon qo'shimcha
   - Sayt statistikasi — Vercel Web Analytics (birinchi navbatda, Marketplace orqali
