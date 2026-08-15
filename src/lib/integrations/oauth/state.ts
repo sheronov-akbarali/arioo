@@ -1,7 +1,7 @@
 import "server-only";
 import { createHmac, timingSafeEqual, randomBytes } from "node:crypto";
 
-type StatePayload = { organizationId: string; provider: string };
+type StatePayload = { organizationId: string; provider: string; locale: string; returnPath?: string };
 
 function getSecret(): string {
   const secret = process.env.OAUTH_STATE_SIGNING_SECRET;
@@ -28,8 +28,19 @@ export function verifyOAuthState(token: string): StatePayload | null {
 
   try {
     const parsed = JSON.parse(Buffer.from(bodyBase64, "base64url").toString("utf8"));
-    if (typeof parsed.organizationId !== "string" || typeof parsed.provider !== "string") return null;
-    return { organizationId: parsed.organizationId, provider: parsed.provider };
+    if (
+      typeof parsed.organizationId !== "string" ||
+      typeof parsed.provider !== "string" ||
+      typeof parsed.locale !== "string"
+    ) {
+      return null;
+    }
+    return {
+      organizationId: parsed.organizationId,
+      provider: parsed.provider,
+      locale: parsed.locale,
+      returnPath: typeof parsed.returnPath === "string" ? parsed.returnPath : undefined,
+    };
   } catch {
     return null;
   }

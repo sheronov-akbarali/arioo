@@ -6,17 +6,22 @@ export type OAuthProviderConfig = {
   clientId: string;
   clientSecret: string;
   scopes: string[];
+  extraAuthParams?: Record<string, string>;
 };
 
 const PROVIDER_ENV_PREFIX: Record<string, string> = {
   amocrm: "AMOCRM",
   bitrix24: "BITRIX24",
   google: "GOOGLE",
+  youtube: "GOOGLE",
   github: "GITHUB",
   headhunter: "HEADHUNTER",
 };
 
-const PROVIDER_ENDPOINTS: Record<string, { authUrl: string; tokenUrl: string; scopes: string[] }> = {
+const PROVIDER_ENDPOINTS: Record<
+  string,
+  { authUrl: string; tokenUrl: string; scopes: string[]; extraAuthParams?: Record<string, string> }
+> = {
   amocrm: { authUrl: "https://www.amocrm.ru/oauth", tokenUrl: "", scopes: [] },
   bitrix24: {
     authUrl: "https://auth2.bitrix24.net/oauth/authorize/",
@@ -34,6 +39,12 @@ const PROVIDER_ENDPOINTS: Record<string, { authUrl: string; tokenUrl: string; sc
       "https://www.googleapis.com/auth/userinfo.profile",
       "https://www.googleapis.com/auth/userinfo.email",
     ],
+  },
+  youtube: {
+    authUrl: "https://accounts.google.com/o/oauth2/v2/auth",
+    tokenUrl: "https://oauth2.googleapis.com/token",
+    scopes: ["https://www.googleapis.com/auth/youtube.readonly"],
+    extraAuthParams: { access_type: "offline", prompt: "consent" },
   },
   github: {
     authUrl: "https://github.com/login/oauth/authorize",
