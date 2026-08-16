@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Inter, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AppClerkProvider } from "@/components/clerk-provider";
+import { PwaProvider } from "@/components/pwa/pwa-provider";
 
 const geistSans = Inter({
   variable: "--font-geist-sans",
@@ -51,8 +52,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: resolvedLocale,
       type: "website",
     },
+    manifest: "/manifest.webmanifest",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "Arioo",
+    },
   };
 }
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fbf8f4" },
+    { media: "(prefers-color-scheme: dark)", color: "#181116" },
+  ],
+};
 
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
@@ -75,6 +89,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
             <AppClerkProvider>{children}</AppClerkProvider>
+            <PwaProvider />
           </ThemeProvider>
         </NextIntlClientProvider>
         <Analytics />

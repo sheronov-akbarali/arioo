@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Arioo — Oflayn</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #fbf8f4;
+        --fg: #241a12;
+        --muted: #8a7a68;
+        --brand: #0950c3;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #181116;
+          --fg: #f3e9df;
+          --muted: #a8998c;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: var(--bg);
+        color: var(--fg);
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        text-align: center;
+      }
+      .card {
+        max-width: 360px;
+      }
+      .icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 20px;
+        color: var(--brand);
+      }
+      h1 {
+        font-size: 1.25rem;
+        margin: 0 0 8px;
+      }
+      p {
+        margin: 0 0 24px;
+        color: var(--muted);
+        line-height: 1.5;
+        font-size: 0.95rem;
+      }
+      button {
+        appearance: none;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        background: var(--brand);
+        color: #fff;
+        cursor: pointer;
+      }
+      button:hover {
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <svg class="icon" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="currentColor" stroke-width="32" stroke-linecap="round">
+          <line x1="256" y1="270" x2="150" y2="380" />
+          <line x1="256" y1="270" x2="362" y2="380" />
+          <line x1="256" y1="270" x2="256" y2="128" />
+        </g>
+        <circle cx="150" cy="380" r="42" fill="currentColor" />
+        <circle cx="362" cy="380" r="42" fill="currentColor" />
+        <circle cx="256" cy="128" r="42" fill="currentColor" />
+        <circle cx="256" cy="270" r="76" fill="currentColor" opacity="0.9" />
+      </svg>
+      <h1 data-i18n="title">Internet aloqasi yo'q</h1>
+      <p data-i18n="description">
+        Ushbu sahifa hozircha mavjud emas, chunki qurilmangiz internetga ulanmagan. Aloqa
+        tiklangach qayta urinib ko'ring.
+      </p>
+      <button type="button" onclick="location.reload()" data-i18n="retry">Qayta urinish</button>
+    </div>
+    <script>
+      var STRINGS = {
+        uz: {
+          title: "Internet aloqasi yo'q",
+          description:
+            "Ushbu sahifa hozircha mavjud emas, chunki qurilmangiz internetga ulanmagan. Aloqa tiklangach qayta urinib ko'ring.",
+          retry: "Qayta urinish",
+        },
+        ru: {
+          title: "Нет подключения к интернету",
+          description:
+            "Эта страница сейчас недоступна, так как ваше устройство не подключено к интернету. Попробуйте снова, когда соединение восстановится.",
+          retry: "Повторить попытку",
+        },
+        en: {
+          title: "No internet connection",
+          description:
+            "This page isn't available right now because your device is offline. Try again once you're back online.",
+          retry: "Try again",
+        },
+      };
+      var lang = (navigator.language || "uz").slice(0, 2);
+      var strings = STRINGS[lang] || STRINGS.uz;
+      document.documentElement.lang = lang in STRINGS ? lang : "uz";
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n");
+        if (strings[key]) el.textContent = strings[key];
+      });
+    </script>
+  </body>
+</html>

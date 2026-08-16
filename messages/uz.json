@@ -3,6 +3,12 @@
     "title": "Arioo — AI xodim ijaraga oling",
     "description": "Sotuv, qo'llab-quvvatlash, HR va marketing bo'limlariga jamoa a'zosi sifatida AI xodim qo'shing."
   },
+  "pwa": {
+    "installTitle": "Arioo'ni o'rnating",
+    "installDescription": "Tezroq kirish uchun ilovani qurilmangizga o'rnating.",
+    "installButton": "O'rnatish",
+    "dismissButton": "Yopish"
+  },
   "nav": {
     "pricing": "Narxlash",
     "partners": "Hamkorlik dasturi",

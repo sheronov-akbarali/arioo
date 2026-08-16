@@ -3,6 +3,12 @@
     "title": "Arioo — Hire an AI employee",
     "description": "Hire AI into sales, support, HR, and marketing as a full member of your team."
   },
+  "pwa": {
+    "installTitle": "Install Arioo",
+    "installDescription": "Install the app on your device for faster access.",
+    "installButton": "Install",
+    "dismissButton": "Dismiss"
+  },
   "nav": {
     "pricing": "Pricing",
     "partners": "Partner Program",
