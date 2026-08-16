@@ -38,8 +38,15 @@ export async function startTelegramConnection(
 
   const client = await openTelegramClient("");
   try {
-    const { phoneCodeHash } = await client.sendCode(telegramApiCredentials(), phone);
-    const sessionString = client.session.save() as unknown as string;
+    let phoneCodeHash: string;
+    let sessionString: string;
+    try {
+      const sendCodeResult = await client.sendCode(telegramApiCredentials(), phone);
+      phoneCodeHash = sendCodeResult.phoneCodeHash;
+      sessionString = client.session.save() as unknown as string;
+    } catch (err) {
+      return { status: "idle", error: telegramSendCodeErrorKey(err) };
+    }
 
     await db
       .insert(telegramChannelConnections)
@@ -72,6 +79,20 @@ export async function startTelegramConnection(
   }
 }
 
+/** Maps GramJS/MTProto errors from auth.sendCode to a translation key under
+ * integrations.telegramChoice.mtproto.connect.errors, instead of letting the
+ * error escape unhandled and crash the whole page. */
+function telegramSendCodeErrorKey(err: unknown): string {
+  const name = (err as { constructor?: { name?: string } })?.constructor?.name;
+  const message = err instanceof Error ? err.message : String(err);
+
+  if (name === "FloodWaitError" || /FLOOD_WAIT/.test(message)) return "rate_limited";
+  if (/PHONE_NUMBER_INVALID/.test(message)) return "invalid_phone";
+  if (/PHONE_NUMBER_BANNED/.test(message)) return "phone_banned";
+  if (/PHONE_NUMBER_FLOOD/.test(message)) return "rate_limited";
+  return "send_code_failed";
+}
+
 async function loadConnection(organizationId: string) {
   const [row] = await db
     .select()
@@ -90,8 +111,15 @@ export async function submitTelegramCode(
 ): Promise<TelegramConnectState> {
   const { organization } = await requireOrganization(locale);
   const code = String(formData.get("code") ?? "").trim();
-  const connection = await loadConnection(organization.id);
-  const client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted!));
+
+  let connection: Awaited<ReturnType<typeof loadConnection>>;
+  let client: Awaited<ReturnType<typeof openTelegramClient>>;
+  try {
+    connection = await loadConnection(organization.id);
+    client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted!));
+  } catch {
+    return { status: "error", error: "send_code_failed" };
+  }
 
   try {
     await client.invoke(
@@ -134,8 +162,15 @@ export async function submitTelegramPassword(
 ): Promise<TelegramConnectState> {
   const { organization } = await requireOrganization(locale);
   const password = String(formData.get("password") ?? "");
-  const connection = await loadConnection(organization.id);
-  const client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted!));
+
+  let connection: Awaited<ReturnType<typeof loadConnection>>;
+  let client: Awaited<ReturnType<typeof openTelegramClient>>;
+  try {
+    connection = await loadConnection(organization.id);
+    client = await openTelegramClient(decryptSessionSecret(connection.sessionSecretEncrypted!));
+  } catch {
+    return { status: "error", error: "send_code_failed" };
+  }
 
   try {
     const passwordInfo = await client.invoke(new Api.account.GetPassword());

@@ -52,6 +52,25 @@ describe("instagram OAuth config", () => {
   });
 });
 
+describe("bitrix24 OAuth config", () => {
+  beforeEach(() => {
+    process.env.BITRIX24_CLIENT_ID = "bx_client";
+    process.env.BITRIX24_CLIENT_SECRET = "bx_secret";
+  });
+
+  it("uses the same oauth.bitrix.info host for both authorize and token endpoints", () => {
+    const config = getOAuthConfig("bitrix24");
+    expect(config).not.toBeNull();
+    // Bitrix24's authorize and token endpoints live on the same host — a
+    // mismatched authUrl host means users get sent somewhere that can't
+    // complete the OAuth handshake.
+    const authHost = new URL(config!.authUrl).host;
+    const tokenHost = new URL(config!.tokenUrl).host;
+    expect(authHost).toBe(tokenHost);
+    expect(authHost).toBe("oauth.bitrix.info");
+  });
+});
+
 describe("facebook OAuth config", () => {
   beforeEach(() => {
     process.env.META_CLIENT_ID = "meta_client";

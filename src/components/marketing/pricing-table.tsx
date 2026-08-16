@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PRICING_TIERS, formatUZS, formatUSDApprox } from "@/lib/pricing-data";
 import { cn } from "@/lib/utils";
-import { Sparkles, Gem, Zap, Crown, type LucideIcon } from "lucide-react";
+import { Sparkles, Gem, Zap, Crown, Check, type LucideIcon } from "lucide-react";
 
 const PRICING_TIER_ICONS: Record<(typeof PRICING_TIERS)[number]["id"], LucideIcon> = {
   freemium: Sparkles,
@@ -19,9 +19,17 @@ const PRICING_TIER_ICONS: Record<(typeof PRICING_TIERS)[number]["id"], LucideIco
   enterprise: Crown,
 };
 
-export function PricingTable() {
+export function PricingTable({
+  currentTierId,
+  requestPlanChangeAction,
+}: {
+  currentTierId?: string;
+  requestPlanChangeAction?: (tierId: string, tierName: string) => Promise<{ success: boolean; error?: string }>;
+} = {}) {
   const t = useTranslations("pricing");
   const [period, setPeriod] = useState<"monthly" | "annual">("annual");
+  const [isPending, startTransition] = useTransition();
+  const [requestedTierId, setRequestedTierId] = useState<string | null>(null);
 
   return (
     <div>
@@ -84,11 +92,36 @@ export function PricingTable() {
                     ) : null}
                   </div>
                 )}
-                <Button
-                  className="mt-6 w-full bg-brand text-brand-foreground hover:opacity-90"
-                  nativeButton={false}
-                  render={<Link href="/#lead-form">{t("cta")}</Link>}
-                />
+                {requestPlanChangeAction ? (
+                  currentTierId === tier.id ? (
+                    <Button className="mt-6 w-full gap-2" variant="outline" disabled>
+                      <Check className="size-4" /> {t("currentPlan")}
+                    </Button>
+                  ) : requestedTierId === tier.id ? (
+                    <Button className="mt-6 w-full gap-2" variant="outline" disabled>
+                      <Check className="size-4" /> {t("requestSent")}
+                    </Button>
+                  ) : (
+                    <Button
+                      className="mt-6 w-full bg-brand text-brand-foreground hover:opacity-90"
+                      disabled={isPending}
+                      onClick={() => {
+                        startTransition(async () => {
+                          const res = await requestPlanChangeAction(tier.id, t(`tiers.${tier.id}.name`));
+                          if (res.success) setRequestedTierId(tier.id);
+                        });
+                      }}
+                    >
+                      {t("cta")}
+                    </Button>
+                  )
+                ) : (
+                  <Button
+                    className="mt-6 w-full bg-brand text-brand-foreground hover:opacity-90"
+                    nativeButton={false}
+                    render={<Link href="/#lead-form">{t("cta")}</Link>}
+                  />
+                )}
               </CardContent>
             </Card>
           );

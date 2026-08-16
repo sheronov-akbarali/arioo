@@ -71,6 +71,8 @@
     "perYear": "/yil",
     "currency": "so'm",
     "cta": "Tanlash",
+    "currentPlan": "Joriy tarif",
+    "requestSent": "So'rov yuborildi",
     "tokenTable": {
       "title": "Model bo'yicha token narxlari",
       "subtitle": "Tarif kreditlari har bir model provayderining aniq narxida, ustama qo'shilmasdan token bo'yicha sarflanadi.",
@@ -1068,7 +1070,11 @@
             "invalid_code": "Kod noto'g'ri. Qayta urinib ko'ring.",
             "invalid_password": "Parol noto'g'ri. Qayta urinib ko'ring.",
             "not_channel_admin": "Bu akkaunt ko'rsatilgan kanalga admin emas.",
-            "channel_not_found": "Kanal topilmadi."
+            "channel_not_found": "Kanal topilmadi.",
+            "rate_limited": "Telegram bu raqam uchun vaqtincha cheklov qo'ydi (juda ko'p urinish). Birozdan so'ng qayta urinib ko'ring.",
+            "invalid_phone": "Telefon raqami noto'g'ri formatda. Xalqaro formatda kiriting (masalan: +998901234567).",
+            "phone_banned": "Bu raqam Telegram tomonidan bloklangan.",
+            "send_code_failed": "Telegram kod yubora olmadi. Birozdan so'ng qayta urinib ko'ring."
           }
         }
       }

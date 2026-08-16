@@ -8,26 +8,53 @@ import { memberships, organizations } from "@/db/schema/org";
 import { aiAgents } from "@/db/schema/agents";
 
 export const getSession = cache(async () => {
-  const { userId } = await auth();
-  if (!userId) return null;
+  // Clerk's backend API (currentUser/auth) can fail transiently (rate
+  // limiting, a network hiccup) — without this guard that throws through
+  // every page that calls requireOrganization/requireAgent, crashing the
+  // whole render instead of just bouncing to sign-in like a real
+  // unauthenticated visit would.
+  try {
+    const { userId } = await auth();
+    if (!userId) return null;
 
-  const user = await currentUser();
-  if (!user) return null;
+    const user = await currentUser();
+    if (!user) return null;
 
-  return {
-    user: {
-      id: userId,
-      email: user.primaryEmailAddress?.emailAddress ?? null,
-      name: user.fullName ?? user.username ?? null,
-      image: user.imageUrl ?? null,
-    },
-  };
+    return {
+      user: {
+        id: userId,
+        email: user.primaryEmailAddress?.emailAddress ?? null,
+        name: user.fullName ?? user.username ?? null,
+        image: user.imageUrl ?? null,
+      },
+    };
+  } catch (error) {
+    console.error("getSession: Clerk API call failed", error);
+    return null;
+  }
 });
 
 export async function verifySession(locale: string) {
   const result = await getSession();
   if (!result) redirect(`/${locale}/sign-in`);
   return result;
+}
+
+/** Like requireOrganization, but for pages reachable by both signed-out
+ * visitors and signed-in dashboard users (e.g. the public pricing page)
+ * — returns null instead of redirecting when there's no session/org. */
+export async function getOptionalOrganization() {
+  const session = await getSession();
+  if (!session) return null;
+
+  const [row] = await db
+    .select({ membership: memberships, organization: organizations })
+    .from(memberships)
+    .innerJoin(organizations, eq(memberships.organizationId, organizations.id))
+    .where(eq(memberships.userId, session.user.id));
+
+  if (!row) return null;
+  return { ...session, ...row };
 }
 
 export async function requireOrganization(locale: string) {

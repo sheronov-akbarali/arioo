@@ -1,9 +1,13 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { PricingTable } from "@/components/marketing/pricing-table";
 import { TokenPricingTable } from "@/components/marketing/token-pricing-table";
+import { getOptionalOrganization } from "@/lib/auth/dal";
+import { requestPlanChangeAction } from "./actions";
 
-export default function PricingPage() {
-  const t = useTranslations("pricing");
+export default async function PricingPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations("pricing");
+  const context = await getOptionalOrganization();
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-20">
@@ -12,7 +16,10 @@ export default function PricingPage() {
         <p className="mt-4 text-muted-foreground">{t("subtitle")}</p>
       </div>
       <div className="mt-12">
-        <PricingTable />
+        <PricingTable
+          currentTierId={context?.organization.plan}
+          requestPlanChangeAction={context ? requestPlanChangeAction.bind(null, locale) : undefined}
+        />
       </div>
       <TokenPricingTable />
     </section>

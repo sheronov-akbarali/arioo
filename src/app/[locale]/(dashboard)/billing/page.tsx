@@ -118,7 +118,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
                       <td className="py-2 pr-4">{tx.description}</td>
                       <td className="py-2 pr-4 text-muted-foreground">{t(`history.types.${tx.type}`)}</td>
                       <td className="py-2 text-right font-medium text-brand">
-                        +{tx.amount.toFixed(2)}W
+                        +{tx.amount.toFixed(2)} TAY
                       </td>
                     </tr>
                   ))}
@@ -154,7 +154,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
                       <td className="py-2 pr-4">{tx.description}</td>
                       <td className="py-2 pr-4 text-muted-foreground">{t(`history.types.${tx.type}`)}</td>
                       <td className="py-2 text-right font-medium text-foreground">
-                        {tx.amount.toFixed(2)}W
+                        {tx.amount.toFixed(2)} TAY
                       </td>
                     </tr>
                   ))}

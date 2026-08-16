@@ -71,6 +71,8 @@
     "perYear": "/yr",
     "currency": "UZS",
     "cta": "Choose",
+    "currentPlan": "Current plan",
+    "requestSent": "Request sent",
     "tokenTable": {
       "title": "Model-by-model token pricing",
       "subtitle": "Plan credits are spent per token, at the exact rate each model's provider charges — no markup.",
@@ -1068,7 +1070,11 @@
             "invalid_code": "Incorrect code. Try again.",
             "invalid_password": "Incorrect password. Try again.",
             "not_channel_admin": "This account is not an admin of the given channel.",
-            "channel_not_found": "Channel not found."
+            "channel_not_found": "Channel not found.",
+            "rate_limited": "Telegram has temporarily rate-limited this number (too many attempts). Try again later.",
+            "invalid_phone": "Invalid phone number format. Use international format (e.g. +998901234567).",
+            "phone_banned": "This phone number has been banned by Telegram.",
+            "send_code_failed": "Telegram couldn't send the code. Try again later."
           }
         }
       }

@@ -10,21 +10,41 @@ type TokenResponsePayload = {
   [key: string]: unknown;
 };
 
-async function postForToken(tokenUrl: string, params: URLSearchParams): Promise<TokenResponsePayload> {
+async function postForToken(
+  tokenUrl: string,
+  params: Record<string, string>,
+  // amoCRM's token endpoint rejects form-urlencoded bodies and requires JSON
+  // — every other provider here (Bitrix24, Google, GitHub, HeadHunter) uses
+  // the standard OAuth2 form-encoded body.
+  encoding: "form" | "json" = "form"
+): Promise<TokenResponsePayload> {
   const response = await fetch(tokenUrl, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Accept: "application/json",
-    },
-    body: params.toString(),
+    headers:
+      encoding === "json"
+        ? { "Content-Type": "application/json", Accept: "application/json" }
+        : { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" },
+    body: encoding === "json" ? JSON.stringify(params) : new URLSearchParams(params).toString(),
   });
 
-  if (!response.ok) {
-    throw new Error(`OAuth token request failed (${response.status}) against ${tokenUrl}`);
+  const json = await response.json().catch(() => null);
+
+  // GitHub (and some other providers) return HTTP 200 even on OAuth errors,
+  // with the real reason in an `error`/`error_description` body field.
+  if (!response.ok || (json && typeof json === "object" && "error" in json && !("access_token" in json))) {
+    const description =
+      json && typeof json === "object"
+        ? (json as { error_description?: string; error?: string }).error_description ??
+          (json as { error?: string }).error
+        : undefined;
+    throw new Error(
+      description
+        ? `OAuth token request failed against ${tokenUrl}: ${description}`
+        : `OAuth token request failed (${response.status}) against ${tokenUrl}`
+    );
   }
 
-  return response.json();
+  return (json ?? {}) as TokenResponsePayload;
 }
 
 function expiresAtFrom(raw: TokenResponsePayload): string | undefined {
@@ -48,15 +68,15 @@ export async function exchangeCodeForToken(
   const tokenUrl = extra.tokenUrl || config.tokenUrl;
   if (!tokenUrl) throw new Error(`No token URL resolved for provider "${provider}"`);
 
-  const params = new URLSearchParams({
+  const params = {
     client_id: config.clientId,
     client_secret: config.clientSecret,
     grant_type: "authorization_code",
     code,
     redirect_uri: redirectUri,
-  });
+  };
 
-  const raw = await postForToken(tokenUrl, params);
+  const raw = await postForToken(tokenUrl, params, provider === "amocrm" ? "json" : "form");
   const accessToken = raw.access_token;
   if (typeof accessToken !== "string") {
     throw new Error(`Token exchange response for "${provider}" did not include access_token`);
@@ -75,14 +95,14 @@ export async function refreshAccessToken(provider: string, refreshToken: string)
   if (!config) throw new Error(`OAuth is not configured for provider "${provider}"`);
   if (!config.tokenUrl) throw new Error(`No token URL resolved for provider "${provider}"`);
 
-  const params = new URLSearchParams({
+  const params = {
     client_id: config.clientId,
     client_secret: config.clientSecret,
     grant_type: "refresh_token",
     refresh_token: refreshToken,
-  });
+  };
 
-  const raw = await postForToken(config.tokenUrl, params);
+  const raw = await postForToken(config.tokenUrl, params, provider === "amocrm" ? "json" : "form");
   const accessToken = raw.access_token;
   if (typeof accessToken !== "string") {
     throw new Error(`Token refresh response for "${provider}" did not include access_token`);

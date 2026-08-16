@@ -52,6 +52,39 @@ describe("exchangeCodeForToken", () => {
   it("throws for an unknown provider", async () => {
     await expect(exchangeCodeForToken("unknown", "code", {})).rejects.toThrow();
   });
+
+  it("posts a JSON body to amoCRM's token endpoint (it rejects form-urlencoded)", async () => {
+    process.env.AMOCRM_CLIENT_ID = "amo_client";
+    process.env.AMOCRM_CLIENT_SECRET = "amo_secret";
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ access_token: "amo_token", refresh_token: "amo_refresh" }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await exchangeCodeForToken("amocrm", "code123", {
+      tokenUrl: "https://mysubdomain.amocrm.ru/oauth2/access_token",
+    });
+
+    expect(result.accessToken).toBe("amo_token");
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe("https://mysubdomain.amocrm.ru/oauth2/access_token");
+    expect(init.headers["Content-Type"]).toBe("application/json");
+    const body = JSON.parse(init.body);
+    expect(body.client_id).toBe("amo_client");
+    expect(body.grant_type).toBe("authorization_code");
+    expect(body.code).toBe("code123");
+  });
+
+  it("surfaces the provider's error message when the token endpoint returns 200 with an error body", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ error: "bad_verification_code", error_description: "The code has expired." }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(exchangeCodeForToken("github", "expired-code", {})).rejects.toThrow(/expired/);
+  });
 });
 
 describe("refreshAccessToken", () => {

@@ -55,21 +55,31 @@ export async function testConnectionAction(
 }
 
 export async function archiveIntegrationAction(integrationId: string, locale: string): Promise<void> {
-  const row = await loadOwnedIntegration(integrationId, locale);
-  await db
-    .update(integrations)
-    .set({ status: "archived", updatedAt: new Date() })
-    .where(eq(integrations.id, integrationId));
-  await db.insert(integrationEvents).values({ integrationId, type: "archived" });
-  await fireRoutinesForEvent(row.organizationId, "integration_event", `${row.providerId}:archived`, { integrationId });
+  try {
+    const row = await loadOwnedIntegration(integrationId, locale);
+    await db
+      .update(integrations)
+      .set({ status: "archived", updatedAt: new Date() })
+      .where(eq(integrations.id, integrationId));
+    await db.insert(integrationEvents).values({ integrationId, type: "archived" });
+    await fireRoutinesForEvent(row.organizationId, "integration_event", `${row.providerId}:archived`, { integrationId });
+  } catch (error) {
+    console.error(`Failed to archive integration ${integrationId}:`, error);
+    return;
+  }
   revalidatePath(`/${locale}/integrations`);
   revalidatePath(`/${locale}/integrations/${integrationId}`);
   revalidatePath(`/${locale}/statistics/marketing`);
 }
 
 export async function deleteIntegrationAction(integrationId: string, locale: string): Promise<void> {
-  await loadOwnedIntegration(integrationId, locale);
-  await db.delete(integrations).where(eq(integrations.id, integrationId));
+  try {
+    await loadOwnedIntegration(integrationId, locale);
+    await db.delete(integrations).where(eq(integrations.id, integrationId));
+  } catch (error) {
+    console.error(`Failed to delete integration ${integrationId}:`, error);
+    return;
+  }
   revalidatePath(`/${locale}/integrations`);
   redirect(`/${locale}/integrations`);
 }

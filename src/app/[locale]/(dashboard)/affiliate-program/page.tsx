@@ -1,17 +1,27 @@
+import { eq, and, like } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { Handshake } from "lucide-react";
-import { Link } from "@/i18n/navigation";
-import { Button } from "@/components/ui/button";
+import { db } from "@/db/client";
+import { tickets } from "@/db/schema/tickets";
+import { requireOrganization } from "@/lib/auth/dal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AffiliateApplyButton } from "@/components/dashboard/affiliate-apply-button";
 
 type Level = { name: string; discount: string; condition: string; support: string; referral: string };
 
-export default async function AffiliateProgramPage() {
+export default async function AffiliateProgramPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const { organization } = await requireOrganization(locale);
   const t = await getTranslations("affiliateProgram");
   const tLevels = await getTranslations("partners.levels");
   const levels = tLevels.raw("items") as Level[];
   const topLevelIndex = levels.length - 1;
+
+  const [existingApplication] = await db
+    .select({ id: tickets.id })
+    .from(tickets)
+    .where(and(eq(tickets.organizationId, organization.id), like(tickets.subject, "Hamkorlik (Affiliate)%")));
 
   return (
     <div className="flex flex-col gap-6">
@@ -36,7 +46,7 @@ export default async function AffiliateProgramPage() {
               <p className="text-sm text-muted-foreground">{t("applyHint")}</p>
             </div>
           </div>
-          <Button nativeButton={false} render={<Link href="/partners">{t("apply")}</Link>} />
+          <AffiliateApplyButton locale={locale} alreadyApplied={!!existingApplication} />
         </CardContent>
       </Card>
 

@@ -26,7 +26,7 @@ const PROVIDER_ENDPOINTS: Record<
 > = {
   amocrm: { authUrl: "https://www.amocrm.ru/oauth", tokenUrl: "", scopes: [] },
   bitrix24: {
-    authUrl: "https://auth2.bitrix24.net/oauth/authorize/",
+    authUrl: "https://oauth.bitrix.info/oauth/authorize/",
     tokenUrl: "https://oauth.bitrix.info/oauth/token/",
     scopes: ["im", "imbot", "imopenlines", "crm", "user_basic"],
   },
