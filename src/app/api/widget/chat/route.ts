@@ -5,6 +5,7 @@ import { channels } from "@/db/schema/channels";
 import { conversations, messages } from "@/db/schema/conversations";
 import { aiAgents } from "@/db/schema/agents";
 import { generateText } from "ai";
+import { resolveModel } from "@/lib/ai/gateway";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -84,7 +85,7 @@ export async function POST(req: Request) {
 
     // 6. Vercel AI SDK orqali javob generatsiya qilish
     const { text: aiResponse } = await generateText({
-      model: agent.model,
+      model: resolveModel(agent.model),
       system: agent.systemPrompt,
       messages: formattedHistory,
     });

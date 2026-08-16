@@ -1,5 +1,7 @@
 import "server-only";
-import { gateway } from "ai";
+import { gateway, type LanguageModel, type EmbeddingModel } from "ai";
+import type { SharedV4ProviderOptions } from "@ai-sdk/provider";
+import { google } from "@ai-sdk/google";
 
 export type GatewayModel = {
   id: string;
@@ -14,6 +16,32 @@ const FALLBACK_MODELS: GatewayModel[] = [
 
 export const DEFAULT_MODEL = "anthropic/claude-sonnet-4.5";
 export const EMBEDDING_MODEL = "openai/text-embedding-3-small";
+
+// AI Gateway requires a card on file (even for its free monthly credits) — see
+// https://vercel.com/docs/ai-gateway. Until that's added, fall back to Google's
+// genuinely free (no card) Gemini API directly, bypassing the gateway entirely.
+export const usingFreeGeminiFallback = Boolean(process.env.GOOGLE_GENERATIVE_AI_API_KEY);
+
+/** Resolves a stored gateway model id (e.g. "anthropic/claude-sonnet-4.5") to
+ * whatever model actually works right now — Gemini direct when no gateway
+ * billing is configured, otherwise the gateway string as-is. */
+export function resolveModel(_modelId: string): LanguageModel {
+  if (usingFreeGeminiFallback) return google("gemini-2.5-flash");
+  return _modelId;
+}
+
+export function resolveEmbeddingModel(): EmbeddingModel {
+  if (usingFreeGeminiFallback) return google.textEmbeddingModel("gemini-embedding-001");
+  return EMBEDDING_MODEL;
+}
+
+// The knowledge_chunk.embedding pgvector column is fixed at 1536 dimensions
+// (matching text-embedding-3-small). gemini-embedding-001 supports truncating
+// its output to any dimension via this provider option, so results stay
+// compatible without a schema migration.
+export function resolveEmbeddingProviderOptions(): SharedV4ProviderOptions | undefined {
+  return usingFreeGeminiFallback ? { google: { outputDimensionality: 1536 } } : undefined;
+}
 
 export async function listAvailableModels(): Promise<GatewayModel[]> {
   try {

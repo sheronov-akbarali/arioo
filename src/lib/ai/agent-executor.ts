@@ -1,5 +1,6 @@
 import "server-only";
-import { generateText, embed } from "ai";
+import { generateText, embed, tool } from "ai";
+import { z } from "zod";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { aiAgents } from "@/db/schema/agents";
@@ -7,7 +8,15 @@ import { messages as messagesTable } from "@/db/schema/conversations";
 import { organizationCredits, creditTransactions } from "@/db/schema/billing";
 import { abTests } from "@/db/schema/ab-tests";
 import { retrieveRelevantChunks } from "./retrieval";
-import { listAvailableModels, estimateCostUsd, EMBEDDING_MODEL } from "./gateway";
+import {
+  listAvailableModels,
+  estimateCostUsd,
+  resolveModel,
+  resolveEmbeddingModel,
+  resolveEmbeddingProviderOptions,
+  usingFreeGeminiFallback,
+} from "./gateway";
+import { createPaymentInvoice } from "@/lib/billing/in-chat-payments";
 
 export type AgentExecutionOptions = {
   agentId: string;
@@ -67,8 +76,9 @@ export async function executeAgentResponse(
   if (userMessage.trim()) {
     try {
       const { embedding } = await embed({
-        model: EMBEDDING_MODEL,
+        model: resolveEmbeddingModel(),
         value: userMessage.trim(),
+        providerOptions: resolveEmbeddingProviderOptions(),
       });
       const chunks = await retrieveRelevantChunks(agentId, embedding, 4);
       if (chunks.length > 0) {
@@ -79,25 +89,61 @@ export async function executeAgentResponse(
     }
   }
 
-  // 4. Generate AI response
-  const fullSystemPrompt = systemPrompt + context;
+  // 4. Generate AI response with In-Chat Payment Tool
+  const fullSystemPrompt =
+    systemPrompt +
+    context +
+    `\n\nEslatma: Agar mijoz biror mahsulot yoki xizmatni xarid qilishga, buyurtma berishga yoki hisobni to'lashga rozi bo'lsa, 'createPaymentInvoice' funksiyasidan foydalanib to'lov havolasini generatsiya qiling va mijozga taqdim eting.`;
+
+  const paymentTool = tool({
+    description:
+      "Mijoz mahsulot yoki xizmatni xarid qilishga rozi bo'lganda to'lov havolalarini (Click, Payme, Uzum) yaratish.",
+    parameters: z.object({
+      amountUzs: z.number().describe("To'lov summasi (so'mda)"),
+      dealTitle: z.string().describe("Mahsulot yoki xizmat nomi"),
+      customerName: z.string().optional().describe("Xaridor ismi"),
+      customerPhone: z.string().optional().describe("Xaridor telefon raqami"),
+    }) as any,
+    execute: async (input: any) => {
+      try {
+        const invoice = await createPaymentInvoice({
+          organizationId: agent.organizationId,
+          agentId: agent.id,
+          amountUzs: Number(input?.amountUzs || 0),
+          dealTitle: String(input?.dealTitle || "Buyurtma"),
+          contactName: input?.customerName,
+          contactPhone: input?.customerPhone,
+        });
+        return invoice;
+      } catch (err) {
+        console.error("Failed to create in-chat payment invoice:", err);
+        return { error: "To'lov havolasini yaratib bo'lmadi" };
+      }
+    },
+  } as any);
+
   const { text: aiResponse, usage } = await generateText({
-    model: agent.model,
+    model: resolveModel(agent.model),
     system: fullSystemPrompt,
     messages: history,
+    tools: {
+      createPaymentInvoice: paymentTool,
+    },
   });
 
   // 5. Cost & Usage Estimation
   let estimatedCost = 0;
-  try {
-    const models = await listAvailableModels();
-    estimatedCost =
-      estimateCostUsd(models, agent.model, {
-        inputTokens: usage.inputTokens,
-        outputTokens: usage.outputTokens,
-      }) ?? 0.0002;
-  } catch {
-    estimatedCost = 0.0002;
+  if (!usingFreeGeminiFallback) {
+    try {
+      const models = await listAvailableModels();
+      estimatedCost =
+        estimateCostUsd(models, agent.model, {
+          inputTokens: usage.inputTokens,
+          outputTokens: usage.outputTokens,
+        }) ?? 0.0002;
+    } catch {
+      estimatedCost = 0.0002;
+    }
   }
 
   // 6. Save assistant message

@@ -18,11 +18,11 @@ export async function BillingWidget({ organizationId, plan }: { organizationId: 
   return (
     <SidebarMenuButton
       render={<Link href="/billing" />}
-      tooltip={`${tierName} — ${credits.balance.toFixed(2)}W`}
+      tooltip={`${tierName} — ${credits.balance.toFixed(2)} TAY`}
     >
       <CreditCard />
       <span>
-        {tierName} — {credits.balance.toFixed(2)}W
+        {tierName} — {credits.balance.toFixed(2)} TAY
       </span>
     </SidebarMenuButton>
   );

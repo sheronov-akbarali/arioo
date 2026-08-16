@@ -1085,6 +1085,7 @@
       "oneC": { "name": "1C", "description": "Product and pricing integration with 1C" },
       "vk": { "name": "VK · VKontakte", "description": "Messaging and group integration" },
       "headhunter": { "name": "HeadHunter", "description": "Candidate communication channel" },
+      "uzum": { "name": "Uzum Market", "description": "AI auto-replies to reviews and product questions" },
       "customMcp": { "name": "Custom MCP Server", "description": "Connect your own tools via MCP" }
     }
   },

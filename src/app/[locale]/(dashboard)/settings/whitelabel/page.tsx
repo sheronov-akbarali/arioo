@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { saveWhitelabelAction } from "./actions";
+import { ColorPickerSync } from "./color-picker-sync";
 
 export default async function SettingsWhitelabelPage({
   params,
@@ -109,15 +110,7 @@ export default async function SettingsWhitelabelPage({
               <div className="space-y-2">
                 <Label htmlFor="primaryColor">Asosiy Accent Rangi (HEX)</Label>
                 <div className="flex items-center gap-3">
-                  <input
-                    type="color"
-                    defaultValue={whitelabelData.primaryColor}
-                    className="size-9 rounded-md border border-input cursor-pointer p-0.5 bg-background"
-                    onChange={(e) => {
-                      const input = document.getElementById("primaryColorText") as HTMLInputElement;
-                      if (input) input.value = e.target.value;
-                    }}
-                  />
+                  <ColorPickerSync defaultValue={whitelabelData.primaryColor} />
                   <Input
                     id="primaryColorText"
                     name="primaryColor"

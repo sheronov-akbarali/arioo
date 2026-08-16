@@ -1085,6 +1085,7 @@
       "oneC": { "name": "1C", "description": "1C bilan mahsulot va narxlar integratsiyasi" },
       "vk": { "name": "VK · ВКонтакте", "description": "Xabarlar va guruh integratsiyasi" },
       "headhunter": { "name": "HeadHunter", "description": "Nomzodlar bilan muloqot kanali" },
+      "uzum": { "name": "Uzum Market", "description": "Sharhlar va tovar savollariga avtomatik AI javoblar" },
       "customMcp": { "name": "Custom MCP Server", "description": "O'z vositalaringizni MCP orqali ulang" }
     }
   },

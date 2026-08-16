@@ -1085,6 +1085,7 @@
       "oneC": { "name": "1С", "description": "Интеграция товаров и цен с 1С" },
       "vk": { "name": "VK · ВКонтакте", "description": "Интеграция сообщений и группы" },
       "headhunter": { "name": "HeadHunter", "description": "Канал общения с соискателями" },
+      "uzum": { "name": "Uzum Market", "description": "Автоответы AI на отзывы и вопросы к товарам" },
       "customMcp": { "name": "Custom MCP Server", "description": "Подключите свои инструменты через MCP" }
     }
   },

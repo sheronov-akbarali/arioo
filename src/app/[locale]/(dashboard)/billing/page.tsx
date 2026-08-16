@@ -71,7 +71,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
           <CardContent className="flex flex-col gap-4 pt-6">
             <div>
               <p className="text-sm text-muted-foreground">{t("balanceCard.title")}</p>
-              <p className="mt-1 text-2xl font-bold">{credits.balance.toFixed(2)}W</p>
+              <p className="mt-1 text-2xl font-bold">{credits.balance.toFixed(2)} TAY</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("balanceCard.hint")}</p>
             </div>
             <TopUpDialog />
@@ -80,7 +80,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
         <Card>
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">{t("bonusCard.title")}</p>
-            <p className="mt-1 text-2xl font-bold">{credits.bonusBalance.toFixed(2)}Wb</p>
+            <p className="mt-1 text-2xl font-bold">{credits.bonusBalance.toFixed(2)} TAYb</p>
             <p className="mt-1 text-xs text-muted-foreground">{t("bonusCard.hint")}</p>
           </CardContent>
         </Card>

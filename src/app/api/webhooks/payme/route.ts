@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { organizationCredits, creditTransactions } from "@/db/schema/billing";
+import { crmDeals } from "@/db/schema/crm";
+import { notifications } from "@/db/schema/notifications";
 
 /**
  * Payme JSON-RPC 2.0 Merchant Webhook Handler
@@ -17,9 +19,9 @@ export async function POST(req: Request) {
       const amount = params?.amount; // in tiyins
       const orgId = params?.account?.org_id;
 
-      if (!orgId || !amount || amount < 500000) {
+      if ((!orgId && !params?.account?.tx_id) || !amount || amount < 500000) {
         return NextResponse.json({
-          error: { code: -31001, message: { uz: "Noto'g'ri summa yoki tashkilot topilmadi" } },
+          error: { code: -31001, message: { uz: "Noto'g'ri summa yoki hisob topilmadi" } },
           id,
         });
       }
@@ -35,9 +37,32 @@ export async function POST(req: Request) {
       const amountTiyins = params?.amount ?? 0;
       const amountUzs = Math.round(amountTiyins / 100);
       const orgId = params?.account?.org_id;
+      const txId = params?.account?.tx_id as string | undefined;
       const paymeTxId = params?.id || crypto.randomUUID();
 
-      if (orgId && amountUzs > 0) {
+      // Check if this payment is for a CRM Deal (format: deal_<dealId>_<orgId>)
+      if (txId?.startsWith("deal_")) {
+        const parts = txId.split("_");
+        const dealId = parts[1];
+        const dealOrgId = parts[2] || orgId;
+
+        if (dealId) {
+          await db
+            .update(crmDeals)
+            .set({ status: "won" })
+            .where(eq(crmDeals.id, dealId));
+        }
+
+        if (dealOrgId) {
+          await db.insert(notifications).values({
+            organizationId: dealOrgId,
+            type: "lead",
+            title: "🎉 To'lov qabul qilindi!",
+            body: `Payme orqali ${amountUzs.toLocaleString()} so'm to'lov muvaffaqiyatli amalga oshirildi (Bitim #${dealId?.substring(0, 6)}).`,
+          });
+        }
+      } else if (orgId && amountUzs > 0) {
+        // Standard Topup
         await db
           .insert(organizationCredits)
           .values({

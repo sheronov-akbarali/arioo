@@ -61,7 +61,7 @@ export function IntegrationsGrid({
   mtprotoConnected = false,
 }: {
   agents?: { id: string; name: string }[];
-  channels?: { id: string; type: string; isActive: boolean; botUsername: string | null }[];
+  channels?: { id: string; type: string; isActive: boolean; botUsername: string | null; agentId: string | null }[];
   integrationRows?: {
     id: string;
     providerId: string;
@@ -95,6 +95,12 @@ export function IntegrationsGrid({
     return channels.some((c) => c.type === channelType && c.isActive);
   }
 
+  function activeChannelFor(providerId: string) {
+    const channelType = CHANNEL_TYPE_BY_PROVIDER[providerId];
+    if (!channelType) return undefined;
+    return channels.find((c) => c.type === channelType && c.isActive);
+  }
+
   function statusFor(providerId: string): IntegrationStatus {
     if (integrationByProvider.has(providerId)) return integrationByProvider.get(providerId)!.status;
     return hasActiveChannel(providerId) ? "active" : "setup_needed";
@@ -116,6 +122,7 @@ export function IntegrationsGrid({
     const Icon = ICONS[provider.id] ?? Building2;
     const isConnected = integrationByProvider.has(provider.id);
     const connectedRow = integrationByProvider.get(provider.id);
+    const connectedChannel = activeChannelFor(provider.id);
 
     return (
       <Card key={provider.id}>
@@ -203,6 +210,16 @@ export function IntegrationsGrid({
             <div className="pt-1">
               <Link
                 href={`/integrations/${connectedRow.id}`}
+                className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+              >
+                {t("manage")}
+              </Link>
+            </div>
+          )}
+          {!connectedRow && connectedChannel?.agentId && (
+            <div className="pt-1">
+              <Link
+                href={`/assistants/${connectedChannel.agentId}/chats`}
                 className="text-xs text-muted-foreground underline-offset-2 hover:underline"
               >
                 {t("manage")}

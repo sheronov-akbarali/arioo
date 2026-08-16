@@ -3,7 +3,7 @@ import { embedMany } from "ai";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/client";
 import { knowledgeDocuments, knowledgeChunks } from "@/db/schema/knowledge";
-import { EMBEDDING_MODEL } from "./gateway";
+import { resolveEmbeddingModel, resolveEmbeddingProviderOptions } from "./gateway";
 
 const CHUNK_SIZE = 800;
 const CHUNK_OVERLAP = 100;
@@ -35,7 +35,11 @@ export async function embedDocument(documentId: string, text: string): Promise<v
   }
 
   try {
-    const { embeddings } = await embedMany({ model: EMBEDDING_MODEL, values: chunks });
+    const { embeddings } = await embedMany({
+      model: resolveEmbeddingModel(),
+      values: chunks,
+      providerOptions: resolveEmbeddingProviderOptions(),
+    });
     await db.insert(knowledgeChunks).values(
       chunks.map((content, index) => ({
         documentId,

@@ -10,7 +10,14 @@ import { eq, and } from "drizzle-orm";
 import { db } from "@/db/client";
 import { conversations, messages as messagesTable } from "@/db/schema/conversations";
 import { retrieveRelevantChunks } from "@/lib/ai/retrieval";
-import { listAvailableModels, estimateCostUsd, EMBEDDING_MODEL } from "@/lib/ai/gateway";
+import {
+  listAvailableModels,
+  estimateCostUsd,
+  resolveModel,
+  resolveEmbeddingModel,
+  resolveEmbeddingProviderOptions,
+  usingFreeGeminiFallback,
+} from "@/lib/ai/gateway";
 import { getAgentForCurrentUser } from "@/lib/auth/dal";
 
 export async function POST(
@@ -43,7 +50,11 @@ export async function POST(
   let context = "";
   if (lastUserText) {
     try {
-      const { embedding } = await embed({ model: EMBEDDING_MODEL, value: lastUserText });
+      const { embedding } = await embed({
+        model: resolveEmbeddingModel(),
+        value: lastUserText,
+        providerOptions: resolveEmbeddingProviderOptions(),
+      });
       const chunks = await retrieveRelevantChunks(agentId, embedding);
       if (chunks.length > 0) {
         context = `\n\nBilim bazasidan tegishli ma'lumot:\n${chunks.join("\n---\n")}`;
@@ -62,18 +73,21 @@ export async function POST(
   }
 
   const result = streamText({
-    model: agent.model,
+    model: resolveModel(agent.model),
     system: agent.systemPrompt + context,
     messages: await convertToModelMessages(uiMessages),
     onError: ({ error }) => {
       console.error(`Chat generation failed for agent ${agentId}`, error);
     },
     onEnd: async ({ text, usage }) => {
-      const models = await listAvailableModels();
-      const cost = estimateCostUsd(models, agent.model, {
-        inputTokens: usage.inputTokens,
-        outputTokens: usage.outputTokens,
-      });
+      let cost: number | null = 0;
+      if (!usingFreeGeminiFallback) {
+        const models = await listAvailableModels();
+        cost = estimateCostUsd(models, agent.model, {
+          inputTokens: usage.inputTokens,
+          outputTokens: usage.outputTokens,
+        });
+      }
       await db.insert(messagesTable).values({
         conversationId,
         role: "assistant",

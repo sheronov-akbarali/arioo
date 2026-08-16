@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@ai-sdk/gateway": "^4.0.44",
+    "@ai-sdk/google": "^4.0.44",
+    "@ai-sdk/provider": "^4.0.6",
     "@ai-sdk/react": "^4.0.59",
     "@base-ui/react": "^1.6.0",
     "@clerk/nextjs": "^7.7.0",

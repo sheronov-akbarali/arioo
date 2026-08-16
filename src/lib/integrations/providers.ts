@@ -21,6 +21,7 @@ export const INTEGRATION_PROVIDERS = [
   { id: "telegram", categories: ["chat"], connectionMode: "special" },
   { id: "whatsapp", categories: ["chat"], connectionMode: "special" },
   { id: "websiteWidget", categories: ["chat"], connectionMode: "special" },
+  { id: "uzum", categories: ["marketplace"], connectionMode: "form" },
   { id: "olx", categories: ["marketplace"], connectionMode: "special" },
   { id: "sip", categories: ["voice"], connectionMode: "form" },
   { id: "oneC", categories: ["crm"], connectionMode: "form" },

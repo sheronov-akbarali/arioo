@@ -16,7 +16,6 @@ import { db } from "@/db/client";
 import { telegramChannelConnections } from "@/db/schema/telegram-channel-connection";
 import { getTelegramChannelStats } from "@/lib/telegram/channel-stats";
 import { disconnectTelegramChannel } from "@/lib/telegram/mtproto-actions";
-import { MockConnectButton } from "@/components/dashboard/statistics/mock-connect-button";
 import { OAuthResultToast } from "@/components/dashboard/integrations/oauth-result-toast";
 import { syncYoutubeStats } from "@/lib/youtube/sync-stats";
 import { YoutubeAnalyticsCard } from "@/components/dashboard/statistics/youtube-analytics-card";
@@ -274,24 +273,17 @@ export default async function MarketingStatisticsPage({
 
             {/* OLX.uz: no confirmed public API for listing view/contact counts yet
                 (see docs/superpowers/specs/2026-08-15-marketing-analytics-completion-design.md).
-                Kept as a placeholder until an API path is confirmed. */}
+                Shown as unavailable rather than faking numbers until an API path is confirmed. */}
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-base">OLX.uz E'lonlari</CardTitle>
                 <p className="text-xs text-muted-foreground">Ko'rishlar va Kontaktlar</p>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-col gap-4">
-                  <div>
-                    <p className="text-2xl font-bold">4,120</p>
-                    <p className="text-xs text-green-600">Umumiy ko'rishlar</p>
-                  </div>
-                  <ul className="text-sm divide-y divide-border">
-                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Raqamni ko'rganlar</span> <span className="font-medium">320</span></li>
-                    <li className="flex justify-between py-2"><span className="text-muted-foreground">Xabarlar</span> <span className="font-medium">85</span></li>
-                  </ul>
-                  <MockConnectButton />
-                </div>
+                <p className="text-sm text-muted-foreground">
+                  OLX.uz hozircha e'lon statistikasi uchun ochiq API taqdim etmaydi, shuning uchun bu
+                  bo'lim hali ulanmagan.
+                </p>
               </CardContent>
             </Card>
           </div>

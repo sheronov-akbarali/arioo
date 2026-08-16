@@ -21,4 +21,5 @@ export * from "./templates";
 export * from "./ab-tests";
 export * from "./message-templates";
 export * from "./site-analytics";
+export * from "./follow-ups";
 export { crmContacts, crmDeals, crmDealStatusEnum } from "./crm";

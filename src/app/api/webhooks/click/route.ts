@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { organizationCredits, creditTransactions } from "@/db/schema/billing";
+import { crmDeals } from "@/db/schema/crm";
+import { notifications } from "@/db/schema/notifications";
 
 /**
  * Click Shop Merchant Webhook Handler
@@ -30,33 +32,56 @@ export async function POST(req: Request) {
 
     // Action 1: Complete
     if (action === 1 && error === 0) {
-      // Find or credit transaction
-      const orgId = merchantTransId?.split("_")[0];
-      if (orgId && amount > 0) {
-        await db
-          .insert(organizationCredits)
-          .values({
-            organizationId: orgId,
-            balance: amount,
-            bonusBalance: Math.round(amount * 0.05),
-            updatedAt: new Date(),
-          })
-          .onConflictDoUpdate({
-            target: organizationCredits.organizationId,
-            set: {
-              balance: sql`${organizationCredits.balance} + ${amount}`,
-              bonusBalance: sql`${organizationCredits.bonusBalance} + ${Math.round(amount * 0.05)}`,
-              updatedAt: new Date(),
-            },
-          });
+      // Check if this payment is for a CRM Deal (format: deal_<dealId>_<orgId>)
+      if (merchantTransId?.startsWith("deal_")) {
+        const parts = merchantTransId.split("_");
+        const dealId = parts[1];
+        const orgId = parts[2];
 
-        await db.insert(creditTransactions).values({
-          id: `click_${clickTransId || clickPaydocId}`,
-          organizationId: orgId,
-          type: "topup",
-          amount,
-          description: `Click to'lovi (ID: ${clickTransId})`,
-        });
+        if (dealId) {
+          await db
+            .update(crmDeals)
+            .set({ status: "won" })
+            .where(eq(crmDeals.id, dealId));
+        }
+
+        if (orgId) {
+          await db.insert(notifications).values({
+            organizationId: orgId,
+            type: "lead",
+            title: "🎉 To'lov qabul qilindi!",
+            body: `Click orqali ${amount.toLocaleString()} so'm to'lov muvaffaqiyatli amalga oshirildi (Bitim #${dealId?.substring(0, 6)}).`,
+          });
+        }
+      } else {
+        // Standard Balance Topup
+        const orgId = merchantTransId?.split("_")[0];
+        if (orgId && amount > 0) {
+          await db
+            .insert(organizationCredits)
+            .values({
+              organizationId: orgId,
+              balance: amount,
+              bonusBalance: Math.round(amount * 0.05),
+              updatedAt: new Date(),
+            })
+            .onConflictDoUpdate({
+              target: organizationCredits.organizationId,
+              set: {
+                balance: sql`${organizationCredits.balance} + ${amount}`,
+                bonusBalance: sql`${organizationCredits.bonusBalance} + ${Math.round(amount * 0.05)}`,
+                updatedAt: new Date(),
+              },
+            });
+
+          await db.insert(creditTransactions).values({
+            id: `click_${clickTransId || clickPaydocId}`,
+            organizationId: orgId,
+            type: "topup",
+            amount,
+            description: `Click to'lovi (ID: ${clickTransId})`,
+          });
+        }
       }
 
       return NextResponse.json({
