@@ -23,7 +23,7 @@
       "sources": "Sources",
       "website": { "label": "Website", "sublabel": "New leads" },
       "telegram": { "label": "Telegram", "sublabel": "Dialogs" },
-      "olx": { "label": "OLX.uz", "sublabel": "Listing inquiries" },
+      "whatsapp": { "label": "WhatsApp", "sublabel": "Customer conversations" },
       "calls": { "label": "Calls", "sublabel": "Phone leads" },
       "crm": { "label": "CRM", "sublabel": "Deals" },
       "knowledge": { "label": "Knowledge base", "sublabel": "Q&A" },
@@ -724,7 +724,7 @@
         "genericError": "Could not load Facebook statistics."
       },
       "channels": {
-        "title": "Telegram, YouTube, Instagram, Facebook, OLX.uz",
+        "title": "Telegram, YouTube, Instagram, Facebook",
         "subtitle": "Analytics for your other marketing channels.",
         "comingSoon": "Coming soon."
       }
@@ -919,6 +919,7 @@
     "triggerTypes": {
       "crm_event": "CRM event",
       "integration_event": "Integration event",
+      "ai_event": "AI-detected event",
       "schedule": "Schedule"
     },
     "status": {
@@ -1076,14 +1077,12 @@
       "telegram": { "name": "Telegram", "description": "Talk to customers via a Telegram bot" },
       "whatsapp": { "name": "WhatsApp Business", "description": "Messaging via WhatsApp Business Cloud API" },
       "websiteWidget": { "name": "Website widget", "description": "Add a chat widget to your website" },
-      "olx": { "name": "OLX.uz", "description": "Process requests from OLX.uz listings" },
       "sip": { "name": "SIP", "description": "Telephony connection for voice calls" },
       "amocrm": { "name": "amoCRM", "description": "Sync leads and deals with amoCRM" },
       "bitrix24": { "name": "Bitrix24", "description": "Sync leads and deals with Bitrix24" },
       "google": { "name": "Google", "description": "Sync with Drive, Sheets, and Calendar" },
       "github": { "name": "GitHub", "description": "Work with repositories and Issues" },
       "oneC": { "name": "1C", "description": "Product and pricing integration with 1C" },
-      "vk": { "name": "VK · VKontakte", "description": "Messaging and group integration" },
       "headhunter": { "name": "HeadHunter", "description": "Candidate communication channel" },
       "uzum": { "name": "Uzum Market", "description": "AI auto-replies to reviews and product questions" },
       "customMcp": { "name": "Custom MCP Server", "description": "Connect your own tools via MCP" }

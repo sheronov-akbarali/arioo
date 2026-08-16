@@ -1,45 +1,73 @@
 "use client";
 
-import { useState } from "react";
-import { Settings2, Table2, GitBranch, Check, Sparkles } from "lucide-react";
+import { useState, useTransition } from "react";
+import { Settings2, Table2, Zap, Check, Sparkles, CalendarClock, Plug } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { updateEnabledToolsAction } from "@/app/[locale]/(dashboard)/assistants/[agentId]/ai/actions";
+import type { ToolId } from "@/lib/ai/tools";
 
-const TOOLS = [
+const TOOLS: { id: ToolId; name: string; desc: string; icon: typeof Settings2 }[] = [
   {
-    id: "internalSystem",
-    name: "Ichki Tizim va CRM Ulanishi",
-    desc: "AI agentga ichki mahsulotlar va buyurtmalar bazasidan to'g'ridan-to'g'ri ma'lumot olish imkonini beradi",
-    icon: Settings2,
-    defaultEnabled: true,
+    id: "createPaymentInvoice",
+    name: "To'lov Havolasi Yaratish",
+    desc: "Mijoz xarid qilishga rozi bo'lganda AI Click/Payme/Uzum to'lov havolasini avtomatik yaratadi",
+    icon: Sparkles,
   },
   {
-    id: "googleSheets",
-    name: "Google Sheets Integratsiyasi",
-    desc: "Mijozlar bilan suhbatdan olingan lid va buyurtmalarni avtomatik jadvalga yozish",
+    id: "checkProductInfo",
+    name: "Mahsulotlar Katalogidan Qidirish",
+    desc: "AI tashkilotning \"Mahsulotlar\" bo'limidagi haqiqiy narx va holat ma'lumotlaridan foydalanadi",
     icon: Table2,
-    defaultEnabled: true,
   },
   {
-    id: "github",
-    name: "Vebhook va Dasturchilar API",
-    desc: "Tashqi tizimlar bilan integratsiya qilish uchun event-driven xabarnomalar",
-    icon: GitBranch,
-    defaultEnabled: false,
+    id: "createCrmLead",
+    name: "CRM'ga Lid Sifatida Saqlash",
+    desc: "To'lovsiz so'rovlarda ham mijoz ma'lumotlarini avtomatik CRM'ga yozib qo'yadi",
+    icon: Settings2,
+  },
+  {
+    id: "triggerBusinessEvent",
+    name: "Ichki Hodisa (Routines) Ishga Tushirish",
+    desc: "AI muhim holatlarni (masalan shikoyat) aniqlaganda Routines'da sozlangan avtomatlashtirishni ishga tushiradi",
+    icon: Zap,
+  },
+  {
+    id: "bookCalendarAppointment",
+    name: "Google Calendar Bron Qilish",
+    desc: "Uchrashuv/qo'ng'iroq vaqtini avtomatik bron qiladi (Integrations'da Google ulangan bo'lishi kerak)",
+    icon: CalendarClock,
+  },
+  {
+    id: "customMcpTools",
+    name: "Custom MCP Server Vositalari",
+    desc: "Integrations'da ulangan Custom MCP Server orqali taqdim etilgan tashqi funksiyalarni AI ishlata oladi",
+    icon: Plug,
   },
 ];
 
-export function ToolsPanel() {
-  const [enabledTools, setEnabledTools] = useState<Record<string, boolean>>({
-    internalSystem: true,
-    googleSheets: true,
-    github: false,
-  });
+export function ToolsPanel({
+  locale,
+  agentId,
+  enabledToolIds,
+}: {
+  locale: string;
+  agentId: string;
+  enabledToolIds: string[];
+}) {
+  const [enabled, setEnabled] = useState<Record<string, boolean>>(
+    Object.fromEntries(TOOLS.map((t) => [t.id, enabledToolIds.includes(t.id)]))
+  );
+  const [isPending, startTransition] = useTransition();
 
-  const toggleTool = (id: string) => {
-    setEnabledTools((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+  const toggleTool = (id: ToolId) => {
+    const next = !enabled[id];
+    setEnabled((prev) => ({ ...prev, [id]: next }));
+    startTransition(async () => {
+      const res = await updateEnabledToolsAction(locale, agentId, id, next);
+      if (!res.success) {
+        setEnabled((prev) => ({ ...prev, [id]: !next }));
+      }
+    });
   };
 
   return (
@@ -58,13 +86,15 @@ export function ToolsPanel() {
       <div className="flex flex-col divide-y divide-border rounded-lg border border-border">
         {TOOLS.map((tool) => {
           const Icon = tool.icon;
-          const isEnabled = !!enabledTools[tool.id];
+          const isEnabled = !!enabled[tool.id];
 
           return (
-            <div
+            <button
+              type="button"
               key={tool.id}
+              disabled={isPending}
               onClick={() => toggleTool(tool.id)}
-              className="flex items-center gap-3 p-3.5 hover:bg-muted/30 cursor-pointer transition-colors"
+              className="flex items-center gap-3 p-3.5 hover:bg-muted/30 cursor-pointer transition-colors text-left disabled:opacity-60"
             >
               <span
                 className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${
@@ -83,11 +113,10 @@ export function ToolsPanel() {
                 {isEnabled ? "Faol" : "O'chirilgan"}
               </Badge>
 
-              <button
-                type="button"
+              <span
                 role="switch"
                 aria-checked={isEnabled}
-                className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
                   isEnabled ? "bg-brand" : "bg-muted"
                 }`}
               >
@@ -97,8 +126,8 @@ export function ToolsPanel() {
                     isEnabled ? "translate-x-4" : "translate-x-0"
                   }`}
                 />
-              </button>
-            </div>
+              </span>
+            </button>
           );
         })}
       </div>

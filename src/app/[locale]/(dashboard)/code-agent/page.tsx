@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Code2, Copy, Check, Terminal, Play, Sparkles, BookOpen, Layers } from "lucide-react";
+import { Code2, Copy, Check, Terminal, Play, Sparkles, BookOpen, Layers, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -80,6 +80,7 @@ export default function CodeAgentPage() {
   const [customPrompt, setCustomPrompt] = useState("");
   const [generatedCode, setGeneratedCode] = useState("");
   const [generating, setGenerating] = useState(false);
+  const [generateError, setGenerateError] = useState<string | null>(null);
 
   const handleCopy = (code: string) => {
     navigator.clipboard.writeText(code);
@@ -87,29 +88,27 @@ export default function CodeAgentPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleGenerateScript = () => {
-    if (!customPrompt) return;
+  const handleGenerateScript = async () => {
+    if (!customPrompt || generating) return;
     setGenerating(true);
-    setTimeout(() => {
-      setGeneratedCode(`// Auto-generated Integration Script for: "${customPrompt}"
-import { db } from "@/db/client";
-
-export async function processCustomerLead(payload: { name: string; phone: string; note: string }) {
-  console.log("Processing lead into Arioo CRM:", payload);
-  
-  // 1. Forward to Arioo CRM & notify assigned AI agent
-  const response = await fetch("https://arioo.uz/api/agents/ai_lead_processor", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      messages: [{ role: "user", content: \`Yangi lid keldi: \${payload.name}, Tel: \${payload.phone}\` }]
-    })
-  });
-  
-  return { success: true, status: "forwarded_to_agent" };
-}`);
+    setGenerateError(null);
+    setGeneratedCode("");
+    try {
+      const res = await fetch("/api/code-agent/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: customPrompt }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "Kod generatsiyasi muvaffaqiyatsiz tugadi");
+      }
+      setGeneratedCode(data.code);
+    } catch (error) {
+      setGenerateError(error instanceof Error ? error.message : "Kutilmagan xatolik yuz berdi");
+    } finally {
       setGenerating(false);
-    }, 1200);
+    }
   };
 
   return (
@@ -194,6 +193,10 @@ export async function processCustomerLead(payload: { name: string; phone: string
                   placeholder="Masalan: Tilda formasi kelganida AI orqali Telegram kanalga yuborish..."
                   value={customPrompt}
                   onChange={(e) => setCustomPrompt(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleGenerateScript();
+                  }}
+                  maxLength={1000}
                   className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm"
                 />
                 <Button
@@ -205,6 +208,13 @@ export async function processCustomerLead(payload: { name: string; phone: string
                   {generating ? "Yozilmoqda..." : "Generatsiya"}
                 </Button>
               </div>
+
+              {generateError && (
+                <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+                  <AlertCircle className="size-3.5 shrink-0" />
+                  {generateError}
+                </div>
+              )}
 
               {generatedCode && (
                 <div className="relative rounded-xl bg-zinc-950 p-4 text-zinc-100 font-mono text-xs overflow-x-auto border border-zinc-800">
@@ -263,9 +273,6 @@ export async function processCustomerLead(payload: { name: string; phone: string
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-emerald-500" /> WhatsApp Cloud Graph API v19
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="size-2 rounded-full bg-emerald-500" /> OLX Partner Webhook
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-emerald-500" /> WebRTC Audio & SIP Trunks

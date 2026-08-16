@@ -74,7 +74,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
               <p className="mt-1 text-2xl font-bold">{credits.balance.toFixed(2)} TAY</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("balanceCard.hint")}</p>
             </div>
-            <TopUpDialog />
+            <TopUpDialog allowTestTopUp={process.env.NODE_ENV !== "production"} />
           </CardContent>
         </Card>
         <Card>

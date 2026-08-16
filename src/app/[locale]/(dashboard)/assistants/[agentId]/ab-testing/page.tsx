@@ -36,6 +36,13 @@ export default async function AssistantAbTestingPage({
   const activeTest = allTests.find((t) => t.status === "running");
   const pastTests = allTests.filter((t) => t.status !== "running");
 
+  const rateA = activeTest && activeTest.variantAConversations > 0
+    ? Math.round((activeTest.variantAConversions / activeTest.variantAConversations) * 100)
+    : null;
+  const rateB = activeTest && activeTest.variantBConversations > 0
+    ? Math.round((activeTest.variantBConversions / activeTest.variantBConversations) * 100)
+    : null;
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
@@ -44,6 +51,8 @@ export default async function AssistantAbTestingPage({
         </h2>
         <p className="text-xs text-muted-foreground">
           Bir xil AI xodim uchun ikki xil tizim promptini solishtirib, qaysi biri eng ko'p savdo va qoniqish keltirishini aniqlang.
+          Har bir variant kamida 25 ta suhbatga yetganda, tizim yuqori konversiyali variantni avtomatik g'olib deb tanlaydi —
+          yoki istalgan vaqtda qo'lda tanlashingiz mumkin.
         </p>
       </div>
 
@@ -83,12 +92,12 @@ export default async function AssistantAbTestingPage({
                 <div className="grid grid-cols-2 gap-2 pt-2 border-t text-center">
                   <div className="p-2 rounded bg-muted/30">
                     <p className="text-[11px] text-muted-foreground">Suhbatlar</p>
-                    <p className="text-sm font-bold">{activeTest.variantAConversations || 14}</p>
+                    <p className="text-sm font-bold">{activeTest.variantAConversations}</p>
                   </div>
                   <div className="p-2 rounded bg-muted/30">
                     <p className="text-[11px] text-muted-foreground">Konversiya</p>
                     <p className="text-sm font-bold text-emerald-600">
-                      {activeTest.variantAConversions ? `${activeTest.variantAConversions}%` : "18%"}
+                      {rateA !== null ? `${rateA}% (${activeTest.variantAConversions})` : "—"}
                     </p>
                   </div>
                 </div>
@@ -114,12 +123,12 @@ export default async function AssistantAbTestingPage({
                 <div className="grid grid-cols-2 gap-2 pt-2 border-t text-center">
                   <div className="p-2 rounded bg-muted/30">
                     <p className="text-[11px] text-muted-foreground">Suhbatlar</p>
-                    <p className="text-sm font-bold">{activeTest.variantBConversations || 12}</p>
+                    <p className="text-sm font-bold">{activeTest.variantBConversations}</p>
                   </div>
                   <div className="p-2 rounded bg-muted/30">
                     <p className="text-[11px] text-muted-foreground">Konversiya</p>
                     <p className="text-sm font-bold text-emerald-600">
-                      {activeTest.variantBConversions ? `${activeTest.variantBConversions}%` : "25%"}
+                      {rateB !== null ? `${rateB}% (${activeTest.variantBConversions})` : "—"}
                     </p>
                   </div>
                 </div>

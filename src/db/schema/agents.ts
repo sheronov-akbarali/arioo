@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, pgEnum, boolean, integer, real } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, pgEnum, boolean, integer, real, jsonb } from "drizzle-orm/pg-core";
 import { organizations } from "./org";
 
 export const agentRole = pgEnum("agent_role", ["sales", "support", "hr", "marketing"]);
@@ -43,4 +43,10 @@ export const aiAgents = pgTable("ai_agent", {
   interruptionMode: agentInterruptionMode("interruptionMode").notNull().default("queue"),
   maxStepsWithoutTools: integer("maxStepsWithoutTools").notNull().default(1),
   maxStepsWithTools: integer("maxStepsWithTools").notNull().default(8),
+  // Which callable tools (see src/lib/ai/tools.ts) this agent may use at
+  // runtime — read by src/lib/ai/agent-executor.ts to filter the tool set.
+  enabledToolIds: jsonb("enabledToolIds")
+    .$type<string[]>()
+    .notNull()
+    .default(["createPaymentInvoice"]),
 });

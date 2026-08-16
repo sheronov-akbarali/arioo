@@ -270,22 +270,6 @@ export default async function MarketingStatisticsPage({
             <InstagramAnalyticsCard data={instagramCard} locale={locale} />
 
             <FacebookAnalyticsCard data={facebookCard} locale={locale} />
-
-            {/* OLX.uz: no confirmed public API for listing view/contact counts yet
-                (see docs/superpowers/specs/2026-08-15-marketing-analytics-completion-design.md).
-                Shown as unavailable rather than faking numbers until an API path is confirmed. */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">OLX.uz E'lonlari</CardTitle>
-                <p className="text-xs text-muted-foreground">Ko'rishlar va Kontaktlar</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  OLX.uz hozircha e'lon statistikasi uchun ochiq API taqdim etmaydi, shuning uchun bu
-                  bo'lim hali ulanmagan.
-                </p>
-              </CardContent>
-            </Card>
           </div>
         </CardContent>
       </Card>

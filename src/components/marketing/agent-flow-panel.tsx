@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import {
   Globe,
   Send,
-  ShoppingBag,
+  MessageCircle,
   PhoneCall,
   Database,
   BookOpen,
@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const SOURCE_ICONS = [Globe, Send, ShoppingBag, PhoneCall] as const;
+const SOURCE_ICONS = [Globe, Send, MessageCircle, PhoneCall] as const;
 const SYSTEM_ICONS = [Database, BookOpen] as const;
 const CYCLE_MS = 2500;
 
@@ -55,7 +55,7 @@ function Node({
 }
 
 // Anchor points as percentages of the diagram's bounding box, matching the
-// 4-row source column (website/telegram/olx/calls), the centered agent
+// 4-row source column (website/telegram/whatsapp/calls), the centered agent
 // node, and the 2-row system column. Percentages (not measured pixels)
 // mean no ResizeObserver/layout-effect sync is needed between the cards
 // and the SVG.
@@ -84,7 +84,7 @@ type Department = (typeof DEPARTMENT_KEYS)[number];
 export function AgentFlowPanel() {
   const t = useTranslations("hero.diagram");
   const reducedMotion = useReducedMotion();
-  const sourceKeys = ["website", "telegram", "olx", "calls"] as const;
+  const sourceKeys = ["website", "telegram", "whatsapp", "calls"] as const;
   const systemKeys = ["crm", "knowledge"] as const;
 
   const [department, setDepartment] = useState<Department>("sales");

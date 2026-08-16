@@ -2,7 +2,8 @@ import { desc, eq } from "drizzle-orm";
 import { getTranslations } from "next-intl/server";
 import { Repeat2 } from "lucide-react";
 import { db } from "@/db/client";
-import { routines, routineTriggerType } from "@/db/schema/routines";
+import { routines, routineTriggerType, routineActionType } from "@/db/schema/routines";
+import { aiAgents } from "@/db/schema/agents";
 import { requireOrganization } from "@/lib/auth/dal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,11 +19,17 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
   const t = await getTranslations("routines");
   const action = createRoutineAction.bind(null, locale);
 
-  const rows = await db
-    .select()
-    .from(routines)
-    .where(eq(routines.organizationId, organization.id))
-    .orderBy(desc(routines.createdAt));
+  const [rows, agents] = await Promise.all([
+    db
+      .select()
+      .from(routines)
+      .where(eq(routines.organizationId, organization.id))
+      .orderBy(desc(routines.createdAt)),
+    db
+      .select({ id: aiAgents.id, name: aiAgents.name })
+      .from(aiAgents)
+      .where(eq(aiAgents.organizationId, organization.id)),
+  ]);
 
   const routineItems: RoutineRow[] = rows.map((r) => ({
     id: r.id,
@@ -69,6 +76,42 @@ export default async function RoutinesPage({ params }: { params: Promise<{ local
               <Label htmlFor="resource">{t("form.resource")}</Label>
               <Input id="resource" name="resource" required minLength={2} maxLength={100} placeholder={t("form.resourcePlaceholder")} />
             </div>
+
+            <div className="flex flex-col gap-2 sm:col-span-3 border-t pt-4 mt-1">
+              <Label htmlFor="actionType">Harakat turi</Label>
+              <select id="actionType" name="actionType" required defaultValue="notify" className="rounded-md border border-input bg-background px-3 py-2 text-sm w-fit">
+                {routineActionType.enumValues.map((value) => (
+                  <option key={value} value={value}>
+                    {value === "notify" ? "Bildirishnoma yuborish" : value === "webhook" ? "Webhook chaqirish" : "Suhbatni boshqa agentga uzatish"}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="notifyTitle">Bildirishnoma sarlavhasi</Label>
+              <Input id="notifyTitle" name="notifyTitle" placeholder="Masalan: Yangi hodisa" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="notifyBody">Bildirishnoma matni</Label>
+              <Input id="notifyBody" name="notifyBody" placeholder="Xabar matni" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="webhookUrl">Webhook URL</Label>
+              <Input id="webhookUrl" name="webhookUrl" type="url" placeholder="https://..." />
+            </div>
+            <div className="flex flex-col gap-2 sm:col-span-3">
+              <Label htmlFor="targetAgentId">Uzatiladigan AI xodim (faqat "uzatish" harakati uchun)</Label>
+              <select id="targetAgentId" name="targetAgentId" className="rounded-md border border-input bg-background px-3 py-2 text-sm w-fit">
+                <option value="">— tanlanmagan —</option>
+                {agents.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <Button type="submit" className="w-fit sm:col-span-3">
               {t("form.submit")}
             </Button>

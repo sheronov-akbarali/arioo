@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import {
   CheckCircle2,
   Circle,
@@ -12,27 +12,40 @@ import {
   ChevronRight,
   ChevronDown,
   Building,
+  X,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { dismissOnboardingAction } from "@/app/[locale]/(dashboard)/dashboard/onboarding-actions";
 
 export type OnboardingWizardProps = {
+  locale: string;
   hasAgents: boolean;
   hasKnowledge: boolean;
   hasChannels: boolean;
   hasChats: boolean;
   firstAgentId?: string;
+  dismissed?: boolean;
 };
 
 export function OnboardingWizard({
+  locale,
   hasAgents,
   hasKnowledge,
   hasChannels,
   hasChats,
   firstAgentId,
+  dismissed,
 }: OnboardingWizardProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(!!dismissed);
+  const [isPending, startTransition] = useTransition();
+
+  const handleDismiss = () => {
+    setIsDismissed(true);
+    startTransition(() => dismissOnboardingAction(locale));
+  };
 
   const steps = [
     {
@@ -85,8 +98,8 @@ export function OnboardingWizard({
   const completedCount = steps.filter((s) => s.done).length;
   const progressPercent = Math.round((completedCount / steps.length) * 100);
 
-  if (completedCount === steps.length) {
-    return null; // All done!
+  if (completedCount === steps.length || isDismissed) {
+    return null; // All done, or the user chose to skip
   }
 
   return (
@@ -106,22 +119,34 @@ export function OnboardingWizard({
           </CardDescription>
         </div>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="h-8 px-2 text-xs text-muted-foreground"
-        >
-          {isCollapsed ? (
-            <>
-              Ko'rsatish <ChevronDown className="size-3.5 ml-1" />
-            </>
-          ) : (
-            <>
-              Yashirish <ChevronRight className="size-3.5 ml-1" />
-            </>
-          )}
-        </Button>
+        <div className="flex items-center gap-1 shrink-0">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="h-8 px-2 text-xs text-muted-foreground"
+          >
+            {isCollapsed ? (
+              <>
+                Ko'rsatish <ChevronDown className="size-3.5 ml-1" />
+              </>
+            ) : (
+              <>
+                Yashirish <ChevronRight className="size-3.5 ml-1" />
+              </>
+            )}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={isPending}
+            onClick={handleDismiss}
+            title="Butunlay o'tkazib yuborish"
+            className="h-8 w-8 p-0 text-muted-foreground"
+          >
+            <X className="size-3.5" />
+          </Button>
+        </div>
       </CardHeader>
 
       <CardContent className="p-4 sm:p-5 pt-0 space-y-4">

@@ -18,13 +18,13 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { initiateTopUpAction } from "@/app/[locale]/(dashboard)/billing/actions";
 
-export function TopUpDialog() {
+export function TopUpDialog({ allowTestTopUp = false }: { allowTestTopUp?: boolean }) {
   const params = useParams();
   const locale = (params?.locale as string) || "uz";
 
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const [method, setMethod] = useState<"payme" | "click" | "test">("test");
+  const [method, setMethod] = useState<"payme" | "click" | "test">(allowTestTopUp ? "test" : "payme");
   const [amount, setAmount] = useState("100000");
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
@@ -105,19 +105,21 @@ export function TopUpDialog() {
               <RadioGroup
                 value={method}
                 onValueChange={(val) => setMethod(val as "payme" | "click" | "test")}
-                className="grid grid-cols-3 gap-3"
+                className={`grid gap-3 ${allowTestTopUp ? "grid-cols-3" : "grid-cols-2"}`}
               >
-                <div>
-                  <RadioGroupItem value="test" id="test" className="peer sr-only" />
-                  <Label
-                    htmlFor="test"
-                    className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent peer-data-[state=checked]:border-brand [&:has([data-state=checked])]:border-brand cursor-pointer text-center"
-                  >
-                    <Sparkles className="size-5 text-amber-500 mb-1" />
-                    <span className="font-bold text-xs">Test Top-Up</span>
-                    <span className="text-[10px] text-muted-foreground">Darhol kredit</span>
-                  </Label>
-                </div>
+                {allowTestTopUp && (
+                  <div>
+                    <RadioGroupItem value="test" id="test" className="peer sr-only" />
+                    <Label
+                      htmlFor="test"
+                      className="flex flex-col items-center justify-between rounded-lg border-2 border-muted bg-popover p-3 hover:bg-accent peer-data-[state=checked]:border-brand [&:has([data-state=checked])]:border-brand cursor-pointer text-center"
+                    >
+                      <Sparkles className="size-5 text-amber-500 mb-1" />
+                      <span className="font-bold text-xs">Test Top-Up</span>
+                      <span className="text-[10px] text-muted-foreground">Darhol kredit</span>
+                    </Label>
+                  </div>
+                )}
 
                 <div>
                   <RadioGroupItem value="payme" id="payme" className="peer sr-only" />

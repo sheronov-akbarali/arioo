@@ -3,18 +3,30 @@
 import { revalidatePath } from "next/cache";
 import { and, eq } from "drizzle-orm";
 import { db } from "@/db/client";
-import { routines, routineTriggerType } from "@/db/schema/routines";
-import { notifications } from "@/db/schema/notifications";
+import { routines, routineTriggerType, routineActionType } from "@/db/schema/routines";
 import { requireOrganization } from "@/lib/auth/dal";
+import { executeRoutine } from "@/lib/routines/executor";
 
 export async function createRoutineAction(locale: string, formData: FormData): Promise<void> {
   const { organization } = await requireOrganization(locale);
   const name = String(formData.get("name") ?? "").trim();
   const triggerType = String(formData.get("triggerType") ?? "");
   const resource = String(formData.get("resource") ?? "").trim();
+  const actionType = String(formData.get("actionType") ?? "notify");
 
   if (!name || !resource || !routineTriggerType.enumValues.includes(triggerType as never)) {
     return;
+  }
+  if (!routineActionType.enumValues.includes(actionType as never)) return;
+
+  const actionConfig: Record<string, string> = {};
+  if (actionType === "notify") {
+    actionConfig.title = String(formData.get("notifyTitle") ?? name);
+    actionConfig.body = String(formData.get("notifyBody") ?? "");
+  } else if (actionType === "webhook") {
+    actionConfig.url = String(formData.get("webhookUrl") ?? "");
+  } else if (actionType === "handoff") {
+    actionConfig.targetAgentId = String(formData.get("targetAgentId") ?? "");
   }
 
   await db.insert(routines).values({
@@ -22,6 +34,9 @@ export async function createRoutineAction(locale: string, formData: FormData): P
     name,
     triggerType: triggerType as (typeof routineTriggerType.enumValues)[number],
     resource,
+    actionType: actionType as (typeof routineActionType.enumValues)[number],
+    actionConfig,
+    status: "active",
   });
 
   revalidatePath(`/${locale}/routines`);
@@ -37,15 +52,7 @@ export async function executeRoutineNowAction(locale: string, routineId: string)
 
   if (!routine) return { error: "Rutina topilmadi" };
 
-  // Log notification for execution
-  await db.insert(notifications).values({
-    id: crypto.randomUUID(),
-    organizationId: organization.id,
-    type: "system",
-    title: `Rutina bajarildi: ${routine.name}`,
-    body: `Resurs: ${routine.resource} (${routine.triggerType}) muvaffaqiyatli ishga tushirildi.`,
-    link: `/${locale}/routines`,
-  });
+  await executeRoutine(routine, {});
 
   revalidatePath(`/${locale}/routines`);
   return { success: true };

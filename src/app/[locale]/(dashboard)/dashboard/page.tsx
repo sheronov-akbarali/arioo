@@ -90,11 +90,13 @@ export default async function DashboardPage({
 
       {/* Interactive Onboarding Wizard */}
       <OnboardingWizard
+        locale={locale}
         hasAgents={agentsCountRow.value > 0}
         hasKnowledge={knowledgeCountRow.value > 0}
         hasChannels={channelsCountRow.value > 0}
         hasChats={chatsCountRow.value > 0}
         firstAgentId={firstAgent[0]?.id}
+        dismissed={organization.onboardingStep === -1}
       />
 
       <div className="grid gap-4 md:grid-cols-3">

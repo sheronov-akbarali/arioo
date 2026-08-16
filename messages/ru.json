@@ -23,7 +23,7 @@
       "sources": "Источники",
       "website": { "label": "Сайт", "sublabel": "Новые лиды" },
       "telegram": { "label": "Telegram", "sublabel": "Диалоги" },
-      "olx": { "label": "OLX.uz", "sublabel": "Запросы по объявлениям" },
+      "whatsapp": { "label": "WhatsApp", "sublabel": "Переписка с клиентами" },
       "calls": { "label": "Звонки", "sublabel": "Телефонные лиды" },
       "crm": { "label": "CRM", "sublabel": "Сделки" },
       "knowledge": { "label": "База знаний", "sublabel": "Вопросы и ответы" },
@@ -724,7 +724,7 @@
         "genericError": "Не удалось загрузить статистику Facebook."
       },
       "channels": {
-        "title": "Telegram, YouTube, Instagram, Facebook, OLX.uz",
+        "title": "Telegram, YouTube, Instagram, Facebook",
         "subtitle": "Аналитика по другим маркетинговым каналам.",
         "comingSoon": "Скоро."
       }
@@ -919,6 +919,7 @@
     "triggerTypes": {
       "crm_event": "Событие CRM",
       "integration_event": "Событие интеграции",
+      "ai_event": "Событие от ИИ",
       "schedule": "По расписанию"
     },
     "status": {
@@ -1076,14 +1077,12 @@
       "telegram": { "name": "Telegram", "description": "Общение с клиентами через Telegram-бота" },
       "whatsapp": { "name": "WhatsApp Business", "description": "Сообщения через WhatsApp Business Cloud API" },
       "websiteWidget": { "name": "Виджет сайта", "description": "Установите чат-виджет на свой сайт" },
-      "olx": { "name": "OLX.uz", "description": "Обработка заявок с объявлений OLX.uz" },
       "sip": { "name": "SIP", "description": "Телефония для голосовых звонков" },
       "amocrm": { "name": "amoCRM", "description": "Синхронизация лидов и сделок с amoCRM" },
       "bitrix24": { "name": "Bitrix24", "description": "Синхронизация лидов и сделок с Bitrix24" },
       "google": { "name": "Google", "description": "Синхронизация с Drive, Sheets и Calendar" },
       "github": { "name": "GitHub", "description": "Работа с репозиториями и Issues" },
       "oneC": { "name": "1С", "description": "Интеграция товаров и цен с 1С" },
-      "vk": { "name": "VK · ВКонтакте", "description": "Интеграция сообщений и группы" },
       "headhunter": { "name": "HeadHunter", "description": "Канал общения с соискателями" },
       "uzum": { "name": "Uzum Market", "description": "Автоответы AI на отзывы и вопросы к товарам" },
       "customMcp": { "name": "Custom MCP Server", "description": "Подключите свои инструменты через MCP" }

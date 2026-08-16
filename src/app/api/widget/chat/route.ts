@@ -4,8 +4,7 @@ import { db } from "@/db/client";
 import { channels } from "@/db/schema/channels";
 import { conversations, messages } from "@/db/schema/conversations";
 import { aiAgents } from "@/db/schema/agents";
-import { generateText } from "ai";
-import { resolveModel } from "@/lib/ai/gateway";
+import { executeAgentResponse } from "@/lib/ai/agent-executor";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -83,18 +82,14 @@ export async function POST(req: Request) {
       content: m.content,
     }));
 
-    // 6. Vercel AI SDK orqali javob generatsiya qilish
-    const { text: aiResponse } = await generateText({
-      model: resolveModel(agent.model),
-      system: agent.systemPrompt,
-      messages: formattedHistory,
-    });
-
-    // 7. AI javobini bazaga yozish
-    await db.insert(messages).values({
+    // 6. Javob generatsiya qilish — RAG, tools, agent sozlamalari, sentiment
+    // va A/B test bilan birga (assistant xabari executeAgentResponse ichida
+    // saqlanadi, shu sababli bu yerda qayta insert qilinmaydi)
+    const { text: aiResponse } = await executeAgentResponse({
+      agentId: agent.id,
       conversationId: conversation.id,
-      role: "assistant",
-      content: aiResponse,
+      userMessage: message,
+      history: formattedHistory,
     });
 
     return NextResponse.json({ response: aiResponse }, { headers: corsHeaders });

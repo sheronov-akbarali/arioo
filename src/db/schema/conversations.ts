@@ -6,7 +6,6 @@ export const conversationChannel = pgEnum("conversation_channel", [
   "telegram",
   "whatsapp",
   "widget",
-  "olx",
 ]);
 export const conversationSentiment = pgEnum("conversation_sentiment", [
   "positive",

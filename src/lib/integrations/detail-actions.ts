@@ -7,6 +7,7 @@ import { db } from "@/db/client";
 import { integrations, integrationEvents } from "@/db/schema/integrations";
 import { requireOrganization } from "@/lib/auth/dal";
 import { testIntegrationConnection } from "./test-connection";
+import { fireRoutinesForEvent } from "@/lib/routines/executor";
 
 async function loadOwnedIntegration(integrationId: string, locale: string) {
   const { organization } = await requireOrganization(locale);
@@ -45,17 +46,22 @@ export async function testConnectionAction(
     message: result.ok ? "Manual test connection succeeded" : result.error,
   });
 
+  await fireRoutinesForEvent(row.organizationId, "integration_event", `${row.providerId}:${result.ok ? "verified" : "error"}`, {
+    integrationId,
+  });
+
   revalidatePath(`/${locale}/integrations/${integrationId}`);
   return result;
 }
 
 export async function archiveIntegrationAction(integrationId: string, locale: string): Promise<void> {
-  await loadOwnedIntegration(integrationId, locale);
+  const row = await loadOwnedIntegration(integrationId, locale);
   await db
     .update(integrations)
     .set({ status: "archived", updatedAt: new Date() })
     .where(eq(integrations.id, integrationId));
   await db.insert(integrationEvents).values({ integrationId, type: "archived" });
+  await fireRoutinesForEvent(row.organizationId, "integration_event", `${row.providerId}:archived`, { integrationId });
   revalidatePath(`/${locale}/integrations`);
   revalidatePath(`/${locale}/integrations/${integrationId}`);
   revalidatePath(`/${locale}/statistics/marketing`);

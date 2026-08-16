@@ -5,6 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/db/client";
 import { crmDeals, crmContacts } from "@/db/schema/crm";
 import { requireOrganization } from "@/lib/auth/dal";
+import { fireRoutinesForEvent } from "@/lib/routines/executor";
 import { z } from "zod";
 
 const createDealSchema = z.object({
@@ -77,6 +78,8 @@ export async function updateDealStatusAction(
     .update(crmDeals)
     .set({ status: newStatus, updatedAt: new Date() })
     .where(and(eq(crmDeals.id, dealId), eq(crmDeals.organizationId, organization.id)));
+
+  await fireRoutinesForEvent(organization.id, "crm_event", `deal_status:${newStatus}`, { dealId });
 
   revalidatePath(`/${locale}/crm`);
   return { success: true };

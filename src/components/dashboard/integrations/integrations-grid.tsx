@@ -7,7 +7,6 @@ import {
   Send,
   MessageCircle,
   Globe,
-  ShoppingBag,
   Phone,
   Building2,
   FileSpreadsheet,
@@ -26,10 +25,8 @@ import { Badge } from "@/components/ui/badge";
 import { TelegramChoiceDialog } from "./telegram-choice-dialog";
 import { WidgetConnectDialog } from "./widget-connect-dialog";
 import { WhatsappConnectDialog } from "./whatsapp-connect-dialog";
-import { OlxConnectDialog } from "./olx-connect-dialog";
 import { OAuthConnectButton } from "./oauth-connect-button";
 import { OneCConnectDialog } from "./onec-connect-dialog";
-import { VkConnectDialog } from "./vk-connect-dialog";
 import { McpConnectDialog } from "./mcp-connect-dialog";
 import { SipConnectDialog } from "./sip-connect-dialog";
 import { IntegrationStatusDashboard } from "./integration-status-dashboard";
@@ -40,7 +37,6 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   telegram: Send,
   whatsapp: MessageCircle,
   websiteWidget: Globe,
-  olx: ShoppingBag,
   sip: Phone,
   amocrm: Building2,
   bitrix24: Building2,
@@ -48,7 +44,6 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   github: GitBranch,
   oneC: Building2,
   customMcp: Webhook,
-  vk: MessageCircle,
   headhunter: Building2,
 };
 
@@ -86,7 +81,6 @@ export function IntegrationsGrid({
     telegram: "telegram",
     whatsapp: "whatsapp",
     websiteWidget: "widget",
-    olx: "olx",
   };
 
   function hasActiveChannel(providerId: string): boolean {
@@ -173,23 +167,10 @@ export function IntegrationsGrid({
               ) : (
                 <WhatsappConnectDialog agents={agents} />
               )
-            ) : provider.id === "olx" ? (
-              channels.find((c) => c.type === "olx" && c.isActive) ? (
-                <Badge
-                  variant="default"
-                  className="h-8 rounded-md bg-green-500/15 text-green-700 hover:bg-green-500/15 dark:bg-green-500/20 dark:text-green-400"
-                >
-                  {t("connected")}
-                </Badge>
-              ) : (
-                <OlxConnectDialog agents={agents} />
-              )
             ) : provider.id === "sip" ? (
               <SipConnectDialog locale={locale} />
             ) : provider.id === "oneC" ? (
               <OneCConnectDialog locale={locale} />
-            ) : provider.id === "vk" ? (
-              <VkConnectDialog locale={locale} />
             ) : provider.id === "customMcp" ? (
               <McpConnectDialog locale={locale} />
             ) : provider.connectionMode === "oauth" ? (

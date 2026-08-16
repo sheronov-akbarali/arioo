@@ -4,6 +4,7 @@ import {
   convertToModelMessages,
   createUIMessageStreamResponse,
   toUIMessageStream,
+  stepCountIs,
   type UIMessage,
 } from "ai";
 import { eq, and } from "drizzle-orm";
@@ -18,6 +19,7 @@ import {
   resolveEmbeddingProviderOptions,
   usingFreeGeminiFallback,
 } from "@/lib/ai/gateway";
+import { buildAgentTools } from "@/lib/ai/tools";
 import { getAgentForCurrentUser } from "@/lib/auth/dal";
 
 export async function POST(
@@ -72,10 +74,17 @@ export async function POST(
     });
   }
 
+  const { tools, handoffPromptNote } = await buildAgentTools(agent, conversationId);
+
   const result = streamText({
     model: resolveModel(agent.model),
-    system: agent.systemPrompt + context,
+    system: agent.systemPrompt + context + handoffPromptNote,
     messages: await convertToModelMessages(uiMessages),
+    tools,
+    stopWhen: stepCountIs(Math.max(1, agent.maxStepsWithTools)),
+    temperature: agent.temperature ?? undefined,
+    topP: agent.topP ?? undefined,
+    maxOutputTokens: agent.maxTokens ?? undefined,
     onError: ({ error }) => {
       console.error(`Chat generation failed for agent ${agentId}`, error);
     },

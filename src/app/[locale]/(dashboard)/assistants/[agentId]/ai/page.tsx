@@ -168,7 +168,7 @@ export default async function AssistantAiTabPage({
 
         <Button type="submit">{t("save")}</Button>
       </form>
-      <ToolsPanel />
+      <ToolsPanel locale={locale} agentId={agent.id} enabledToolIds={agent.enabledToolIds ?? []} />
     </div>
   );
 }

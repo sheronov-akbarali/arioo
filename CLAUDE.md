@@ -3,23 +3,21 @@
 O'zbekiston bizneslari uchun "AI xodim ijaraga olish" B2B SaaS platformasi. worken.ru
 konsepsiyasining chuqur mahalliylashtirilgan va kuchaytirilgan versiyasi: bizneslar sotuv,
 qo'llab-quvvatlash, HR va marketing uchun AI agentlarni "ishga oladi", agentlar Telegram,
-WhatsApp, OLX.uz, CRM kabi tizimlarga ulanadi va mustaqil ishlaydi.
+WhatsApp, CRM kabi tizimlarga ulanadi va mustaqil ishlaydi.
 
 Original tahlil qilingan mahsulot: https://worken.ru (bizniki emas — faqat konsepsiya manbai).
 
 ## Nega bu loyiha va nima uchun worken.ru'dan farq qiladi
 
 worken.ru Rossiya bozori uchun qurilgan (RU/EN, rubl narxlash, Avito, rus to'lov tizimlari).
-Arioo xuddi shu g'oyani O'zbekiston bozori uchun qayta quradi va 4 ta muhim joyda undan
+Arioo xuddi shu g'oyani O'zbekiston bozori uchun qayta quradi va 3 ta muhim joyda undan
 ustun bo'lishga harakat qiladi:
 
 1. **WhatsApp Business integratsiyasi** — O'zbekistonda Telegramdan ham keng tarqalgan kanal,
    worken.ru'da yo'q.
-2. **OLX.uz integratsiyasi** — Avito'ning mahalliy analogi (O'zbekistondagi eng katta
-   e'lonlar sayti).
-3. **Soha bo'yicha tayyor shablonlar** — do'kon, restoran, ta'lim markazi, ko'chmas mulk kabi
+2. **Soha bo'yicha tayyor shablonlar** — do'kon, restoran, ta'lim markazi, ko'chmas mulk kabi
    mahalliy SMB segmentlari uchun tayyor agent konfiguratsiyalari, tezroq ishga tushirish.
-4. **Human-in-the-loop rejimi** — AI ishonchsiz holatda avtomatik odamga topshiradi;
+3. **Human-in-the-loop rejimi** — AI ishonchsiz holatda avtomatik odamga topshiradi;
    ishonchni oshiradigan xavfsizlik qatlami sifatida alohida ajratib ko'rsatiladi.
 
 Qo'shimcha mahalliylashtirish: 3 til (o'zbek/rus/ingliz, standart — o'zbek), Clerk orqali
@@ -63,8 +61,7 @@ Worken'ning ichki CI vositasi).
 - **Uzoq muddatli jarayonlar:** Vercel Workflow (lid pipeline, onboarding)
 - **To'lovlar:** Stripe (xalqaro) + Payme/Click (mahalliy, maxsus integratsiya — Vercel
   Marketplace'da yo'q, qo'lda API integratsiyasi kerak)
-- **Kanallar:** Telegram Bot API, WhatsApp Business Cloud API (Meta), sayt vidjeti, OLX.uz
-  (ochiq API yo'qligi taxmin qilinadi — forma/lid asosida boshlanadi, keyin qayta tekshiriladi)
+- **Kanallar:** Telegram Bot API, WhatsApp Business Cloud API (Meta), sayt vidjeti
 - **Hosting:** Vercel
 
 ## Asosiy data-model (yuqori darajadagi)
@@ -90,7 +87,6 @@ oldin qayta ko'rib chiqiladi.
   - [x] Telegram bot connector (DB schema, UI connect, Webhook API, AI javob)
   - [x] WhatsApp Business Cloud API (DB schema, UI connect, Webhook API, AI javob)
   - [x] sayt chat-vidjeti (Backend API, UI Dialog, public/widget.js)
-  - [x] OLX.uz lid-intake (Backend Webhook, UI Dialog, RPA adapter uchun javob)
   - [x] **ovozli qo'ng'iroq muvofiqlik tizimi** (ish soatlari, "Qo'ng'iroq qilmang" ro'yxati, davr uchun urinishlar chastotasi, faqat kontekstli tashqi qo'ng'iroq) — telefon/SIP kanali qo'shilganda
 - [x] **5 — CRM/tizim integratsiyalari**: 
   - [x] ichki yengil CRM (Deals Kanban, Contacts jadvali)
@@ -149,8 +145,6 @@ dashboard'ning ichki ko'rinishi **detalma-detal worken.ru bilan bir xil** bo'lis
     ulanadi, shu sababli arzon qo'shimcha
   - Sayt statistikasi — Vercel Web Analytics (birinchi navbatda, Marketplace orqali
     oson ulanadi) + chat-vidjet orqali traffic→lid conversion funnel
-  - OLX.uz e'lon statistikasi — ko'rishlar, qo'ng'iroqlar/xabarlar soni (API imkoniga
-    qarab)
   - Bularning barchasi alohida `superpowers:brainstorming` → spec → plan tsiklidan
     o'tadi, 6-bosqichdagi "ishonchli real-time analitika dashboardlari" ishini
     kengaytiradi
@@ -243,7 +237,7 @@ da saqlanmoqda, ertaga davom ettirish uchun kerak.
   - Boshlang'ich shablonlar:
     - "Do'kon sotuv bo'limi" — narxlar, buyurtma holati so'rovlari
     - "Restoran bron qilish" — stol bron, menyu, ish vaqti
-    - "Ko'chmas mulk agenti" — OLX integratsiya, narx so'rash
+    - "Ko'chmas mulk agenti" — mulk ma'lumotlari, narx so'rash
     - "Ta'lim markazi" — kurs ma'lumotlari, ro'yxatdan o'tish
     - "Texnik qo'llab-quvvatlash" — FAQ, ticket yaratish
   - DB schema: `agent_templates` jadvali (name, description, industry, role,
@@ -345,7 +339,7 @@ shu darajaga to'liq olib chiqildi va `main`ga merge qilindi. Spec:
       almashish, `OAuthConnectButton` va `isOAuthConfigured` holat boshqaruvi.
 - [x] **Guruh 5 — Yangi/tuzatilgan formalar**: umumiy forma-integratsiya server action
       (`connectFormIntegrationAction`), SIP telefoniya dialogi, 1C uchun yangi forma,
-      VK uchun yangi forma, Custom MCP Server (URL + dinamik headers).
+      Custom MCP Server (URL + dinamik headers).
 - [x] **Guruh 6 — `/integrations/:id` boshqaruv sahifasi**: test-connection funksiyalari,
       Test/Archive/Delete server action'lari, Profil/Ulanish tafsilotlari bo'limlari,
       lifecycle audit log komponenti, ulangan integratsiya kartalaridan "Boshqarish" havolasi.

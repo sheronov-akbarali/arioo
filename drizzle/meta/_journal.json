@@ -29,6 +29,20 @@
       "when": 1786813191713,
       "tag": "0003_bouncy_masque",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786880137151,
+      "tag": "0004_brown_frightful_four",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786883429110,
+      "tag": "0005_spotty_catseye",
+      "breakpoints": true
     }
   ]
 }

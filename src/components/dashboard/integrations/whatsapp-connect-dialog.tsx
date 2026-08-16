@@ -92,6 +92,19 @@ export function WhatsappConnectDialog({
                 />
               </div>
               <div className="flex flex-col gap-2">
+                <Label htmlFor="wabaId">WhatsApp Business Account ID</Label>
+                <Input
+                  id="wabaId"
+                  name="wabaId"
+                  placeholder="1029384..."
+                  required
+                />
+                <p className="text-xs text-muted-foreground">
+                  Meta Business Manager → WhatsApp Manager sahifasida topasiz. Arioo shu ID orqali
+                  ilovani sizning akkauntingizga avtomatik obuna qiladi.
+                </p>
+              </div>
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="agentId">AI Xodim (Agent)</Label>
                 <Select name="agentId" required>
                   <SelectTrigger>

@@ -22,11 +22,9 @@ export const INTEGRATION_PROVIDERS = [
   { id: "whatsapp", categories: ["chat"], connectionMode: "special" },
   { id: "websiteWidget", categories: ["chat"], connectionMode: "special" },
   { id: "uzum", categories: ["marketplace"], connectionMode: "form" },
-  { id: "olx", categories: ["marketplace"], connectionMode: "special" },
   { id: "sip", categories: ["voice"], connectionMode: "form" },
   { id: "oneC", categories: ["crm"], connectionMode: "form" },
   { id: "customMcp", categories: ["other"], connectionMode: "form" },
-  { id: "vk", categories: ["chat"], connectionMode: "form" },
   {
     id: "amocrm",
     categories: ["crm"],

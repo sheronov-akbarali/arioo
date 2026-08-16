@@ -30,10 +30,6 @@ export async function connectTelegramBotAction(
 
     const botUsername = data.result.username;
 
-    // TODO: Webhook o'rnatish
-    // const WEBHOOK_URL = `https://<sizning-domen.uz>/api/webhooks/telegram`;
-    // await fetch(`https://api.telegram.org/bot${botToken}/setWebhook?url=${WEBHOOK_URL}`);
-
     // Bazaga yozamiz — bitta tashkilot uchun faol Telegram kanali mavjud bo'lsa,
     // yangi qator qo'shish o'rniga uni yangilaymiz (ikki nusxa yaratmaslik uchun).
     const [existingChannel] = await db
@@ -41,20 +37,41 @@ export async function connectTelegramBotAction(
       .from(channels)
       .where(and(eq(channels.organizationId, organization.id), eq(channels.type, "telegram"), eq(channels.isActive, true)));
 
+    let channelId: string;
     if (existingChannel) {
       await db
         .update(channels)
         .set({ agentId, botToken, botUsername, updatedAt: new Date() })
         .where(eq(channels.id, existingChannel.id));
+      channelId = existingChannel.id;
     } else {
-      await db.insert(channels).values({
-        organizationId: organization.id,
-        agentId,
-        type: "telegram",
-        botToken,
-        botUsername,
-        isActive: true,
-      });
+      const [newChannel] = await db
+        .insert(channels)
+        .values({
+          organizationId: organization.id,
+          agentId,
+          type: "telegram",
+          botToken,
+          botUsername,
+          isActive: true,
+        })
+        .returning({ id: channels.id });
+      channelId = newChannel.id;
+    }
+
+    // Telegram'ga xabarlarni qayerga yuborishni aytamiz — bunisiz bot hech
+    // qachon xabar qabul qilmaydi, faqat token tekshirilgan bo'lib qoladi.
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (!appUrl) {
+      return { success: false, error: "NEXT_PUBLIC_APP_URL sozlanmagan — webhook o'rnatib bo'lmadi" };
+    }
+    const webhookUrl = `${appUrl}/api/webhooks/telegram/${channelId}`;
+    const setWebhookRes = await fetch(
+      `https://api.telegram.org/bot${botToken}/setWebhook?url=${encodeURIComponent(webhookUrl)}`
+    );
+    const setWebhookData = await setWebhookRes.json();
+    if (!setWebhookData.ok) {
+      return { success: false, error: `Bot topildi, lekin webhook o'rnatilmadi: ${setWebhookData.description || "noma'lum xato"}` };
     }
 
     const [integrationRow] = await db
@@ -121,9 +138,25 @@ export async function connectWhatsappAction(
     const agentId = formData.get("agentId") as string;
     const accessToken = formData.get("accessToken") as string;
     const phoneNumberId = formData.get("phoneNumberId") as string;
+    const wabaId = formData.get("wabaId") as string;
 
-    if (!agentId || !accessToken || !phoneNumberId) {
+    if (!agentId || !accessToken || !phoneNumberId || !wabaId) {
       return { success: false, error: "Barcha maydonlarni to'ldiring" };
+    }
+
+    // Meta'ga ilovani ushbu WhatsApp Business Account'ga xabar yubortirishga
+    // obuna qilamiz — bunisiz webhook URL Meta konsolida to'g'ri bo'lsa ham
+    // hech qanday xabar kelmaydi.
+    const subscribeRes = await fetch(
+      `https://graph.facebook.com/v21.0/${wabaId}/subscribed_apps`,
+      { method: "POST", headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+    const subscribeData = await subscribeRes.json();
+    if (!subscribeRes.ok || !subscribeData.success) {
+      return {
+        success: false,
+        error: `Meta'ga obuna bo'lishda xatolik: ${subscribeData.error?.message || "token yoki WABA ID noto'g'ri"}`,
+      };
     }
 
     const [channel] = await db
@@ -142,36 +175,6 @@ export async function connectWhatsappAction(
     return { success: true, channelId: channel.id };
   } catch (error) {
     console.error("WhatsApp ulashda xato:", error);
-    return { success: false, error: "Kutilmagan xatolik yuz berdi" };
-  }
-}
-
-export async function connectOlxAction(
-  prevState: { success: boolean; error?: string; channelId?: string },
-  formData: FormData
-) {
-  try {
-    const { organization } = await requireOrganization("uz");
-    const agentId = formData.get("agentId") as string;
-
-    if (!agentId) {
-      return { success: false, error: "Agentni tanlang" };
-    }
-
-    const [channel] = await db
-      .insert(channels)
-      .values({
-        organizationId: organization.id,
-        agentId,
-        type: "olx",
-        isActive: true,
-      })
-      .returning();
-
-    revalidatePath("/integrations");
-    return { success: true, channelId: channel.id };
-  } catch (error) {
-    console.error("OLX ulashda xato:", error);
     return { success: false, error: "Kutilmagan xatolik yuz berdi" };
   }
 }

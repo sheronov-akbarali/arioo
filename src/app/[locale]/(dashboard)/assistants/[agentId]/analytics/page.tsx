@@ -9,7 +9,7 @@ import {
   Frown,
   HelpCircle,
   Clock,
-  Sparkles,
+  TrendingUp,
 } from "lucide-react";
 import { db } from "@/db/client";
 import { aiAgents } from "@/db/schema/agents";
@@ -17,6 +17,14 @@ import { conversations, messages } from "@/db/schema/conversations";
 import { requireOrganization } from "@/lib/auth/dal";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AgentTrendChart } from "@/components/dashboard/assistants/agent-trend-chart";
+import {
+  getAvgResponseSeconds,
+  getConversionRate,
+  getDailyCostTrend,
+  getDailyRevenueTrend,
+  getTopCustomerTopics,
+} from "@/lib/analytics/agent-analytics";
 
 export default async function AssistantAnalyticsPage({
   params,
@@ -68,17 +76,13 @@ export default async function AssistantAnalyticsPage({
     return acc;
   }, {} as Record<string, number>);
 
-  const conversionRate = totalConversations > 0
-    ? Math.round(((positiveCount + Math.floor(totalConversations * 0.25)) / totalConversations) * 100)
-    : 0;
-
-  // Common customer topics sample
-  const commonTopics = [
-    { topic: "Mahsulot narxlari va to'lov turlari", count: Math.max(12, Math.round(totalConversations * 0.45)), percent: "45%" },
-    { topic: "Yetkazib berish muddati va hududlar", count: Math.max(8, Math.round(totalConversations * 0.28)), percent: "28%" },
-    { topic: "Kafolat va qaytarish shartlari", count: Math.max(5, Math.round(totalConversations * 0.15)), percent: "15%" },
-    { topic: "Ish vaqti va ofis manzili", count: Math.max(3, Math.round(totalConversations * 0.12)), percent: "12%" },
-  ];
+  const [avgResponseSeconds, conversion, costTrend, revenueTrend, topTopics] = await Promise.all([
+    getAvgResponseSeconds(agentId),
+    getConversionRate(agentId, totalConversations),
+    getDailyCostTrend(agentId),
+    getDailyRevenueTrend(agentId),
+    getTopCustomerTopics(agentId, agent.model),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -102,14 +106,16 @@ export default async function AssistantAnalyticsPage({
         <Card className="shadow-xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Javob Tezligi
+              O'rtacha Javob Tezligi
             </CardTitle>
             <Zap className="size-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">~1.1s</div>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1 font-medium">
-              <Sparkles className="size-3" /> Real-time streaming
+            <div className="text-2xl font-bold">
+              {avgResponseSeconds !== null ? `${avgResponseSeconds.toFixed(1)}s` : "—"}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {avgResponseSeconds !== null ? "Haqiqiy xabarlar asosida hisoblangan" : "Hali yetarli ma'lumot yo'q"}
             </p>
           </CardContent>
         </Card>
@@ -117,14 +123,14 @@ export default async function AssistantAnalyticsPage({
         <Card className="shadow-xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Mijoz Qoniqishi
+              Konversiya (Yutilgan Bitimlar)
             </CardTitle>
             <Smile className="size-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{conversionRate > 0 ? `${conversionRate}%` : "92%"}</div>
+            <div className="text-2xl font-bold">{conversion.rate !== null ? `${conversion.rate}%` : "—"}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              Ijobiy va neytral muloqotlar
+              {conversion.wonDeals} ta CRM bitim yutildi
             </p>
           </CardContent>
         </Card>
@@ -165,9 +171,7 @@ export default async function AssistantAnalyticsPage({
               <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                 <div
                   className="h-full bg-emerald-500 rounded-full"
-                  style={{
-                    width: `${totalConversations > 0 ? (positiveCount / totalConversations) * 100 : 70}%`,
-                  }}
+                  style={{ width: `${totalConversations > 0 ? (positiveCount / totalConversations) * 100 : 0}%` }}
                 />
               </div>
             </div>
@@ -182,9 +186,7 @@ export default async function AssistantAnalyticsPage({
               <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                 <div
                   className="h-full bg-blue-500 rounded-full"
-                  style={{
-                    width: `${totalConversations > 0 ? (neutralCount / totalConversations) * 100 : 25}%`,
-                  }}
+                  style={{ width: `${totalConversations > 0 ? (neutralCount / totalConversations) * 100 : 0}%` }}
                 />
               </div>
             </div>
@@ -199,9 +201,7 @@ export default async function AssistantAnalyticsPage({
               <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                 <div
                   className="h-full bg-red-500 rounded-full"
-                  style={{
-                    width: `${totalConversations > 0 ? (negativeCount / totalConversations) * 100 : 5}%`,
-                  }}
+                  style={{ width: `${totalConversations > 0 ? (negativeCount / totalConversations) * 100 : 0}%` }}
                 />
               </div>
             </div>
@@ -226,7 +226,6 @@ export default async function AssistantAnalyticsPage({
               { key: "telegram", label: "Telegram Bot", count: channelDistribution["telegram"] || 0, badge: "Telegram" },
               { key: "whatsapp", label: "WhatsApp Business", count: channelDistribution["whatsapp"] || 0, badge: "WhatsApp" },
               { key: "widget", label: "Sayt Vidjeti", count: channelDistribution["widget"] || 0, badge: "Web Widget" },
-              { key: "olx", label: "OLX E'lonlar", count: channelDistribution["olx"] || 0, badge: "OLX" },
               { key: "playground", label: "Test Playground", count: channelDistribution["playground"] || 0, badge: "Arioo" },
             ].map((ch) => (
               <div key={ch.key} className="flex items-center justify-between p-2.5 rounded-lg border bg-muted/30">
@@ -241,33 +240,63 @@ export default async function AssistantAnalyticsPage({
         </Card>
       </div>
 
+      {/* Cost vs Revenue trend */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card className="shadow-xs">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <DollarSign className="size-4 text-purple-500" /> Kunlik Xarajat (14 kun)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AgentTrendChart data={costTrend} unit="usd" color="var(--color-brand)" />
+          </CardContent>
+        </Card>
+        <Card className="shadow-xs">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <TrendingUp className="size-4 text-emerald-500" /> Kunlik Daromad (14 kun, yutilgan bitimlar)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AgentTrendChart data={revenueTrend} unit="uzs" color="#10b981" />
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Top Topics */}
       <Card className="shadow-xs">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
-            <HelpCircle className="size-4 text-brand" /> Eng Ko'p Beriladigan Savollar (TOP-4)
+            <HelpCircle className="size-4 text-brand" /> Eng Ko'p Beriladigan Savollar (AI Klasterlash)
           </CardTitle>
           <CardDescription>
-            Mijozlar tomonidan eng ko'p qiziqilgan mavzular klasteri
+            So'nggi 150 ta mijoz xabari AI tomonidan mavzularga guruhlangan
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            {commonTopics.map((item, idx) => (
-              <div key={idx} className="flex items-center justify-between p-3 rounded-lg border bg-background hover:bg-muted/40 transition-colors">
-                <div className="flex items-center gap-3">
-                  <span className="flex size-6 items-center justify-center rounded-full bg-brand/10 text-brand text-xs font-bold">
-                    {idx + 1}
-                  </span>
-                  <span className="text-sm font-medium">{item.topic}</span>
+          {topTopics.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-6 text-center">
+              Klasterlash uchun hali yetarli suhbat tarixi yo'q
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {topTopics.map((item, idx) => (
+                <div key={idx} className="flex items-center justify-between p-3 rounded-lg border bg-background hover:bg-muted/40 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <span className="flex size-6 items-center justify-center rounded-full bg-brand/10 text-brand text-xs font-bold">
+                      {idx + 1}
+                    </span>
+                    <span className="text-sm font-medium">{item.topic}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary">{item.percent}%</Badge>
+                    <span className="text-xs text-muted-foreground">{item.count} marta</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary">{item.percent}</Badge>
-                  <span className="text-xs text-muted-foreground">{item.count} marta</span>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

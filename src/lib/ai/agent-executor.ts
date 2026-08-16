@@ -1,10 +1,9 @@
 import "server-only";
-import { generateText, embed, tool } from "ai";
-import { z } from "zod";
+import { generateText, embed, stepCountIs } from "ai";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { aiAgents } from "@/db/schema/agents";
-import { messages as messagesTable } from "@/db/schema/conversations";
+import { conversations, messages as messagesTable } from "@/db/schema/conversations";
 import { organizationCredits, creditTransactions } from "@/db/schema/billing";
 import { abTests } from "@/db/schema/ab-tests";
 import { retrieveRelevantChunks } from "./retrieval";
@@ -16,7 +15,10 @@ import {
   resolveEmbeddingProviderOptions,
   usingFreeGeminiFallback,
 } from "./gateway";
-import { createPaymentInvoice } from "@/lib/billing/in-chat-payments";
+import { buildAgentTools } from "./tools";
+import { classifyAndReactToTurn } from "./sentiment";
+import { assignAbVariant, readConversationMetadata } from "./ab-testing";
+import { findMatchingMessageTemplate } from "@/lib/message-templates/suggest";
 
 export type AgentExecutionOptions = {
   agentId: string;
@@ -32,46 +34,43 @@ export type AgentExecutionResult = {
   costUsd?: number | null;
 };
 
+// Emoji-stripping regex — covers the common emoji Unicode blocks.
+const EMOJI_REGEX =
+  /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F1E6}-\u{1F1FF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}️]/gu;
+
+function stripEmojis(text: string): string {
+  return text.replace(EMOJI_REGEX, "").replace(/ {2,}/g, " ").trim();
+}
+
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/\*(.*?)\*/g, "$1")
+    .replace(/`(.*?)`/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\[(.*?)\]\((.*?)\)/g, "$1 ($2)");
+}
+
 export async function executeAgentResponse(
   options: AgentExecutionOptions
 ): Promise<AgentExecutionResult> {
   const { agentId, conversationId, userMessage, history } = options;
 
-  // 1. Fetch Agent & Org
-  const [agent] = await db
-    .select()
-    .from(aiAgents)
-    .where(eq(aiAgents.id, agentId));
+  const [agent] = await db.select().from(aiAgents).where(eq(aiAgents.id, agentId));
+  if (!agent) throw new Error(`Agent not found: ${agentId}`);
 
-  if (!agent) {
-    throw new Error(`Agent not found: ${agentId}`);
-  }
+  const [conversation] = await db.select().from(conversations).where(eq(conversations.id, conversationId));
+  const metadata = readConversationMetadata(conversation?.metadata ?? null);
 
-  // 2. Check active A/B test
-  const [activeAbTest] = await db
-    .select()
-    .from(abTests)
-    .where(eq(abTests.agentId, agentId));
-
+  // 1. Active A/B test — variant assignment is sticky per conversation.
+  const [activeAbTest] = await db.select().from(abTests).where(eq(abTests.agentId, agentId));
   let systemPrompt = agent.systemPrompt;
   if (activeAbTest && activeAbTest.status === "running") {
-    const randomPercent = Math.random() * 100;
-    if (randomPercent < activeAbTest.trafficSplit) {
-      systemPrompt = activeAbTest.variantAPrompt;
-      await db
-        .update(abTests)
-        .set({ variantAConversations: sql`${abTests.variantAConversations} + 1` })
-        .where(eq(abTests.id, activeAbTest.id));
-    } else {
-      systemPrompt = activeAbTest.variantBPrompt;
-      await db
-        .update(abTests)
-        .set({ variantBConversations: sql`${abTests.variantBConversations} + 1` })
-        .where(eq(abTests.id, activeAbTest.id));
-    }
+    const variant = await assignAbVariant(conversationId, metadata, activeAbTest);
+    systemPrompt = variant === "A" ? activeAbTest.variantAPrompt : activeAbTest.variantBPrompt;
   }
 
-  // 3. RAG Knowledge Base Retrieval
+  // 2. RAG Knowledge Base Retrieval
   let context = "";
   if (userMessage.trim()) {
     try {
@@ -89,49 +88,41 @@ export async function executeAgentResponse(
     }
   }
 
-  // 4. Generate AI response with In-Chat Payment Tool
+  // 3. Matching canned message template, offered as a suggestion (not forced)
+  const templateSuggestion = await findMatchingMessageTemplate(agent.organizationId, userMessage);
+  const templateContext = templateSuggestion
+    ? `\n\nMos keluvchi tayyor shablon (kerak bo'lsa asos sifatida foydalaning, so'zma-so'z takrorlamang):\n"${templateSuggestion.body}"`
+    : "";
+
+  // 4. Build the tool set (integration tools the org enabled + always-on safety tools)
+  const { tools, handoffPromptNote } = await buildAgentTools(agent, conversationId);
+
   const fullSystemPrompt =
     systemPrompt +
     context +
-    `\n\nEslatma: Agar mijoz biror mahsulot yoki xizmatni xarid qilishga, buyurtma berishga yoki hisobni to'lashga rozi bo'lsa, 'createPaymentInvoice' funksiyasidan foydalanib to'lov havolasini generatsiya qiling va mijozga taqdim eting.`;
+    templateContext +
+    handoffPromptNote +
+    `\n\nEslatma: Agar mijoz biror mahsulot yoki xizmatni xarid qilishga, buyurtma berishga yoki hisobni to'lashga rozi bo'lsa va 'createPaymentInvoice' vositasi mavjud bo'lsa, undan foydalaning.`;
 
-  const paymentTool = tool({
-    description:
-      "Mijoz mahsulot yoki xizmatni xarid qilishga rozi bo'lganda to'lov havolalarini (Click, Payme, Uzum) yaratish.",
-    parameters: z.object({
-      amountUzs: z.number().describe("To'lov summasi (so'mda)"),
-      dealTitle: z.string().describe("Mahsulot yoki xizmat nomi"),
-      customerName: z.string().optional().describe("Xaridor ismi"),
-      customerPhone: z.string().optional().describe("Xaridor telefon raqami"),
-    }) as any,
-    execute: async (input: any) => {
-      try {
-        const invoice = await createPaymentInvoice({
-          organizationId: agent.organizationId,
-          agentId: agent.id,
-          amountUzs: Number(input?.amountUzs || 0),
-          dealTitle: String(input?.dealTitle || "Buyurtma"),
-          contactName: input?.customerName,
-          contactPhone: input?.customerPhone,
-        });
-        return invoice;
-      } catch (err) {
-        console.error("Failed to create in-chat payment invoice:", err);
-        return { error: "To'lov havolasini yaratib bo'lmadi" };
-      }
-    },
-  } as any);
+  // 5. Recent-history window & real generation settings from the agent editor
+  const windowedHistory = history.slice(-Math.max(2, agent.recentMessagesCount));
 
-  const { text: aiResponse, usage } = await generateText({
+  const { text: rawResponse, usage } = await generateText({
     model: resolveModel(agent.model),
     system: fullSystemPrompt,
-    messages: history,
-    tools: {
-      createPaymentInvoice: paymentTool,
-    },
+    messages: windowedHistory,
+    tools,
+    stopWhen: stepCountIs(Math.max(1, agent.maxStepsWithTools)),
+    temperature: agent.temperature ?? undefined,
+    topP: agent.topP ?? undefined,
+    maxOutputTokens: agent.maxTokens ?? undefined,
   });
 
-  // 5. Cost & Usage Estimation
+  let aiResponse = rawResponse;
+  if (agent.removeMarkdown) aiResponse = stripMarkdown(aiResponse);
+  if (agent.removeEmojis) aiResponse = stripEmojis(aiResponse);
+
+  // 6. Cost & Usage Estimation
   let estimatedCost = 0;
   if (!usingFreeGeminiFallback) {
     try {
@@ -146,7 +137,7 @@ export async function executeAgentResponse(
     }
   }
 
-  // 6. Save assistant message
+  // 7. Save assistant message
   await db.insert(messagesTable).values({
     conversationId,
     role: "assistant",
@@ -155,22 +146,15 @@ export async function executeAgentResponse(
     estimatedCostUsd: estimatedCost,
   });
 
-  // 7. Deduct from organization credits & log transaction (best effort)
+  // 8. Deduct from organization credits & log transaction (best effort)
   try {
     const costInCredits = Math.max(1, Math.round(estimatedCost * 13000)); // 1 USD approx 13000 UZS / 1 Credit
     await db
       .insert(organizationCredits)
-      .values({
-        organizationId: agent.organizationId,
-        balance: -costInCredits,
-        updatedAt: new Date(),
-      })
+      .values({ organizationId: agent.organizationId, balance: -costInCredits, updatedAt: new Date() })
       .onConflictDoUpdate({
         target: organizationCredits.organizationId,
-        set: {
-          balance: sql`${organizationCredits.balance} - ${costInCredits}`,
-          updatedAt: new Date(),
-        },
+        set: { balance: sql`${organizationCredits.balance} - ${costInCredits}`, updatedAt: new Date() },
       });
 
     await db.insert(creditTransactions).values({
@@ -183,9 +167,17 @@ export async function executeAgentResponse(
     console.warn("Credit deduction notice:", err);
   }
 
-  return {
-    text: aiResponse,
-    tokenCount: usage.totalTokens,
-    costUsd: estimatedCost,
-  };
+  // 9. Sentiment classification + auto-lead/notification reaction (best effort)
+  await classifyAndReactToTurn({
+    organizationId: agent.organizationId,
+    agentId: agent.id,
+    conversationId,
+    agentName: agent.name,
+    agentModel: agent.model,
+    userMessage,
+    channel: conversation?.channel ?? "playground",
+    externalChatId: conversation?.externalChatId,
+  });
+
+  return { text: aiResponse, tokenCount: usage.totalTokens, costUsd: estimatedCost };
 }

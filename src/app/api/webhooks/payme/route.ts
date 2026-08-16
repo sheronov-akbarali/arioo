@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { timingSafeEqual } from "crypto";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db/client";
 import { organizationCredits, creditTransactions } from "@/db/schema/billing";
@@ -9,10 +10,34 @@ import { notifications } from "@/db/schema/notifications";
  * Payme JSON-RPC 2.0 Merchant Webhook Handler
  * Documentation: https://developer.help.paycom.uz/metody-merchant-api
  */
+
+// Payme signs every request with HTTP Basic Auth: login "Paycom", password =
+// the merchant key from the Payme Business cabinet. Constant-time compare to
+// avoid a timing side-channel; fail closed if the key isn't configured.
+export function isAuthorizedPaymeRequest(req: Request): boolean {
+  const merchantKey = process.env.PAYME_MERCHANT_KEY;
+  if (!merchantKey) return false;
+
+  const authHeader = req.headers.get("authorization") || "";
+  const expected = `Basic ${Buffer.from(`Paycom:${merchantKey}`).toString("base64")}`;
+
+  const a = Buffer.from(authHeader);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { method, params, id } = body;
+
+    if (!isAuthorizedPaymeRequest(req)) {
+      return NextResponse.json({
+        error: { code: -32504, message: { uz: "Ruxsat yo'q", ru: "Недостаточно привилегий", en: "Not authorized" } },
+        id: id ?? null,
+      });
+    }
 
     // CheckPerformTransaction
     if (method === "CheckPerformTransaction") {
@@ -39,6 +64,20 @@ export async function POST(req: Request) {
       const orgId = params?.account?.org_id;
       const txId = params?.account?.tx_id as string | undefined;
       const paymeTxId = params?.id || crypto.randomUUID();
+
+      // Payme retries PerformTransaction on network hiccups — guard against
+      // double-crediting the same transaction twice.
+      const [existingTx] = await db
+        .select({ id: creditTransactions.id })
+        .from(creditTransactions)
+        .where(eq(creditTransactions.id, `payme_${paymeTxId}`));
+
+      if (existingTx) {
+        return NextResponse.json({
+          result: { transaction: paymeTxId, perform_time: Date.now(), state: 2 },
+          id,
+        });
+      }
 
       // Check if this payment is for a CRM Deal (format: deal_<dealId>_<orgId>)
       if (txId?.startsWith("deal_")) {

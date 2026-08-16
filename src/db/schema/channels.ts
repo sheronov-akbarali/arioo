@@ -2,7 +2,7 @@ import { pgTable, text, timestamp, boolean, pgEnum } from "drizzle-orm/pg-core";
 import { organizations } from "./org";
 import { aiAgents } from "./agents";
 
-export const channelType = pgEnum("channel_type", ["telegram", "whatsapp", "widget", "olx"]);
+export const channelType = pgEnum("channel_type", ["telegram", "whatsapp", "widget"]);
 
 export const channels = pgTable("channel", {
   id: text("id")

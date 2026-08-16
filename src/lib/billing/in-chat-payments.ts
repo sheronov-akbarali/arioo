@@ -18,8 +18,8 @@ export type PaymentInvoiceResult = {
   invoiceId: string;
   dealId?: string;
   amountUzs: number;
-  clickUrl: string;
-  paymeUrl: string;
+  clickUrl: string | null;
+  paymeUrl: string | null;
   uzumUrl?: string;
   formattedMessage: string;
 };
@@ -31,9 +31,9 @@ export async function createPaymentInvoice(
   params: PaymentInvoiceParams
 ): Promise<PaymentInvoiceResult> {
   const invoiceId = `inv_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-  const clickServiceId = process.env.CLICK_SERVICE_ID || "33445";
-  const clickMerchantId = process.env.CLICK_MERCHANT_ID || "22110";
-  const paymeMerchantId = process.env.PAYME_MERCHANT_ID || "640102030405";
+  const clickServiceId = process.env.CLICK_SERVICE_ID;
+  const clickMerchantId = process.env.CLICK_MERCHANT_ID;
+  const paymeMerchantId = process.env.PAYME_MERCHANT_ID;
 
   // 1. Create or Find CRM Contact & Deal if possible
   let dealId: string | undefined;
@@ -76,26 +76,40 @@ export async function createPaymentInvoice(
     ? `deal_${dealId}_${params.organizationId}`
     : `${params.organizationId}_${invoiceId}`;
 
-  const clickUrl = getClickCheckoutUrl({
-    serviceId: clickServiceId,
-    merchantId: clickMerchantId,
-    amountUzs: params.amountUzs,
-    transactionId: transactionParam,
-    returnUrl: "https://arioo.uz",
-  });
+  const clickUrl = clickServiceId && clickMerchantId
+    ? getClickCheckoutUrl({
+        serviceId: clickServiceId,
+        merchantId: clickMerchantId,
+        amountUzs: params.amountUzs,
+        transactionId: transactionParam,
+        returnUrl: "https://arioo.uz",
+      })
+    : null;
 
-  const paymeUrl = getPaymeCheckoutUrl({
-    merchantId: paymeMerchantId,
-    amountUzs: params.amountUzs,
-    organizationId: params.organizationId,
-    transactionId: transactionParam,
-  });
+  const paymeUrl = paymeMerchantId
+    ? getPaymeCheckoutUrl({
+        merchantId: paymeMerchantId,
+        amountUzs: params.amountUzs,
+        organizationId: params.organizationId,
+        transactionId: transactionParam,
+      })
+    : null;
 
-  const uzumUrl = `https://pay.uzum.uz/pay?merchantId=${clickMerchantId}&amount=${params.amountUzs}&orderId=${transactionParam}`;
+  const uzumUrl = clickMerchantId
+    ? `https://pay.uzum.uz/pay?merchantId=${clickMerchantId}&amount=${params.amountUzs}&orderId=${transactionParam}`
+    : undefined;
 
   const formattedAmount = new Intl.NumberFormat("uz-UZ").format(params.amountUzs);
 
-  const formattedMessage = `💳 **To'lov uchun hisob:**\n\n📌 **Buyurtma:** ${params.dealTitle}\n💰 **Summa:** ${formattedAmount} so'm\n\nQuyidagi to'lov tizimlaridan biri orqali 1 ta bosishda to'lashingiz mumkin:\n\n🔹 [Click orqali to'lash](${clickUrl})\n🔹 [Payme orqali to'lash](${paymeUrl})\n🔹 [Uzum Pay orqali to'lash](${uzumUrl})\n\nTo'lovingiz qabul qilingach, buyurtmangiz darhol faollashadi!`;
+  const paymentLines = [
+    clickUrl ? `🔹 [Click orqali to'lash](${clickUrl})` : null,
+    paymeUrl ? `🔹 [Payme orqali to'lash](${paymeUrl})` : null,
+    uzumUrl ? `🔹 [Uzum Pay orqali to'lash](${uzumUrl})` : null,
+  ].filter(Boolean);
+
+  const formattedMessage = paymentLines.length > 0
+    ? `💳 **To'lov uchun hisob:**\n\n📌 **Buyurtma:** ${params.dealTitle}\n💰 **Summa:** ${formattedAmount} so'm\n\nQuyidagi to'lov tizimlaridan biri orqali 1 ta bosishda to'lashingiz mumkin:\n\n${paymentLines.join("\n")}\n\nTo'lovingiz qabul qilingach, buyurtmangiz darhol faollashadi!`
+    : `💳 **To'lov uchun hisob:**\n\n📌 **Buyurtma:** ${params.dealTitle}\n💰 **Summa:** ${formattedAmount} so'm\n\nTo'lov tizimi hozircha sozlanmagan — operator siz bilan bog'lanib to'lovni qabul qiladi.`;
 
   return {
     invoiceId,

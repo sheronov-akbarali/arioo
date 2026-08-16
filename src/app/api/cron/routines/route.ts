@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
-import { db } from "@/db/client";
-import { routines } from "@/db/schema/routines";
-import { notifications } from "@/db/schema/notifications";
+import { runScheduledRoutines } from "@/lib/routines/executor";
 
 /**
- * Automated Cron Runner for Scheduled Routines
+ * Cron Runner for "schedule"-triggered Routines.
+ * "crm_event"/"integration_event"/"ai_event" routines fire immediately from
+ * their real event source instead — see src/lib/routines/executor.ts.
  * Can be triggered by Vercel Cron or any scheduler via GET/POST /api/cron/routines
  */
 export async function GET(req: Request) {
@@ -26,36 +25,11 @@ async function handleCron(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Fetch active routines
-    const activeRoutines = await db
-      .select()
-      .from(routines)
-      .where(eq(routines.status, "active"));
-
-    console.log(`Cron: Executing ${activeRoutines.length} active routines...`);
-
-    const results = [];
-    for (const r of activeRoutines) {
-      try {
-        // Record notification for organization
-        await db.insert(notifications).values({
-          id: crypto.randomUUID(),
-          organizationId: r.organizationId,
-          type: "system",
-          title: `Avtomatik Rutina bajarildi: ${r.name}`,
-          body: `Trigger: ${r.triggerType} (${r.resource}) reja bo'yicha muvaffaqiyatli ishga tushirildi.`,
-        });
-
-        results.push({ id: r.id, name: r.name, status: "executed" });
-      } catch (err) {
-        console.error(`Failed to execute routine ${r.id}:`, err);
-        results.push({ id: r.id, name: r.name, status: "failed" });
-      }
-    }
+    const results = await runScheduledRoutines();
 
     return NextResponse.json({
       success: true,
-      executedCount: activeRoutines.length,
+      executedCount: results.length,
       results,
     });
   } catch (error) {

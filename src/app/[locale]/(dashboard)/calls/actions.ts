@@ -5,6 +5,7 @@ import { db } from "@/db/client";
 import { conversations, messages } from "@/db/schema/conversations";
 import { notifications } from "@/db/schema/notifications";
 import { requireOrganization } from "@/lib/auth/dal";
+import { initiateOutboundCall } from "@/lib/voice/sip-client";
 import { z } from "zod";
 
 const startCallSchema = z.object({
@@ -28,22 +29,34 @@ export async function startVoiceCallAction(
     return { error: "Agent yoki telefon raqami noto'g'ri kiritildi" };
   }
 
-  // Create conversation entry for call
+  // Actually attempt the outbound call (compliance policy + real SIP
+  // provider request) — no longer a hardcoded "success" regardless of
+  // whether a phone actually rings.
+  const callResult = await initiateOutboundCall({
+    organizationId: organization.id,
+    agentId: parsed.data.agentId,
+    recipientPhone: parsed.data.phone,
+  });
+
+  if (callResult.status !== "initiated") {
+    return { error: callResult.reason || "Qo'ng'iroqni boshlab bo'lmadi" };
+  }
+
+  // Create conversation entry for the call
   const [conv] = await db
     .insert(conversations)
     .values({
       agentId: parsed.data.agentId,
       channel: "widget",
       externalChatId: `call_${parsed.data.phone}_${Date.now()}`,
-      metadata: JSON.stringify({ type: "voice_call", phone: parsed.data.phone }),
+      metadata: JSON.stringify({ type: "voice_call", phone: parsed.data.phone, sipCallId: callResult.callId }),
     })
     .returning();
 
-  // Initial greeting
   await db.insert(messages).values({
     conversationId: conv.id,
     role: "assistant",
-    content: "Assalomu alaykum! Arioo AI ovozli yordamchisi xizmatingizda. Sizga qanday yordam bera olaman?",
+    content: callResult.greetingText || "Assalomu alaykum! Arioo AI ovozli yordamchisi xizmatingizda.",
   });
 
   await db.insert(notifications).values({

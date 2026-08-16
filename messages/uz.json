@@ -23,7 +23,7 @@
       "sources": "Manbalar",
       "website": { "label": "Veb-sayt", "sublabel": "Yangi lidlar" },
       "telegram": { "label": "Telegram", "sublabel": "Dialoglar" },
-      "olx": { "label": "OLX.uz", "sublabel": "E'lon so'rovlari" },
+      "whatsapp": { "label": "WhatsApp", "sublabel": "Mijozlar bilan yozishmalar" },
       "calls": { "label": "Qo'ng'iroqlar", "sublabel": "Telefon lidlari" },
       "crm": { "label": "CRM", "sublabel": "Bitimlar" },
       "knowledge": { "label": "Bilim bazasi", "sublabel": "Savol-javoblar" },
@@ -724,7 +724,7 @@
         "genericError": "Facebook statistikasini yuklab bo'lmadi."
       },
       "channels": {
-        "title": "Telegram, YouTube, Instagram, Facebook, OLX.uz",
+        "title": "Telegram, YouTube, Instagram, Facebook",
         "subtitle": "Boshqa marketing kanallaringiz bo'yicha analitika.",
         "comingSoon": "Tez orada."
       }
@@ -919,6 +919,7 @@
     "triggerTypes": {
       "crm_event": "CRM hodisasi",
       "integration_event": "Integratsiya hodisasi",
+      "ai_event": "AI aniqlagan hodisa",
       "schedule": "Jadval bo'yicha"
     },
     "status": {
@@ -1076,14 +1077,12 @@
       "telegram": { "name": "Telegram", "description": "Telegram bot orqali mijozlar bilan muloqot" },
       "whatsapp": { "name": "WhatsApp Business", "description": "WhatsApp Business Cloud API orqali xabarlashish" },
       "websiteWidget": { "name": "Sayt vidjeti", "description": "Veb-saytingizga chat vidjeti o'rnating" },
-      "olx": { "name": "OLX.uz", "description": "OLX.uz e'lonlaridan kelgan so'rovlarni qayta ishlash" },
       "sip": { "name": "SIP", "description": "Ovozli qo'ng'iroqlar uchun telefoniya ulanishi" },
       "amocrm": { "name": "amoCRM", "description": "Lidlar va bitimlarni amoCRM bilan sinxronlash" },
       "bitrix24": { "name": "Bitrix24", "description": "Lidlar va bitimlarni Bitrix24 bilan sinxronlash" },
       "google": { "name": "Google", "description": "Drive, Sheets va Calendar bilan sinxronlash" },
       "github": { "name": "GitHub", "description": "Repozitoriy va Issues bilan ishlash" },
       "oneC": { "name": "1C", "description": "1C bilan mahsulot va narxlar integratsiyasi" },
-      "vk": { "name": "VK · ВКонтакте", "description": "Xabarlar va guruh integratsiyasi" },
       "headhunter": { "name": "HeadHunter", "description": "Nomzodlar bilan muloqot kanali" },
       "uzum": { "name": "Uzum Market", "description": "Sharhlar va tovar savollariga avtomatik AI javoblar" },
       "customMcp": { "name": "Custom MCP Server", "description": "O'z vositalaringizni MCP orqali ulang" }

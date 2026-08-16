@@ -26,8 +26,13 @@ export async function initiateTopUpAction(
 
   const transactionId = crypto.randomUUID();
 
-  // Test to'lov rejimi (darhol balansga qo'shiladi)
+  // Test to'lov rejimi (darhol balansga qo'shiladi) — faqat production bo'lmagan
+  // muhitda ochiq, aks holda istalgan foydalanuvchi to'lovsiz balans olishi mumkin edi.
   if (method === "test") {
+    if (process.env.NODE_ENV === "production") {
+      return { success: false, error: "Test to'lov rejimi production muhitida mavjud emas" };
+    }
+
     await db
       .insert(organizationCredits)
       .values({
@@ -59,7 +64,10 @@ export async function initiateTopUpAction(
 
   // Payme Merchant checkout
   if (method === "payme") {
-    const paymeMerchantId = process.env.PAYME_MERCHANT_ID || "demo_merchant_id";
+    const paymeMerchantId = process.env.PAYME_MERCHANT_ID;
+    if (!paymeMerchantId) {
+      return { success: false, error: "Payme to'lov tizimi hozircha sozlanmagan, administrator bilan bog'laning" };
+    }
     const checkoutUrl = getPaymeCheckoutUrl({
       merchantId: paymeMerchantId,
       amountUzs: amount,
@@ -71,8 +79,11 @@ export async function initiateTopUpAction(
 
   // Click Shop checkout
   if (method === "click") {
-    const clickServiceId = process.env.CLICK_SERVICE_ID || "demo_service_id";
-    const clickMerchantId = process.env.CLICK_MERCHANT_ID || "demo_merchant_id";
+    const clickServiceId = process.env.CLICK_SERVICE_ID;
+    const clickMerchantId = process.env.CLICK_MERCHANT_ID;
+    if (!clickServiceId || !clickMerchantId) {
+      return { success: false, error: "Click to'lov tizimi hozircha sozlanmagan, administrator bilan bog'laning" };
+    }
     const checkoutUrl = getClickCheckoutUrl({
       serviceId: clickServiceId,
       merchantId: clickMerchantId,

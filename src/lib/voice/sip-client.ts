@@ -62,12 +62,52 @@ export async function initiateOutboundCall(
     language: "uz",
   });
 
-  return {
-    callId,
-    status: "initiated",
-    greetingText,
-    greetingAudio,
-  };
+  // 4. Actually place the call through the configured SIP/telephony
+  // provider. Without real credentials there is no way to make a phone
+  // ring, so this fails honestly instead of pretending success — see
+  // SIP_PROVIDER_URL/SIP_PROVIDER_API_KEY in .env.example.
+  const providerUrl = process.env.SIP_PROVIDER_URL;
+  const providerApiKey = process.env.SIP_PROVIDER_API_KEY;
+  if (!providerUrl || !providerApiKey) {
+    return {
+      callId,
+      status: "failed",
+      reason: "SIP telefoniya provayderi ulanmagan (Integrations bo'limida sozlang)",
+      greetingText,
+      greetingAudio,
+    };
+  }
+
+  try {
+    // Generic REST contract: adjust the request/response shape to match
+    // whichever real SIP provider (Zadarma, Voximplant, a Twilio SIP
+    // trunk, ...) the organization has actually signed up with.
+    const res = await fetch(providerUrl, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${providerApiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: request.recipientPhone,
+        greetingAudioBase64: greetingAudio.audioBase64,
+        callbackId: callId,
+      }),
+      signal: AbortSignal.timeout(10000),
+    });
+
+    if (!res.ok) {
+      const errorBody = await res.text();
+      return { callId, status: "failed", reason: `SIP provayder xatosi: ${res.status} ${errorBody}`, greetingText, greetingAudio };
+    }
+
+    return { callId, status: "initiated", greetingText, greetingAudio };
+  } catch (err) {
+    return {
+      callId,
+      status: "failed",
+      reason: err instanceof Error ? err.message : "SIP provayderga ulanib bo'lmadi",
+      greetingText,
+      greetingAudio,
+    };
+  }
 }
 
 /**
