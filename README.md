@@ -65,7 +65,11 @@ AI xodimning turli kanallarda (Telegram, Vebsayt) mijozlar bilan qilgan barcha s
 ## 3. Admin Paneli
 
 Admin panel faqat tizim egalari (superadminlar) uchun yopiq hududdir (`/uz/admin` orqali kiriladi).
-Kirish uchun login: `admin@arioo.uz`, parol: `admin123`.
+Kirish ma'lumotlari (email va parol) kodda emas, `.env.local` faylidagi `ADMIN_EMAIL` va
+`ADMIN_PASSWORD_HASH` o'zgaruvchilarida saqlanadi — parolning o'zi hech qayerda ochiq matnda
+saqlanmaydi, faqat xesh (`src/lib/admin/password.ts`dagi `hashAdminPassword()` orqali
+generatsiya qilinadi). Kirish ma'lumotlarini bilish kerak bo'lgan shaxsga xavfsiz kanal orqali
+alohida yuboring.
 
 **Admin Imkoniyatlari:**
 - **Asosiy Ko'rsatkichlar:** Jami mijozlar, jami yaratilgan AI xodimlar, daromad.

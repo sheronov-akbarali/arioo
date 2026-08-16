@@ -36,7 +36,7 @@ export function AdminLoginForm({ locale }: { locale: string }) {
               id="email" 
               name="email" 
               type="email" 
-              placeholder="admin@arioo.uz" 
+              placeholder="admin@example.com"
               required 
             />
           </div>
