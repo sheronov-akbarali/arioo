@@ -105,20 +105,22 @@ export function AgentFlowPanel() {
     `M ${AGENT_POINT.x} ${AGENT_POINT.y} C 70 ${AGENT_POINT.y}, 70 ${SYSTEM_Y[i]}, ${SYSTEM_X} ${SYSTEM_Y[i]}`;
 
   return (
-    <div className="rounded-2xl border border-border bg-card/50 p-6">
+    <div className="min-w-0 rounded-2xl border border-border bg-card/50 p-6">
       <Tabs value={department} onValueChange={(v) => setDepartment(v as Department)}>
-        <TabsList className="mb-4">
-          {DEPARTMENT_KEYS.map((key) => (
-            <TabsTrigger key={key} value={key}>
-              {t(`departments.${key}`)}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        <div className="mb-4 -mx-1 overflow-x-auto px-1">
+          <TabsList>
+            {DEPARTMENT_KEYS.map((key) => (
+              <TabsTrigger key={key} value={key} className="shrink-0">
+                {t(`departments.${key}`)}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
       </Tabs>
       <p className="mb-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
         {t("sources")}
       </p>
-      <div className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+      <div className="relative grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
         <svg
           aria-hidden
           viewBox="0 0 100 100"
@@ -174,7 +176,7 @@ export function AgentFlowPanel() {
           )}
         </svg>
 
-        <div className="flex flex-col gap-3">
+        <div className="min-w-0 flex flex-col gap-3">
           {sourceKeys.map((key, i) => {
             const Icon = SOURCE_ICONS[i]!;
             return (
@@ -191,7 +193,7 @@ export function AgentFlowPanel() {
 
         <div aria-hidden className="w-8" />
 
-        <div className="flex flex-col gap-3">
+        <div className="min-w-0 flex flex-col gap-3">
           {systemKeys.map((key, i) => {
             const Icon = SYSTEM_ICONS[i]!;
             return (
