@@ -71,7 +71,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
           <CardContent className="flex flex-col gap-4 pt-6">
             <div>
               <p className="text-sm text-muted-foreground">{t("balanceCard.title")}</p>
-              <p className="mt-1 text-2xl font-bold">{credits.balance.toFixed(2)} TAY</p>
+              <p className="mt-1 text-2xl font-bold">{credits.balance.toFixed(2)} ARI</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("balanceCard.hint")}</p>
             </div>
             <TopUpDialog allowTestTopUp={process.env.NODE_ENV !== "production"} />
@@ -80,7 +80,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
         <Card>
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">{t("bonusCard.title")}</p>
-            <p className="mt-1 text-2xl font-bold">{credits.bonusBalance.toFixed(2)} TAYb</p>
+            <p className="mt-1 text-2xl font-bold">{credits.bonusBalance.toFixed(2)} ARIb</p>
             <p className="mt-1 text-xs text-muted-foreground">{t("bonusCard.hint")}</p>
           </CardContent>
         </Card>
@@ -118,7 +118,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
                       <td className="py-2 pr-4">{tx.description}</td>
                       <td className="py-2 pr-4 text-muted-foreground">{t(`history.types.${tx.type}`)}</td>
                       <td className="py-2 text-right font-medium text-brand">
-                        +{tx.amount.toFixed(2)} TAY
+                        +{tx.amount.toFixed(2)} ARI
                       </td>
                     </tr>
                   ))}
@@ -154,7 +154,7 @@ export default async function BillingPage({ params }: { params: Promise<{ locale
                       <td className="py-2 pr-4">{tx.description}</td>
                       <td className="py-2 pr-4 text-muted-foreground">{t(`history.types.${tx.type}`)}</td>
                       <td className="py-2 text-right font-medium text-foreground">
-                        {tx.amount.toFixed(2)} TAY
+                        {tx.amount.toFixed(2)} ARI
                       </td>
                     </tr>
                   ))}

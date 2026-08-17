@@ -41,10 +41,22 @@ export function NotificationsPopover({ locale }: { locale: string }) {
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
+    // Guards against overlapping polls: on a slow/flaky connection a
+    // getNotifications() call can take longer than the 15s interval,
+    // which would otherwise pile up concurrent requests and starve real
+    // user actions (form submits) hitting the same server.
+    let inFlight = false;
+
     const fetchItems = () => {
+      if (inFlight) return;
+      inFlight = true;
       startTransition(async () => {
-        const data = await getNotifications(locale);
-        setItems(data);
+        try {
+          const data = await getNotifications(locale);
+          setItems(data);
+        } finally {
+          inFlight = false;
+        }
       });
     };
 

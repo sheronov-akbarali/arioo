@@ -105,7 +105,7 @@ export default async function ReferralProgramPage({
         <Card>
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">{t("balance")}</p>
-            <p className="mt-1 text-2xl font-bold">{account.balance.toFixed(2)} TAY</p>
+            <p className="mt-1 text-2xl font-bold">{account.balance.toFixed(2)} ARI</p>
             <PayoutDialog locale={locale} currentBalance={account.balance} />
           </CardContent>
         </Card>
@@ -125,7 +125,7 @@ export default async function ReferralProgramPage({
         <Card>
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">{t("totalEarned")}</p>
-            <p className="mt-1 text-2xl font-bold">{totalEarned.toFixed(2)} TAY</p>
+            <p className="mt-1 text-2xl font-bold">{totalEarned.toFixed(2)} ARI</p>
           </CardContent>
         </Card>
       </div>
@@ -211,7 +211,7 @@ export default async function ReferralProgramPage({
                   <span>{op.description}</span>
                   <span className="flex items-center gap-3">
                     <span className="text-muted-foreground">{dtf.format(op.createdAt)}</span>
-                    <span className="font-medium text-brand">+{op.amount.toFixed(2)} TAY</span>
+                    <span className="font-medium text-brand">+{op.amount.toFixed(2)} ARI</span>
                   </span>
                 </li>
               ))}

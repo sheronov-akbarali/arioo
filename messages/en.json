@@ -783,12 +783,12 @@
     },
     "balanceCard": {
       "title": "Balance",
-      "hint": "TAY is the platform's internal currency, spent on AI employees, tools, and other features.",
+      "hint": "ARI is the platform's internal currency, spent on AI employees, tools, and other features.",
       "topUp": "Top up balance"
     },
     "bonusCard": {
       "title": "Bonuses",
-      "hint": "TAYb is an additional currency earned for platform activity and with some subscriptions."
+      "hint": "ARIb is an additional currency earned for platform activity and with some subscriptions."
     },
     "storageCard": {
       "title": "Storage",

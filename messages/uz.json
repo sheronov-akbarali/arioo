@@ -783,12 +783,12 @@
     },
     "balanceCard": {
       "title": "Balans",
-      "hint": "TAY — platformadagi ichki valyuta. AI xodimlar, vositalar va boshqa funksiyalar uchun sarflanadi.",
+      "hint": "ARI — platformadagi ichki valyuta. AI xodimlar, vositalar va boshqa funksiyalar uchun sarflanadi.",
       "topUp": "Hisobni to'ldirish"
     },
     "bonusCard": {
       "title": "Bonuslar",
-      "hint": "TAYb — platforma faolligi va ba'zi obunalar uchun beriladigan qo'shimcha valyuta."
+      "hint": "ARIb — platforma faolligi va ba'zi obunalar uchun beriladigan qo'shimcha valyuta."
     },
     "storageCard": {
       "title": "Saqlash",

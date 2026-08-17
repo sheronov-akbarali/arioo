@@ -51,6 +51,7 @@
 }
 
 :root {
+  color-scheme: light;
   --background: hsl(37 45% 97%);
   --foreground: hsl(22 50% 15%);
   --brand: hsl(217 91% 40%);
@@ -88,6 +89,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: hsl(320 18% 8%);
   --foreground: hsl(28 46% 94%);
   --brand: hsl(217 91% 45%);
@@ -132,5 +134,8 @@
   }
   html {
     @apply font-sans;
+  }
+  select {
+    @apply bg-background text-foreground;
   }
 }

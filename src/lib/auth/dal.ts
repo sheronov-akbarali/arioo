@@ -7,6 +7,24 @@ import { db } from "@/db/client";
 import { memberships, organizations } from "@/db/schema/org";
 import { aiAgents } from "@/db/schema/agents";
 
+// Clerk's backend API calls occasionally fail with a bare "fetch failed"
+// (transient network hiccup, same class of issue the Neon client in
+// src/db/client.ts already retries around) rather than a real auth
+// rejection. Retrying a couple of times before giving up avoids treating
+// that blip as "not signed in" and bouncing a real session to sign-in.
+async function withFetchRetry<T>(fn: () => Promise<T>): Promise<T> {
+  const RETRIES = 3;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      const isFetchFailure = error instanceof Error && error.message === "fetch failed";
+      if (!isFetchFailure || attempt >= RETRIES) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 300 * (attempt + 1)));
+    }
+  }
+}
+
 export const getSession = cache(async () => {
   // Clerk's backend API (currentUser/auth) can fail transiently (rate
   // limiting, a network hiccup) — without this guard that throws through
@@ -14,10 +32,10 @@ export const getSession = cache(async () => {
   // whole render instead of just bouncing to sign-in like a real
   // unauthenticated visit would.
   try {
-    const { userId } = await auth();
+    const { userId } = await withFetchRetry(() => auth());
     if (!userId) return null;
 
-    const user = await currentUser();
+    const user = await withFetchRetry(() => currentUser());
     if (!user) return null;
 
     return {
