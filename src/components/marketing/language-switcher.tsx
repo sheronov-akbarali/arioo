@@ -16,7 +16,7 @@ export function LanguageSwitcher() {
       {routing.locales.map((loc) => (
         <button
           key={loc}
-          onClick={() => router.replace(pathname, { locale: loc })}
+          onClick={() => router.replace(pathname, { locale: loc, scroll: false })}
           className={`rounded-full px-2 py-1 transition-colors ${
             loc === locale
               ? "bg-brand text-brand-foreground"
