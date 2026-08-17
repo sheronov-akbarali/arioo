@@ -59,3 +59,23 @@ test("language switcher changes the URL prefix", async ({ page }) => {
   await page.getByRole("button", { name: "RU" }).click();
   await expect(page).toHaveURL(/\/ru\/pricing/);
 });
+
+test("hero agent-flow diagram switches departments and expands node panels", async ({ page }) => {
+  await page.goto("/uz");
+
+  // Switching to the HR tab swaps the description text shown above the diagram.
+  await page.getByRole("tab", { name: "HR" }).click();
+  await expect(page.getByText("Arizalarni qayta ishlaydi, nomzodlarga javob beradi va suhbat rejalashtiradi.")).toBeVisible();
+
+  // Clicking a source node opens its sample-data flyout.
+  await page.getByRole("button", { name: "Veb-sayt Yangi lidlar" }).click();
+  await expect(page.getByText("Aziz")).toBeVisible();
+
+  // Clicking a system node opens its connection panel with the demo URL.
+  await page.getByRole("button", { name: "CRM Bitimlar" }).click();
+  await expect(page.getByText("crm.demo.arioo.uz")).toBeVisible();
+
+  // Closing the panel via its × button hides the demo URL again.
+  await page.getByRole("button", { name: "Yopish" }).click();
+  await expect(page.getByText("crm.demo.arioo.uz")).not.toBeVisible();
+});
