@@ -26,7 +26,6 @@
     "ctaPrimary": "Получить консультацию",
     "ctaSecondary": "Смотреть тарифы",
     "diagram": {
-      "sources": "Источники",
       "website": { "label": "Сайт", "sublabel": "Новые лиды" },
       "telegram": { "label": "Telegram", "sublabel": "Диалоги" },
       "whatsapp": { "label": "WhatsApp", "sublabel": "Переписка с клиентами" },
@@ -44,6 +43,54 @@
         "support": { "label": "AI Поддержка", "sublabel": "Решает обращения и эскалирует" },
         "hr": { "label": "AI HR", "sublabel": "Отбирает кандидатов и планирует" },
         "marketing": { "label": "AI Маркетинг", "sublabel": "Готовит контент и кампании" }
+      },
+      "groups": {
+        "sales": ["Источники", "Общение"],
+        "support": ["Обращения", "Дополнительно"],
+        "hr": ["Заявки", "Собеседования"],
+        "marketing": ["Каналы", "Связь"]
+      },
+      "description": {
+        "sales": "Квалифицирует лиды, отвечает на вопросы и записывает всё в CRM.",
+        "support": "Решает обращения, ищет ответ в базе знаний и при необходимости передаёт человеку.",
+        "hr": "Обрабатывает заявки, отвечает кандидатам и планирует собеседования.",
+        "marketing": "Собирает заявки, помогает готовить контент и сегментирует запросы."
+      },
+      "chips": {
+        "sales": ["Лиды", "Встречи", "CRM"],
+        "support": ["Тикеты", "База знаний", "Эскалация"],
+        "hr": ["Заявки", "Скрининг", "Собеседование"],
+        "marketing": ["Контент", "Лиды", "Сегментация"]
+      },
+      "systemsHeading": "Системы",
+      "sampleBadge": "Демо",
+      "flyout": {
+        "website": ["Азиз", "Малика"],
+        "telegram": ["@aziz_dev", "@malika_uz"],
+        "whatsapp": ["+998 90 123-45-67", "+998 91 234-56-78"],
+        "calls": ["+998 93 555-11-22", "+998 94 666-33-44"]
+      },
+      "connection": {
+        "crm": {
+          "url": "crm.demo.arioo.uz",
+          "tools": {
+            "createDeal": { "name": "createDeal", "description": "Создаёт новую сделку" },
+            "updateStage": { "name": "updateStage", "description": "Обновляет этап" }
+          }
+        },
+        "knowledge": {
+          "url": "kb.demo.arioo.uz",
+          "tools": {
+            "searchDocs": { "name": "searchDocs", "description": "Ищет по документам" },
+            "suggestAnswer": { "name": "suggestAnswer", "description": "Предлагает ответ" }
+          }
+        }
+      },
+      "panelLabels": {
+        "connection": "Подключение",
+        "url": "URL",
+        "tools": "Инструменты",
+        "close": "Закрыть"
       }
     }
   },

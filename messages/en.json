@@ -26,7 +26,6 @@
     "ctaPrimary": "Get Consultation",
     "ctaSecondary": "See Pricing",
     "diagram": {
-      "sources": "Sources",
       "website": { "label": "Website", "sublabel": "New leads" },
       "telegram": { "label": "Telegram", "sublabel": "Dialogs" },
       "whatsapp": { "label": "WhatsApp", "sublabel": "Customer conversations" },
@@ -44,6 +43,54 @@
         "support": { "label": "AI Support", "sublabel": "Resolves tickets and escalates" },
         "hr": { "label": "AI HR", "sublabel": "Screens candidates and schedules" },
         "marketing": { "label": "AI Marketing", "sublabel": "Drafts content and campaigns" }
+      },
+      "groups": {
+        "sales": ["Sources", "Conversations"],
+        "support": ["Requests", "Additional"],
+        "hr": ["Applications", "Interviews"],
+        "marketing": ["Channels", "Outreach"]
+      },
+      "description": {
+        "sales": "Qualifies leads, answers questions, and writes everything to the CRM.",
+        "support": "Resolves requests, finds answers in the knowledge base, and hands off to a human when needed.",
+        "hr": "Processes applications, replies to candidates, and schedules interviews.",
+        "marketing": "Collects requests, helps draft content, and segments inquiries."
+      },
+      "chips": {
+        "sales": ["Leads", "Meetings", "CRM"],
+        "support": ["Tickets", "Knowledge base", "Escalation"],
+        "hr": ["Applications", "Screening", "Interview"],
+        "marketing": ["Content", "Leads", "Segmentation"]
+      },
+      "systemsHeading": "Systems",
+      "sampleBadge": "Demo",
+      "flyout": {
+        "website": ["Aziz", "Malika"],
+        "telegram": ["@aziz_dev", "@malika_uz"],
+        "whatsapp": ["+998 90 123-45-67", "+998 91 234-56-78"],
+        "calls": ["+998 93 555-11-22", "+998 94 666-33-44"]
+      },
+      "connection": {
+        "crm": {
+          "url": "crm.demo.arioo.uz",
+          "tools": {
+            "createDeal": { "name": "createDeal", "description": "Creates a new deal" },
+            "updateStage": { "name": "updateStage", "description": "Updates the stage" }
+          }
+        },
+        "knowledge": {
+          "url": "kb.demo.arioo.uz",
+          "tools": {
+            "searchDocs": { "name": "searchDocs", "description": "Searches the docs" },
+            "suggestAnswer": { "name": "suggestAnswer", "description": "Suggests an answer" }
+          }
+        }
+      },
+      "panelLabels": {
+        "connection": "Connection",
+        "url": "URL",
+        "tools": "Tools",
+        "close": "Close"
       }
     }
   },

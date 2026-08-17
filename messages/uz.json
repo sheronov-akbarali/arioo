@@ -26,7 +26,6 @@
     "ctaPrimary": "Konsultatsiya olish",
     "ctaSecondary": "Narxlarni ko'rish",
     "diagram": {
-      "sources": "Manbalar",
       "website": { "label": "Veb-sayt", "sublabel": "Yangi lidlar" },
       "telegram": { "label": "Telegram", "sublabel": "Dialoglar" },
       "whatsapp": { "label": "WhatsApp", "sublabel": "Mijozlar bilan yozishmalar" },
@@ -44,6 +43,54 @@
         "support": { "label": "AI Qo'llab-quvvatlash", "sublabel": "Murojaatlarni hal qiladi va eskalatsiya qiladi" },
         "hr": { "label": "AI HR", "sublabel": "Nomzodlarni saralaydi va uchrashuv belgilaydi" },
         "marketing": { "label": "AI Marketing", "sublabel": "Kontent va kampaniyalar tayyorlaydi" }
+      },
+      "groups": {
+        "sales": ["Manbalar", "Muloqot"],
+        "support": ["Murojaatlar", "Qo'shimcha"],
+        "hr": ["Arizalar", "Suhbatlar"],
+        "marketing": ["Kanallar", "Aloqa"]
+      },
+      "description": {
+        "sales": "Lidlarni malakalashtiradi, savollarga javob beradi va CRM'ga yozadi.",
+        "support": "Murojaatlarni hal qiladi, bilim bazasidan javob topadi va kerak bo'lsa odamga topshiradi.",
+        "hr": "Arizalarni qayta ishlaydi, nomzodlarga javob beradi va suhbat rejalashtiradi.",
+        "marketing": "Xabarlarni yig'adi, kontent tayyorlashda yordam beradi va so'rovlarni segmentlaydi."
+      },
+      "chips": {
+        "sales": ["Lidlar", "Uchrashuvlar", "CRM"],
+        "support": ["Chiptalar", "Bilim bazasi", "Eskalatsiya"],
+        "hr": ["Arizalar", "Skrining", "Suhbat"],
+        "marketing": ["Kontent", "Lidlar", "Segmentatsiya"]
+      },
+      "systemsHeading": "Tizimlar",
+      "sampleBadge": "Namuna",
+      "flyout": {
+        "website": ["Aziz", "Malika"],
+        "telegram": ["@aziz_dev", "@malika_uz"],
+        "whatsapp": ["+998 90 123-45-67", "+998 91 234-56-78"],
+        "calls": ["+998 93 555-11-22", "+998 94 666-33-44"]
+      },
+      "connection": {
+        "crm": {
+          "url": "crm.demo.arioo.uz",
+          "tools": {
+            "createDeal": { "name": "createDeal", "description": "Yangi bitim yaratadi" },
+            "updateStage": { "name": "updateStage", "description": "Bosqichni yangilaydi" }
+          }
+        },
+        "knowledge": {
+          "url": "kb.demo.arioo.uz",
+          "tools": {
+            "searchDocs": { "name": "searchDocs", "description": "Hujjatlardan qidiradi" },
+            "suggestAnswer": { "name": "suggestAnswer", "description": "Javob taklif qiladi" }
+          }
+        }
+      },
+      "panelLabels": {
+        "connection": "Ulanish",
+        "url": "URL",
+        "tools": "Vositalar",
+        "close": "Yopish"
       }
     }
   },
