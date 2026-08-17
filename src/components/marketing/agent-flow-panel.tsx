@@ -1,18 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Bot, type LucideIcon } from "lucide-react";
+import { Bot, X, type LucideIcon } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import {
   DEPARTMENT_KEYS,
   type Department,
   type SourceKey,
   SYSTEM_KEYS,
+  type SystemKey,
   SOURCE_ICONS,
   SYSTEM_ICONS,
   DEPARTMENT_SOURCE_GROUPS,
+  CONNECTION_TOOL_KEYS,
 } from "./agent-flow-data";
 
 const CYCLE_MS = 2500;
@@ -20,27 +23,29 @@ const CYCLE_MS = 2500;
 // connector lines (1.2s per dash-gap cycle, linear, indefinite).
 const FLOW_DUR_S = 1.2;
 
+type ActiveNode = { kind: "source"; key: SourceKey } | { kind: "system"; key: SystemKey } | null;
+
 function NodeCard({
   icon: Icon,
   label,
   sublabel,
   active,
   pulseKey,
+  interactive,
+  expanded,
+  onToggle,
 }: {
   icon: LucideIcon;
   label: string;
   sublabel: string;
   active: boolean;
   pulseKey?: number;
+  interactive?: boolean;
+  expanded?: boolean;
+  onToggle?: () => void;
 }) {
-  return (
-    <div
-      className={
-        active
-          ? "relative z-10 flex items-center gap-3 rounded-xl border border-brand bg-brand/10 p-3 shadow-[0_0_24px_-8px_var(--brand)] transition-colors duration-500"
-          : "relative z-10 flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors duration-500"
-      }
-    >
+  const content = (
+    <>
       {active && (
         <span
           key={pulseKey}
@@ -60,16 +65,110 @@ function NodeCard({
         )}
         <Icon className="relative size-4" />
       </span>
-      <div className="min-w-0">
+      <div className="min-w-0 text-left">
         <p className="truncate text-sm font-medium">{label}</p>
         <p className="truncate text-xs text-muted-foreground">{sublabel}</p>
       </div>
-    </div>
+    </>
   );
+
+  const className = [
+    "relative z-10 flex w-full items-center gap-3 rounded-xl border p-3 transition-colors duration-500",
+    active ? "border-brand bg-brand/10 shadow-[0_0_24px_-8px_var(--brand)]" : "border-border bg-card",
+    interactive ? "cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand" : "",
+    expanded ? "ring-2 ring-brand" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  if (interactive) {
+    return (
+      <button type="button" onClick={onToggle} aria-expanded={expanded} className={className}>
+        {content}
+      </button>
+    );
+  }
+  return <div className={className}>{content}</div>;
 }
 
 function GroupHeading({ text }: { text: string }) {
   return <p className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">{text}</p>;
+}
+
+function SourceFlyout({ items }: { items: string[] }) {
+  return (
+    <div
+      role="status"
+      className="animate-in fade-in slide-in-from-bottom-1 absolute -top-2 left-3 z-20 flex -translate-y-full gap-1.5 duration-300"
+    >
+      {items.map((item) => (
+        <span
+          key={item}
+          className="rounded-full border border-brand/40 bg-card px-2.5 py-1 text-xs font-medium whitespace-nowrap text-foreground shadow-sm"
+        >
+          {item}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function SystemConnectionPanel({
+  url,
+  tools,
+  labels,
+  sampleBadge,
+  onClose,
+}: {
+  url: string;
+  tools: { key: string; name: string; description: string }[];
+  labels: { connection: string; url: string; tools: string; close: string };
+  sampleBadge: string;
+  onClose: () => void;
+}) {
+  const [enabled, setEnabled] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(tools.map((tool, i) => [tool.key, i === 0])),
+  );
+
+  return (
+    <div className="animate-in fade-in slide-in-from-top-2 mt-4 rounded-xl border border-border bg-card p-4 duration-300">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-semibold">{labels.connection}</p>
+          <Badge variant="outline">{sampleBadge}</Badge>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={labels.close}
+          className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+        >
+          <X className="size-4" />
+        </button>
+      </div>
+      <p className="mb-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">{labels.url}</p>
+      <p className="mb-4 rounded-lg border border-border bg-muted/40 px-3 py-2 font-mono text-xs">{url}</p>
+      <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">{labels.tools}</p>
+      <div className="flex flex-col gap-2">
+        {tools.map((tool) => (
+          <div
+            key={tool.key}
+            className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2"
+          >
+            <div className="min-w-0">
+              <p className="truncate font-mono text-xs font-medium">{tool.name}</p>
+              <p className="truncate text-xs text-muted-foreground">{tool.description}</p>
+            </div>
+            <Switch
+              checked={enabled[tool.key] ?? false}
+              onCheckedChange={(value) => setEnabled((prev) => ({ ...prev, [tool.key]: value }))}
+              aria-label={tool.name}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 // Anchor points as percentages of the diagram's bounding box. The source
@@ -100,10 +199,12 @@ function useReducedMotion() {
 export function AgentFlowPanel() {
   const t = useTranslations("hero.diagram");
   const reducedMotion = useReducedMotion();
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const [department, setDepartment] = useState<Department>("sales");
   const [activeSource, setActiveSource] = useState(0);
   const [cycle, setCycle] = useState(0);
+  const [activeNode, setActiveNode] = useState<ActiveNode>(null);
 
   const [group0, group1] = DEPARTMENT_SOURCE_GROUPS[department];
   const renderedSourceKeys: SourceKey[] = [...group0, ...group1];
@@ -112,24 +213,90 @@ export function AgentFlowPanel() {
   useEffect(() => {
     setActiveSource(0);
     setCycle((c) => c + 1);
+    setActiveNode(null);
   }, [department]);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || activeNode) return;
     const id = setInterval(() => {
       setActiveSource((i) => (i + 1) % renderedSourceKeys.length);
       setCycle((c) => c + 1);
     }, CYCLE_MS);
     return () => clearInterval(id);
-  }, [reducedMotion, renderedSourceKeys.length]);
+  }, [reducedMotion, renderedSourceKeys.length, activeNode]);
+
+  useEffect(() => {
+    if (!activeNode) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
+        setActiveNode(null);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [activeNode]);
+
+  const toggleSource = (key: SourceKey) =>
+    setActiveNode((prev) => (prev?.kind === "source" && prev.key === key ? null : { kind: "source", key }));
+  const toggleSystem = (key: SystemKey) =>
+    setActiveNode((prev) => (prev?.kind === "system" && prev.key === key ? null : { kind: "system", key }));
 
   const sourceToAgentPath = (i: number) =>
     `M ${SOURCE_X} ${SOURCE_Y[i]} C 30 ${SOURCE_Y[i]}, 30 ${AGENT_POINT.y}, ${AGENT_POINT.x} ${AGENT_POINT.y}`;
   const agentToSystemPath = (i: number) =>
     `M ${AGENT_POINT.x} ${AGENT_POINT.y} C 70 ${AGENT_POINT.y}, 70 ${SYSTEM_Y[i]}, ${SYSTEM_X} ${SYSTEM_Y[i]}`;
 
+  const panelLabels = {
+    connection: t("panelLabels.connection"),
+    url: t("panelLabels.url"),
+    tools: t("panelLabels.tools"),
+    close: t("panelLabels.close"),
+  };
+  const sampleBadge = t("sampleBadge");
+
+  const renderSourceNode = (key: SourceKey) => {
+    const i = renderedSourceKeys.indexOf(key);
+    const Icon = SOURCE_ICONS[key];
+    const expanded = activeNode?.kind === "source" && activeNode.key === key;
+    return (
+      <div key={key} className="relative">
+        <NodeCard
+          icon={Icon}
+          label={t(`${key}.label`)}
+          sublabel={t(`${key}.sublabel`)}
+          active={!reducedMotion && i === activeSource}
+          pulseKey={cycle}
+          interactive
+          expanded={expanded}
+          onToggle={() => toggleSource(key)}
+        />
+        {expanded && <SourceFlyout items={t.raw(`flyout.${key}`) as string[]} />}
+      </div>
+    );
+  };
+
+  const renderSystemNode = (key: SystemKey, i: number) => {
+    const Icon = SYSTEM_ICONS[key];
+    const expanded = activeNode?.kind === "system" && activeNode.key === key;
+    return (
+      <NodeCard
+        key={key}
+        icon={Icon}
+        label={t(`${key}.label`)}
+        sublabel={t(`${key}.sublabel`)}
+        active={!reducedMotion && i === activeSystem}
+        pulseKey={cycle}
+        interactive
+        expanded={expanded}
+        onToggle={() => toggleSystem(key)}
+      />
+    );
+  };
+
+  const expandedSystem = activeNode?.kind === "system" ? activeNode.key : null;
+
   return (
-    <div className="min-w-0 overflow-hidden rounded-2xl border border-border bg-card/50">
+    <div ref={panelRef} className="min-w-0 overflow-hidden rounded-2xl border border-border bg-card/50">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 bg-muted/40 px-4 py-3">
         <div aria-hidden className="flex shrink-0 gap-1.5">
           <span className="size-2.5 rounded-full bg-red-400/70" />
@@ -219,7 +386,7 @@ export function AgentFlowPanel() {
                 </path>
               );
             })}
-            {!reducedMotion && (
+            {!reducedMotion && !activeNode && (
               <circle r={1.6} fill="var(--brand)">
                 <animateMotion
                   key={`journey-${cycle}`}
@@ -236,35 +403,9 @@ export function AgentFlowPanel() {
 
           <div className="min-w-0 flex flex-col gap-3">
             <GroupHeading text={t(`groups.${department}.0`)} />
-            {group0.map((key) => {
-              const i = renderedSourceKeys.indexOf(key);
-              const Icon = SOURCE_ICONS[key];
-              return (
-                <NodeCard
-                  key={key}
-                  icon={Icon}
-                  label={t(`${key}.label`)}
-                  sublabel={t(`${key}.sublabel`)}
-                  active={!reducedMotion && i === activeSource}
-                  pulseKey={cycle}
-                />
-              );
-            })}
+            {group0.map(renderSourceNode)}
             <GroupHeading text={t(`groups.${department}.1`)} />
-            {group1.map((key) => {
-              const i = renderedSourceKeys.indexOf(key);
-              const Icon = SOURCE_ICONS[key];
-              return (
-                <NodeCard
-                  key={key}
-                  icon={Icon}
-                  label={t(`${key}.label`)}
-                  sublabel={t(`${key}.sublabel`)}
-                  active={!reducedMotion && i === activeSource}
-                  pulseKey={cycle}
-                />
-              );
-            })}
+            {group1.map(renderSourceNode)}
           </div>
 
           <div className="min-w-0 w-full">
@@ -273,21 +414,23 @@ export function AgentFlowPanel() {
 
           <div className="min-w-0 flex flex-col gap-3">
             <GroupHeading text={t("systemsHeading")} />
-            {SYSTEM_KEYS.map((key, i) => {
-              const Icon = SYSTEM_ICONS[key];
-              return (
-                <NodeCard
-                  key={key}
-                  icon={Icon}
-                  label={t(`${key}.label`)}
-                  sublabel={t(`${key}.sublabel`)}
-                  active={!reducedMotion && i === activeSystem}
-                  pulseKey={cycle}
-                />
-              );
-            })}
+            {SYSTEM_KEYS.map((key, i) => renderSystemNode(key, i))}
           </div>
         </div>
+
+        {expandedSystem && (
+          <SystemConnectionPanel
+            url={t(`connection.${expandedSystem}.url`)}
+            tools={CONNECTION_TOOL_KEYS[expandedSystem].map((toolKey) => ({
+              key: toolKey,
+              name: t(`connection.${expandedSystem}.tools.${toolKey}.name`),
+              description: t(`connection.${expandedSystem}.tools.${toolKey}.description`),
+            }))}
+            labels={panelLabels}
+            sampleBadge={sampleBadge}
+            onClose={() => setActiveNode(null)}
+          />
+        )}
       </div>
     </div>
   );
