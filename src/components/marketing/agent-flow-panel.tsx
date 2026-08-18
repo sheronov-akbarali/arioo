@@ -95,11 +95,47 @@ function GroupHeading({ text }: { text: string }) {
   return <p className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">{text}</p>;
 }
 
+function FlowPath({
+  d,
+  isActive,
+  reducedMotion,
+  animateBegin,
+}: {
+  d: string;
+  isActive: boolean;
+  reducedMotion: boolean;
+  animateBegin?: string;
+}) {
+  return (
+    <path
+      d={d}
+      fill="none"
+      stroke={isActive ? "var(--brand)" : "var(--border)"}
+      strokeWidth={isActive ? 0.8 : 0.6}
+      strokeOpacity={isActive ? 1 : 0.6}
+      strokeDasharray="2 2"
+      strokeLinecap="round"
+      className="transition-[stroke,stroke-width,stroke-opacity] duration-500"
+      vectorEffect="non-scaling-stroke"
+    >
+      {!reducedMotion && (
+        <animate
+          attributeName="stroke-dashoffset"
+          values="0;-4"
+          dur={`${FLOW_DUR_S}s`}
+          repeatCount="indefinite"
+          begin={animateBegin}
+        />
+      )}
+    </path>
+  );
+}
+
 function SourceFlyout({ items }: { items: string[] }) {
   return (
     <div
       role="status"
-      className="animate-in fade-in slide-in-from-bottom-1 absolute -top-2 left-3 z-20 flex -translate-y-full gap-1.5 duration-300"
+      className="animate-in fade-in slide-in-from-left-1 absolute top-1/2 left-full z-20 ml-2 flex -translate-y-1/2 gap-1.5 duration-300"
     >
       {items.map((item) => (
         <span
@@ -178,7 +214,7 @@ function SystemConnectionPanel({
 // layout (heading rows are shorter than card rows) — exact pixel sync
 // isn't needed since the SVG stretches with preserveAspectRatio="none".
 const SOURCE_Y = [18, 39, 70, 91];
-const SYSTEM_Y = [37, 81];
+const SYSTEM_Y = [43, 65];
 const AGENT_POINT = { x: 50, y: 50 };
 const SOURCE_X = 2;
 const SYSTEM_X = 98;
@@ -206,15 +242,10 @@ export function AgentFlowPanel() {
   const [cycle, setCycle] = useState(0);
   const [activeNode, setActiveNode] = useState<ActiveNode>(null);
 
+  const groupHeadings = t.raw(`groups.${department}`) as string[];
   const [group0, group1] = DEPARTMENT_SOURCE_GROUPS[department];
   const renderedSourceKeys: SourceKey[] = [...group0, ...group1];
   const activeSystem = activeSource % SYSTEM_KEYS.length;
-
-  useEffect(() => {
-    setActiveSource(0);
-    setCycle((c) => c + 1);
-    setActiveNode(null);
-  }, [department]);
 
   useEffect(() => {
     if (reducedMotion || activeNode) return;
@@ -303,7 +334,15 @@ export function AgentFlowPanel() {
           <span className="size-2.5 rounded-full bg-amber-400/70" />
           <span className="size-2.5 rounded-full bg-emerald-400/70" />
         </div>
-        <Tabs value={department} onValueChange={(v) => setDepartment(v as Department)}>
+        <Tabs
+          value={department}
+          onValueChange={(v) => {
+            setDepartment(v as Department);
+            setActiveSource(0);
+            setCycle((c) => c + 1);
+            setActiveNode(null);
+          }}
+        >
           <div className="-mx-1 overflow-x-auto px-1">
             <TabsList>
               {DEPARTMENT_KEYS.map((key) => (
@@ -326,66 +365,30 @@ export function AgentFlowPanel() {
           ))}
         </div>
 
-        <div className="relative grid grid-cols-[minmax(0,1fr)_minmax(0,148px)_minmax(0,1fr)] items-center gap-3">
+        <div className="relative grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,148px)_minmax(0,1fr)] sm:items-center">
           <svg
             aria-hidden
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
-            className="pointer-events-none absolute inset-0 h-full w-full"
+            className="pointer-events-none absolute inset-0 hidden h-full w-full sm:block"
           >
-            {renderedSourceKeys.map((key, i) => {
-              const isActive = !reducedMotion && i === activeSource;
-              return (
-                <path
-                  key={key}
-                  d={sourceToAgentPath(i)}
-                  fill="none"
-                  stroke={isActive ? "var(--brand)" : "var(--border)"}
-                  strokeWidth={isActive ? 0.8 : 0.6}
-                  strokeOpacity={isActive ? 1 : 0.6}
-                  strokeDasharray="2 2"
-                  strokeLinecap="round"
-                  className="transition-[stroke,stroke-width,stroke-opacity] duration-500"
-                  vectorEffect="non-scaling-stroke"
-                >
-                  {!reducedMotion && (
-                    <animate
-                      attributeName="stroke-dashoffset"
-                      values="0;-4"
-                      dur={`${FLOW_DUR_S}s`}
-                      repeatCount="indefinite"
-                    />
-                  )}
-                </path>
-              );
-            })}
-            {SYSTEM_KEYS.map((key, i) => {
-              const isActive = !reducedMotion && i === activeSystem;
-              return (
-                <path
-                  key={key}
-                  d={agentToSystemPath(i)}
-                  fill="none"
-                  stroke={isActive ? "var(--brand)" : "var(--border)"}
-                  strokeWidth={isActive ? 0.8 : 0.6}
-                  strokeOpacity={isActive ? 1 : 0.6}
-                  strokeDasharray="2 2"
-                  strokeLinecap="round"
-                  className="transition-[stroke,stroke-width,stroke-opacity] duration-500"
-                  vectorEffect="non-scaling-stroke"
-                >
-                  {!reducedMotion && (
-                    <animate
-                      attributeName="stroke-dashoffset"
-                      values="0;-4"
-                      dur={`${FLOW_DUR_S}s`}
-                      repeatCount="indefinite"
-                      begin={`${FLOW_DUR_S / 2}s`}
-                    />
-                  )}
-                </path>
-              );
-            })}
+            {renderedSourceKeys.map((key, i) => (
+              <FlowPath
+                key={key}
+                d={sourceToAgentPath(i)}
+                isActive={!reducedMotion && i === activeSource}
+                reducedMotion={reducedMotion}
+              />
+            ))}
+            {SYSTEM_KEYS.map((key, i) => (
+              <FlowPath
+                key={key}
+                d={agentToSystemPath(i)}
+                isActive={!reducedMotion && i === activeSystem}
+                reducedMotion={reducedMotion}
+                animateBegin={`${FLOW_DUR_S / 2}s`}
+              />
+            ))}
             {!reducedMotion && !activeNode && (
               <circle r={1.6} fill="var(--brand)">
                 <animateMotion
@@ -402,9 +405,9 @@ export function AgentFlowPanel() {
           </svg>
 
           <div className="min-w-0 flex flex-col gap-3">
-            <GroupHeading text={t(`groups.${department}.0`)} />
+            <GroupHeading text={groupHeadings[0]} />
             {group0.map(renderSourceNode)}
-            <GroupHeading text={t(`groups.${department}.1`)} />
+            <GroupHeading text={groupHeadings[1]} />
             {group1.map(renderSourceNode)}
           </div>
 
@@ -420,6 +423,7 @@ export function AgentFlowPanel() {
 
         {expandedSystem && (
           <SystemConnectionPanel
+            key={expandedSystem}
             url={t(`connection.${expandedSystem}.url`)}
             tools={CONNECTION_TOOL_KEYS[expandedSystem].map((toolKey) => ({
               key: toolKey,
