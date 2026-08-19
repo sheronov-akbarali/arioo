@@ -35,7 +35,7 @@ export default async function SearchPage({
     .where(eq(aiAgents.organizationId, organization.id));
 
   const trimmedQuery = (q ?? "").trim();
-  const page = Math.max(1, Number(pageParam) || 1);
+  const page = Math.max(1, Math.min(Math.floor(Number(pageParam)) || 1, 10000));
   const selectedChannel = isTranscriptChannel(channel) ? channel : undefined;
 
   const outcome =
