@@ -28,6 +28,7 @@ import {
   Briefcase,
   Sparkles,
   MessageSquareText,
+  Search,
   type LucideIcon,
 } from "lucide-react";
 
@@ -41,6 +42,7 @@ const GROUPS: NavGroup[] = [
       { key: "assistants", icon: Bot, href: "/assistants" },
       { key: "templates", icon: Sparkles, href: "/templates" },
       { key: "chats", icon: MessageSquare, href: "/chats" },
+      { key: "search", icon: Search, href: "/search" },
       { key: "calls", icon: PhoneCall, href: "/calls" },
       { key: "routines", icon: Repeat2, href: "/routines" },
       { key: "crm", icon: Briefcase, href: "/crm" },
