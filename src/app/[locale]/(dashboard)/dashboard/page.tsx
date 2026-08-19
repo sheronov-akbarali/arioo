@@ -22,35 +22,48 @@ export default async function DashboardPage({
   const { organization } = await requireOrganization(locale);
   const t = await getTranslations("dashboard.home");
 
-  // Fetch real statistics for this organization
-  const [agentsCountRow] = await db.select({ value: count() })
-    .from(aiAgents)
-    .where(eq(aiAgents.organizationId, organization.id));
-    
-  const [dealsCountRow] = await db.select({ value: count() })
-    .from(crmDeals)
-    .where(eq(crmDeals.organizationId, organization.id));
+  // Fetch real statistics for this organization. These 6 queries are
+  // independent (none depends on another's result), so run them concurrently
+  // instead of round-tripping to the DB one at a time — this is the first
+  // page every user hits after login, and each sequential await added its
+  // own network round-trip on top of the others.
+  const [
+    [agentsCountRow],
+    [dealsCountRow],
+    [chatsCountRow],
+    [knowledgeCountRow],
+    [channelsCountRow],
+    firstAgent,
+  ] = await Promise.all([
+    db.select({ value: count() })
+      .from(aiAgents)
+      .where(eq(aiAgents.organizationId, organization.id)),
 
-  const [chatsCountRow] = await db.select({ value: count() })
-    .from(conversations)
-    .innerJoin(aiAgents, eq(conversations.agentId, aiAgents.id))
-    .where(eq(aiAgents.organizationId, organization.id));
+    db.select({ value: count() })
+      .from(crmDeals)
+      .where(eq(crmDeals.organizationId, organization.id)),
 
-  // Check onboarding prerequisites
-  const [knowledgeCountRow] = await db.select({ value: count() })
-    .from(knowledgeDocuments)
-    .innerJoin(aiAgents, eq(knowledgeDocuments.agentId, aiAgents.id))
-    .where(eq(aiAgents.organizationId, organization.id));
+    db.select({ value: count() })
+      .from(conversations)
+      .innerJoin(aiAgents, eq(conversations.agentId, aiAgents.id))
+      .where(eq(aiAgents.organizationId, organization.id)),
 
-  const [channelsCountRow] = await db.select({ value: count() })
-    .from(channels)
-    .innerJoin(aiAgents, eq(channels.agentId, aiAgents.id))
-    .where(eq(aiAgents.organizationId, organization.id));
+    // Check onboarding prerequisites
+    db.select({ value: count() })
+      .from(knowledgeDocuments)
+      .innerJoin(aiAgents, eq(knowledgeDocuments.agentId, aiAgents.id))
+      .where(eq(aiAgents.organizationId, organization.id)),
 
-  const firstAgent = await db.select({ id: aiAgents.id })
-    .from(aiAgents)
-    .where(eq(aiAgents.organizationId, organization.id))
-    .limit(1);
+    db.select({ value: count() })
+      .from(channels)
+      .innerJoin(aiAgents, eq(channels.agentId, aiAgents.id))
+      .where(eq(aiAgents.organizationId, organization.id)),
+
+    db.select({ id: aiAgents.id })
+      .from(aiAgents)
+      .where(eq(aiAgents.organizationId, organization.id))
+      .limit(1),
+  ]);
 
   const stats = [
     {
