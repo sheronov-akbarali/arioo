@@ -4,14 +4,16 @@ export function MessageBubble({
   role,
   content,
   label,
+  id,
 }: {
   role: "user" | "assistant" | "system";
   content: string;
   label: string;
+  id?: string;
 }) {
   const isUser = role === "user";
   return (
-    <div className={cn("flex flex-col gap-1", isUser ? "items-end" : "items-start")}>
+    <div id={id} className={cn("flex flex-col gap-1", isUser ? "items-end" : "items-start")}>
       <span className="px-1 text-xs text-muted-foreground">{label}</span>
       <div
         className={cn(

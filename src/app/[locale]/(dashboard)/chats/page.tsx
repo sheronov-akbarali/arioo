@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageBubble } from "@/components/dashboard/chat/message-bubble";
 import { ChatsList, type ChatThread } from "@/components/dashboard/chats/chats-list";
+import { ScrollToMessage } from "@/components/dashboard/chats/scroll-to-message";
 import { handoffConversationAction } from "./actions";
 
 export default async function ChatsPage({
@@ -17,10 +18,10 @@ export default async function ChatsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ conversation?: string }>;
+  searchParams: Promise<{ conversation?: string; message?: string }>;
 }) {
   const { locale } = await params;
-  const { conversation: selectedId } = await searchParams;
+  const { conversation: selectedId, message: targetMessageId } = await searchParams;
   const { organization } = await requireOrganization(locale);
   const t = await getTranslations("chats");
   const tAssistants = await getTranslations("assistants.chat");
@@ -180,9 +181,11 @@ export default async function ChatsPage({
                     </Link>
                   </div>
                 </div>
+                {targetMessageId && <ScrollToMessage targetId={targetMessageId} />}
                 {activeMessages.map((message) => (
                   <MessageBubble
                     key={message.id}
+                    id={message.id}
                     role={message.role}
                     label={
                       message.role === "user"
