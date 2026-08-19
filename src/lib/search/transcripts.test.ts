@@ -91,4 +91,25 @@ describe("searchTranscripts", () => {
 
     expect(result).toEqual({ ok: false, error: "query_failed" });
   });
+
+  it("scopes the query to the given organizationId", async () => {
+    dbExecute.mockResolvedValueOnce({ rows: [] });
+
+    await searchTranscripts({
+      organizationId: "org_42",
+      query: "qaytarish",
+      page: 1,
+      pageSize: 20,
+    });
+
+    expect(dbExecute).toHaveBeenCalledTimes(1);
+    // drizzle's `sql` template stores interpolated values directly inside
+    // `.queryChunks` for params bound at the top level of the template (as
+    // opposed to nested `sql` fragments, which appear as their own SQL
+    // objects). `organizationId` is interpolated at the top level in
+    // transcripts.ts, so it should show up here verbatim. This guards
+    // against someone dropping the `a."organizationId" = ...` filter.
+    const calledSql = dbExecute.mock.calls[0]?.[0] as { queryChunks: unknown[] };
+    expect(calledSql.queryChunks).toContain("org_42");
+  });
 });
