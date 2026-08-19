@@ -1,7 +1,9 @@
-// ts_headline output only ever contains our own literal <mark>/</mark> delimiters
-// around excerpted message text — this renders those delimiters as React elements
-// (never via dangerouslySetInnerHTML) so the excerpted text itself stays an
-// auto-escaped text node no matter what a customer's message contained.
+// ts_headline inserts <mark>/</mark> around matched terms, but it passes the
+// surrounding message content through verbatim — so a customer message that
+// happens to literally contain the string "<mark>" could also toggle
+// highlighting here. That's harmless: this renders everything as React text
+// nodes (never via dangerouslySetInnerHTML), so it's never a security
+// concern, at most a rare cosmetic mis-highlight.
 export function SnippetHighlight({ snippet }: { snippet: string }) {
   const parts = snippet.split(/(<mark>|<\/mark>)/g);
   let marking = false;
