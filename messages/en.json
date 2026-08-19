@@ -384,6 +384,7 @@
     "nav": {
       "assistants": "AI Employees",
       "chats": "Chats",
+      "search": "Search",
       "calls": "Calls",
       "routines": "Routines",
     "crm": "CRM",
@@ -870,6 +871,27 @@
     "continueInPlayground": "Continue in playground →",
     "searchPlaceholder": "Search by agent or message...",
     "noResults": "No results found"
+  },
+  "search": {
+    "title": "Transcript search",
+    "subtitle": "Search across every AI employee's Telegram, WhatsApp, and widget conversations.",
+    "placeholder": "Search message text (2+ characters)...",
+    "submit": "Search",
+    "allAgents": "All AI employees",
+    "allChannels": "All channels",
+    "channel": {
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "widget": "Site widget"
+    },
+    "emptyState": "Enter a search term and press Search.",
+    "tooShort": "Enter at least 2 characters.",
+    "searchError": "Search failed. Please try again.",
+    "noResults": "No results found. Try widening your filters.",
+    "resultsCount": "{count} results found",
+    "viewInChat": "View in chat",
+    "previous": "Previous",
+    "next": "Next"
   },
   "knowledgeBases": {
     "title": "Knowledge base",

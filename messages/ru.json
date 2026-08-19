@@ -384,6 +384,7 @@
     "nav": {
       "assistants": "AI Сотрудники",
       "chats": "Диалоги",
+      "search": "Поиск",
       "calls": "Звонки",
       "routines": "Рутины",
       "knowledgeBases": "База знаний",
@@ -870,6 +871,27 @@
     "continueInPlayground": "Продолжить в плейграунде →",
     "searchPlaceholder": "Поиск по агенту или сообщению...",
     "noResults": "Ничего не найдено"
+  },
+  "search": {
+    "title": "Поиск по транскриптам",
+    "subtitle": "Поиск по диалогам всех AI-сотрудников в Telegram, WhatsApp и виджете.",
+    "placeholder": "Поиск по тексту сообщения (минимум 2 символа)...",
+    "submit": "Искать",
+    "allAgents": "Все AI-сотрудники",
+    "allChannels": "Все каналы",
+    "channel": {
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "widget": "Виджет сайта"
+    },
+    "emptyState": "Введите поисковый запрос и нажмите Искать.",
+    "tooShort": "Введите минимум 2 символа.",
+    "searchError": "Ошибка поиска. Попробуйте снова.",
+    "noResults": "Ничего не найдено. Попробуйте расширить фильтры.",
+    "resultsCount": "Найдено {count} результатов",
+    "viewInChat": "Открыть в диалоге",
+    "previous": "Назад",
+    "next": "Далее"
   },
   "knowledgeBases": {
     "title": "База знаний",

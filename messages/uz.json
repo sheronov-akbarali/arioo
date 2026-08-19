@@ -384,6 +384,7 @@
     "nav": {
       "assistants": "AI Xodimlar",
       "chats": "Suhbatlar",
+      "search": "Qidiruv",
       "calls": "Qo'ng'iroqlar",
       "routines": "Rutinalar",
       "knowledgeBases": "Bilim bazasi",
@@ -870,6 +871,27 @@
     "continueInPlayground": "Playgroundda davom ettirish →",
     "searchPlaceholder": "Agent yoki xabar bo'yicha qidirish...",
     "noResults": "Hech narsa topilmadi"
+  },
+  "search": {
+    "title": "Transkript qidiruv",
+    "subtitle": "Barcha AI Xodimlarning Telegram, WhatsApp va vidjet suhbatlari bo'yicha qidiring.",
+    "placeholder": "Xabar matni bo'yicha qidiring (kamida 2 belgi)...",
+    "submit": "Qidirish",
+    "allAgents": "Barcha AI Xodimlar",
+    "allChannels": "Barcha kanallar",
+    "channel": {
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "widget": "Sayt vidjeti"
+    },
+    "emptyState": "Qidiruv so'zini kiriting va Qidirish tugmasini bosing.",
+    "tooShort": "Kamida 2 belgi kiriting.",
+    "searchError": "Qidiruvda xatolik yuz berdi. Qaytadan urinib ko'ring.",
+    "noResults": "Hech narsa topilmadi. Filtrlarni kengaytirib ko'ring.",
+    "resultsCount": "{count} ta natija topildi",
+    "viewInChat": "Suhbatda ko'rish",
+    "previous": "Oldingi",
+    "next": "Keyingi"
   },
   "knowledgeBases": {
     "title": "Bilim bazasi",
