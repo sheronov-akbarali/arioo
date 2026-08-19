@@ -69,12 +69,13 @@ export async function searchTranscripts(
       INNER JOIN "conversation" c ON c."id" = m."conversationId"
       INNER JOIN "ai_agent" a ON a."id" = c."agentId"
       WHERE a."organizationId" = ${params.organizationId}
+        AND c."channel" <> 'playground'
         AND m."search_vector" @@ ${tsQuery}
         ${params.agentId ? sql`AND a."id" = ${params.agentId}` : sql``}
         ${params.channel ? sql`AND c."channel" = ${params.channel}` : sql``}
         ${params.dateFrom ? sql`AND m."createdAt" >= ${params.dateFrom}` : sql``}
         ${params.dateTo ? sql`AND m."createdAt" <= ${params.dateTo}` : sql``}
-      ORDER BY ts_rank(m."search_vector", ${tsQuery}) DESC
+      ORDER BY ts_rank(m."search_vector", ${tsQuery}) DESC, m."createdAt" DESC, m."id" ASC
       LIMIT ${params.pageSize}
       OFFSET ${offset}
     `);
