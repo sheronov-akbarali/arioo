@@ -135,7 +135,7 @@ export default async function SearchPage({
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium">{result.agentName}</p>
                     <span className="rounded bg-muted-foreground/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                      {result.channel}
+                      {t(`channel.${result.channel}`)}
                     </span>
                     <span className="text-xs text-muted-foreground">{dtf.format(result.createdAt)}</span>
                   </div>
