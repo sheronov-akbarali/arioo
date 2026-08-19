@@ -11,6 +11,7 @@ const isProtectedRoute = createRouteMatcher([
   "/(uz|ru|en)/dashboard(.*)",
   "/(uz|ru|en)/assistants(.*)",
   "/(uz|ru|en)/chats(.*)",
+  "/(uz|ru|en)/search(.*)",
   "/(uz|ru|en)/calls(.*)",
   "/(uz|ru|en)/routines(.*)",
   "/(uz|ru|en)/crm(.*)",
