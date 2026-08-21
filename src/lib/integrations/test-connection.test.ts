@@ -2,6 +2,8 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { testIntegrationConnection } from "./test-connection";
 import { encryptCredential } from "./credential-crypto";
 
+process.env.INTEGRATION_CREDENTIALS_ENCRYPTION_KEY = Buffer.alloc(32, 7).toString("base64");
+
 describe("testIntegrationConnection", () => {
   it("returns ok:false with a clear error when credentials are missing", async () => {
     const result = await testIntegrationConnection("amocrm", {
